@@ -1,0 +1,38 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Base",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost"
+        }
+    ],
+    "paths": {
+        "/api/user/{id}": {
+            "get": {
+                "summary": "Obtener Usuario Especifico",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Buscar por idusuario",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Obtener Usuario Especifico."
+                    },
+                    "404": {
+                        "description": "No se encontro el usuario."
+                    },
+                    "500": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        }
+    }
+}
