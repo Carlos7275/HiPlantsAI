@@ -1,0 +1,23 @@
+_id: req_2efd769321fd4c0682f4b935837ba4b1
+type: Request
+parentId: fld_2958c67f8aba4aedac7edf3a6ebf9ff9
+modified: 1697297019213
+created: 1697296920854
+url: "{{url}}/api/CodigoPostal/81234"
+name: Obtener Cp Especifico
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1696850043754.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,23 @@
+_id: req_7fdaf27d2671403c8d6d37fb7b587e77
+type: Request
+parentId: fld_2958c67f8aba4aedac7edf3a6ebf9ff9
+modified: 1697296987924
+created: 1697296880083
+url: "{{url}}/api/CodigoPostal/0/0"
+name: Buscar Colonia
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1696998742429
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

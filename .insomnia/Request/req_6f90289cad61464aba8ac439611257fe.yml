@@ -1,0 +1,42 @@
+_id: req_6f90289cad61464aba8ac439611257fe
+type: Request
+parentId: fld_f9a804e324bf4e84abe6689e21042ffa
+modified: 1697292465376
+created: 1696701345080
+url: "{{url}}/api/Registrar/Usuario"
+name: RegistrarUsuario
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email": "Carlos_72_75@hotmail.com",
+    	"telefono": 6682566496,
+    	"password": "Carlos7275",
+    	"nombres": "Carlos Fernando",
+    	"apellido_paterno": "Sandoval",
+    	"apellido_materno": "Lizarraga",
+    	"domicilio": "Ahome #2487 entre marina nacional y ejercito nacional",
+    	"fecha_nacimiento": "2001-02-14",
+    	"id_rol": 1,
+    	"id_genero": 1,
+    	"id_asenta": 0,
+    	"cp": 0,
+    	"referencia": "Casa enjarrada"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1696701345080
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

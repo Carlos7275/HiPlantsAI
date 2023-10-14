@@ -1,0 +1,25 @@
+_id: req_4ea2c40786b64ed99797732f1881f2d0
+type: Request
+parentId: fld_f9a804e324bf4e84abe6689e21042ffa
+modified: 1697292613173
+created: 1696701989939
+url: "{{url}}/api/Usuario/3"
+name: ObtenerUsuario
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication:
+  type: bearer
+  token: "{{token}}"
+metaSortKey: -1696700978587.25
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,25 @@
+_id: req_5da68f35b3c748e0ad1bb5a26a614b0b
+type: Request
+parentId: fld_3f5132b834c24b49a06b4e380f38a78f
+modified: 1697298799252
+created: 1697298561796
+url: "{{url}}/api/Roles"
+name: Obtener Roles
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication:
+  type: bearer
+  token: "{{token}}"
+metaSortKey: -1697298561796
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

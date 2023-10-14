@@ -1,0 +1,25 @@
+_id: req_5578a371ec73487b9b446fc2c6e7b5fd
+type: Request
+parentId: fld_f9a804e324bf4e84abe6689e21042ffa
+modified: 1697292571651
+created: 1696701430375
+url: "{{url}}/api/Usuarios"
+name: ObtenerUsuarios
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication:
+  type: bearer
+  token: "{{token}}"
+metaSortKey: -1696701100751.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

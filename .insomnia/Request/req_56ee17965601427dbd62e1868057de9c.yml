@@ -1,0 +1,37 @@
+_id: req_56ee17965601427dbd62e1868057de9c
+type: Request
+parentId: fld_60dcf38d0b0b42ab925c736840e8dc1d
+modified: 1697292418616
+created: 1696700578350
+url: "{{url}}/api/auth/login"
+name: Iniciar Sesion
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email":"admin@admin.com",
+    	"password":"admin"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_74b4bf74d9d64823a17d10028ef538a3
+    disabled: true
+  - name: User-Agent
+    value: insomnia/2023.5.8
+    id: pair_5e09f44c487045babd54f1be598261aa
+    disabled: true
+authentication:
+  type: bearer
+  disabled: true
+metaSortKey: -1696700856423
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
