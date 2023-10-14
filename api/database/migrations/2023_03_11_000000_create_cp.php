@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('codigos_postales', function (Blueprint $table) {
             $table->integer("id_asenta_cpcons");
             $table->string("d_codigo");
-            $table->primary(["id_asenta_cp_cpcons", "d_codigo"]);
+            $table->primary(["id_asenta_cpcons", "d_codigo"]);
             $table->string("d_asenta");
             $table->string("d_tipo_asenta");
             $table->string("d_mnpio");

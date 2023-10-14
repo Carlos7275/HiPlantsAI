@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         CodigoPostales::create([
-            "id_asenta_cp_cpcons" => 0,
+            "id_asenta_cpcons" => 0,
             "d_asenta" => "NONE",
             "d_codigo" => "0",
             "d_ciudad" => "NONE",

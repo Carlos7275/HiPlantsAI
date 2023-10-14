@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer("id_asenta_cpcons");
             $table->string("cp")->length(255);
             $table->string("telefono")->length(10);
-            $table->foreign(["id_asenta_cpcons","cp"])->references(["id_asenta_cp_cpcons","d_codigo"])->on("codigos_postales");//FK Users
+            $table->foreign(["id_asenta_cpcons","cp"])->references(["id_asenta_cpcons","d_codigo"])->on("codigos_postales");//FK Users
             $table->date("fecha_nacimiento");
             $table->timestamps();
         });
