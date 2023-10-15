@@ -2,19 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/pages/login_form/login_form.widget.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 20));
+    animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        animationController.forward(from: 0);
+      }
+    });
+
+    animationController.addListener(() {
+      setState(() {});
+    });
+
+    animationController.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.center, colors: [
-              Enviroment.primaryColor,
-              Enviroment.secondaryColor,
-            ])),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    transform: GradientRotation(animationController.value),
+                    colors: const [
+                  Enviroment.primaryColor,
+                  Enviroment.secondaryColor,
+                ])),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

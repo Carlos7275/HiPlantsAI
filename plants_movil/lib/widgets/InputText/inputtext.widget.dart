@@ -6,9 +6,11 @@ class InputText extends StatelessWidget {
       required this.controller,
       required this.callback,
       required this.message,
-      required this.icon});
+      required this.icon,
+      this.obscure = false});
 
   final TextEditingController controller;
+  final obscure;
   final String? Function(String?) callback;
   final Icon icon;
   final String? message;
@@ -19,6 +21,7 @@ class InputText extends StatelessWidget {
       validator: callback,
       controller: controller,
       cursorColor: Colors.black,
+      obscureText: obscure,
       style: const TextStyle(fontSize: 12),
       decoration: InputDecoration(
           border: const UnderlineInputBorder(
