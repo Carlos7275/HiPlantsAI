@@ -19,6 +19,16 @@ class UsuarioService extends Service<Usuario> {
     );
 
     if (resp.statusCode == 200) {
+      return json.decode(resp.body);
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<Map<String, dynamic>> me() async {
+    http.Response resp = await httpClient.get(url: 'auth/me');
+
+    if (resp.statusCode == 200) {
       return json.decode(resp.body) as Map<String, dynamic>;
     } else {
       throw resp;

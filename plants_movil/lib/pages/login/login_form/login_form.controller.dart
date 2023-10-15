@@ -1,7 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:plants_movil/actions/login.action.dart';
+import 'package:plants_movil/generics/redux/app.store.dart';
 import 'package:plants_movil/generics/widgets/controller.dart';
+import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:plants_movil/services/usuario.service.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:quickalert/quickalert.dart';
@@ -13,11 +17,10 @@ class LoginFormController extends Controller {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final AppStore store;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final BehaviorSubject<bool> isLoading$ = BehaviorSubject<bool>.seeded(false);
-
-
-
+  LoginFormController(this.store);
   String? emailValidator(String? text) {
     if (text != null && Regex.email.hasMatch(text)) {
       return null;
@@ -34,28 +37,29 @@ class LoginFormController extends Controller {
     }
   }
 
-  login(BuildContext context) {
-    if (formKey.currentState!.validate()) {
-      isLoading$.add(true);
-
-      isLoading$.add(false);
-    }
-  }
-
   enviar(BuildContext context) {
     if (formKey.currentState!.validate()) {
       isLoading$.add(true);
+
       UsuarioService()
           .login(emailController.text, passwordController.text)
           .then((Map<String, dynamic> resp) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
-        prefs.setString("token", resp['data']); //Guardar Token
-        isLoading$.add(false);
-        /*AppStore().dispatch(
-            Login(Administrador.fromJson(decodificado), resp['data']));
-*/
-        //    Modular.to.pushNamed('/home');
+        var token = resp['data'];
+        prefs.setString("token", token); //Guardar Token
+        UsuarioService().me().then((Map<String, dynamic> resp) async {
+          store.dispatch(LoginAction(Usuario.fromJson(resp["data"])));
+          isLoading$.add(false);
+          Modular.to.pushNamed('home');
+        }).catchError((error) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: jsonDecode(error.body)["message"],
+            showConfirmBtn: true,
+          );
+        });
       }).catchError((error) {
         QuickAlert.show(
           context: context,
@@ -63,18 +67,8 @@ class LoginFormController extends Controller {
           text: jsonDecode(error.body)["message"],
           showConfirmBtn: true,
         );
-
         isLoading$.add(false);
       });
-    }
-
-    @override
-    void dispose() {
-      super.dispose();
-      emailController.dispose();
-      passwordController.dispose();
-
-      isLoading$.close();
     }
   }
 }

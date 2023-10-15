@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plants_movil/env/local.env.dart';
-import 'package:plants_movil/pages/login_form/login_form.widget.dart';
+import 'package:plants_movil/pages/login/login_form/login_form.widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 20));
+        AnimationController(vsync: this, duration: const Duration(seconds: 7));
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         animationController.forward(from: 0);
@@ -58,14 +58,14 @@ class _LoginPageState extends State<LoginPage>
                       children: <Widget>[
                         Text(
                           "Iniciar Sesión",
-                          style: TextStyle(fontSize: 30),
+                          style: TextStyle(color: Colors.white, fontSize: 30),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
                           "Bienvenido a Plants",
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(color: Colors.white, fontSize: 22),
                         ),
                       ],
                     ),

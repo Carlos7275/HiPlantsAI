@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalPersistance {
   late final SharedPreferences _prefs;
+  
   final String _jwtKey = "";
 
   static final LocalPersistance instance =

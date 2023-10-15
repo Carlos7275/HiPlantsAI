@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/env/local.env.dart';
-import 'package:plants_movil/routes.dart';
 
 class PlantsWidget extends StatelessWidget {
   const PlantsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Plants App',
       theme: ThemeData(
@@ -19,8 +19,8 @@ class PlantsWidget extends StatelessWidget {
           secondary: Enviroment.secondaryColor,
         ),
       ),
-      initialRoute: "/",
-      routes: routes,
+      routeInformationParser: Modular.routeInformationParser,
+      routerDelegate: Modular.routerDelegate,
     );
   }
 }

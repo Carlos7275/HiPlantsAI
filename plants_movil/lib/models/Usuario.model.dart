@@ -1,6 +1,5 @@
-import 'package:plants_movil/generics/persistence/model.dart';
-
-class Usuario extends BaseModel{
+class Usuario {
+  int? id;
   String? email;
   String? urlImagen;
   int? idRol;
@@ -18,10 +17,8 @@ class Usuario extends BaseModel{
   String? telefono;
   String? fechaNacimiento;
 
-  
   Usuario(
-      {
-      this.email,
+      {this.email,
       this.urlImagen,
       this.idRol,
       this.idGenero,
@@ -59,24 +56,24 @@ class Usuario extends BaseModel{
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['url_imagen'] = this.urlImagen;
-    data['id_rol'] = this.idRol;
-    data['id_genero'] = this.idGenero;
-    data['estatus'] = this.estatus;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['nombres'] = this.nombres;
-    data['apellido_paterno'] = this.apellidoPaterno;
-    data['apellido_materno'] = this.apellidoMaterno;
-    data['domicilio'] = this.domicilio;
-    data['referencia'] = this.referencia;
-    data['id_asenta_cpcons'] = this.idAsentaCpcons;
-    data['cp'] = this.cp;
-    data['telefono'] = this.telefono;
-    data['fecha_nacimiento'] = this.fechaNacimiento;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['email'] = email;
+    data['url_imagen'] = urlImagen;
+    data['id_rol'] = idRol;
+    data['id_genero'] = idGenero;
+    data['estatus'] = estatus;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['nombres'] = nombres;
+    data['apellido_paterno'] = apellidoPaterno;
+    data['apellido_materno'] = apellidoMaterno;
+    data['domicilio'] = domicilio;
+    data['referencia'] = referencia;
+    data['id_asenta_cpcons'] = idAsentaCpcons;
+    data['cp'] = cp;
+    data['telefono'] = telefono;
+    data['fecha_nacimiento'] = fechaNacimiento;
     return data;
   }
 }

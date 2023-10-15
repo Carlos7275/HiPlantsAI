@@ -10,7 +10,7 @@ class InputText extends StatelessWidget {
       this.obscure = false});
 
   final TextEditingController controller;
-  final obscure;
+  final bool obscure;
   final String? Function(String?) callback;
   final Icon icon;
   final String? message;
