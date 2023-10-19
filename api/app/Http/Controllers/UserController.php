@@ -32,7 +32,7 @@ class UserController extends Controller
         $usuario = $this->_usuarioRepository->find($id);
 
         if ($usuario)
-            return response()->json($usuario);
+            return response()->json(Message::success($usuario));
 
         return response()->json(Message::notFound(), 404);
     }
