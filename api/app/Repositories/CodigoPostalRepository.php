@@ -17,7 +17,7 @@ class CodigoPostalRepository extends EloquentRepository
     }
 
     public function BuscarColonia($id_asenta,$cp){
-       return $this->model::where("id_asenta_cp_cpcons", $id_asenta)->where("d_codigo", $cp)->firstOrFail();
+       return $this->model::where("id_asenta_cpcons", $id_asenta)->where("d_codigo", $cp)->firstOrFail();
     }
     
     public function find($id){
