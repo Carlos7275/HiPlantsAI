@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:plants_movil/generics/widgets/stateful.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
+import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
 
 class LoginForm extends StatefulWidget {
@@ -28,7 +29,7 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                     Expanded(
                       child: InputText(
                         controller: controller.emailController,
-                        callback: controller.emailValidator,
+                        callback: Utilities.emailValidator,
                         icon: const Icon(Icons.alternate_email),
                         message: "Ingrese su Correo electronico",
                       ),
@@ -40,7 +41,7 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                   children: [
                     Expanded(
                       child: InputText(
-                        callback: controller.passwordValidator,
+                        callback: Utilities.passwordValidator,
                         controller: controller.passwordController,
                         obscure: true,
                         message: "Ingrese su contraseña",

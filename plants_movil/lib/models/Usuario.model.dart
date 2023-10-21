@@ -55,7 +55,7 @@ class Usuario {
     fechaNacimiento = json['fecha_nacimiento'];
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(String? json) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['email'] = email;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/env/local.env.dart';
-import 'package:plants_movil/generics/redux/app.state.dart';
-import 'package:plants_movil/generics/redux/app.store.dart';
+import 'package:plants_movil/models/Usuario.model.dart';
+import 'package:plants_movil/services/usuario.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +13,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  AppState state = AppStore().state;
+  Usuario? usuario;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    obtenerInfoUsuario();
+  }
+
+  void obtenerInfoUsuario() async {
+    usuario = await UsuarioService().obtenerInfoUsuario();
+    setState(() {
+      if (usuario != null) isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,45 +40,48 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Enviroment.secondaryColor,
             shape: const RoundedRectangleBorder()),
         drawer: Drawer(
-            // Add a ListView to the drawer. This ensures the user can scroll
-            // through the options in the drawer if there isn't enough vertical
-            // space to fit everything.
-
             child: ListView(
                 // Important: Remove any padding from the ListView.
                 padding: EdgeInsets.zero,
                 children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 226, 227, 229),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Bienvenido ${state.user!.nombres}",
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                    Material(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image(
-                            image: NetworkImage(
-                                Enviroment.server + state.user!.urlImagen!),
-                            width: 60),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                        "Email:${state.user!.email}",
-                        style: const TextStyle(fontSize: 12),
-                      ),
+              isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(), // Indicador de carga
                     )
-                  ],
-                ),
-              ),
+                  : DrawerHeader(
+                      decoration: const BoxDecoration(
+                        color: Enviroment.secondaryColor,
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Material(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    Enviroment.server + usuario!.urlImagen!),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "Hola ${usuario!.nombres}",
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.white),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              "Email:${usuario!.email}",
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
               ListTile(
                 leading: const Icon(Icons.map),
                 title: const Text('Mapa'),
@@ -83,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                 leading: const Icon(Icons.supervised_user_circle_outlined),
                 title: const Text('Configuracion del Usuario'),
                 onTap: () async {
+                  Modular.to.pushNamed('/infousuario/', arguments: usuario);
                   Navigator.pop(context);
                 },
               ),
@@ -101,8 +119,6 @@ class _HomePageState extends State<HomePage> {
                       await SharedPreferences.getInstance();
                   prefs.clear();
                   Modular.to.pushNamed('/');
-
-                  Navigator.pop(context);
                 },
               ),
             ])));
