@@ -14,7 +14,9 @@ dependencies:
   flutter_modular: ^5.0.2
   flutter_native_splash: ^2.3.4
   flutter_redux: ^0.10.0
+  geolocator: ^10.1.0
   http: ^1.1.0
+  image_picker: ^1.0.4
   provider: ^6.0.5
   quickalert: ^1.0.2
   rxdart: ^0.27.7

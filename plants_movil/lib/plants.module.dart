@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
+import 'package:plants_movil/pages/usuario/usuario_form/usuario.controller.dart';
 import 'package:plants_movil/routes.dart';
 import 'package:plants_movil/services/usuario.service.dart';
 
@@ -7,7 +8,8 @@ class PlantsModule extends Module {
   @override
   List<Bind> get binds => [
         Bind.singleton((i) => UsuarioService()),
-        Bind.factory((i) => LoginFormController())
+        Bind.factory((i) => LoginFormController()),
+        Bind.factory((i) => UsuarioFormController())
       ];
 
   @override

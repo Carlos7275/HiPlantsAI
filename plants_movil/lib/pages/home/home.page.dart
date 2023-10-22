@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/env/local.env.dart';
@@ -23,6 +25,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void obtenerInfoUsuario() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    UsuarioService().me().then((value) =>
+        preferences.setString("info_usuario", jsonEncode(value["data"])));
     usuario = await UsuarioService().obtenerInfoUsuario();
     setState(() {
       if (usuario != null) isLoading = false;
@@ -67,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            "Hola ${usuario!.nombres}",
+                            "Hola ${usuario!.nombres!}",
                             style: const TextStyle(
                                 fontSize: 14, color: Colors.white),
                           ),

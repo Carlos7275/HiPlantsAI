@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/models/Usuario.model.dart';
+import 'package:plants_movil/pages/usuario/usuario_form/usuario_form.dart';
 import 'package:plants_movil/services/usuario.service.dart';
 
 class UsuarioPage extends StatefulWidget {
-  UsuarioPage({super.key});
+  const UsuarioPage({super.key});
 
   @override
   State<UsuarioPage> createState() => _UsuarioPageState();
@@ -29,25 +30,29 @@ class _UsuarioPageState extends State<UsuarioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Configuracion de Usuario",
-            style: TextStyle(color: Colors.white)),
-        backgroundColor: Enviroment.secondaryColor,
-      ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
-              children: [
-                const Padding(padding: EdgeInsets.all(10.0)),
-                Text(
-                  "Hola ${usuario!.nombres}",
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-    );
+        appBar: AppBar(
+          title: const Text("Configuracion de Usuario",
+              style: TextStyle(color: Colors.white)),
+          backgroundColor: Enviroment.secondaryColor,
+        ),
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                child: SingleChildScrollView(
+                    child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(children: [
+                  Column(children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      child: UsuarioForm(
+                        infoUsuario: usuario!,
+                      ),
+                    )
+                  ])
+                ]),
+              ))));
   }
 }
