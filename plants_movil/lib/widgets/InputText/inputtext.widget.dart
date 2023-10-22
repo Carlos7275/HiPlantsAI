@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
 class InputText extends StatelessWidget {
-  const InputText(
+  InputText(
       {super.key,
       required this.controller,
       required this.callback,
       required this.message,
       this.message2,
       this.icon,
-      this.obscure = false});
+      this.obscure = false,
+      this.onchanged});
 
   final TextEditingController controller;
   final bool obscure;
   final String? Function(String?) callback;
+  void Function(String)? onchanged;
+
   final Icon? icon;
   final String? message, message2;
 
@@ -23,7 +26,8 @@ class InputText extends StatelessWidget {
       controller: controller,
       cursorColor: Colors.black,
       obscureText: obscure,
-      style: const TextStyle(fontSize: 12),
+      onChanged: onchanged,
+      style: const TextStyle(fontSize: 13),
       decoration: InputDecoration(
           alignLabelWithHint: true,
           border: const UnderlineInputBorder(

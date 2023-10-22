@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 class UsuarioFormController extends Controller {
   //Controladores de EdicionDeTexto
   List<TextEditingController> controllers =
-      List.generate(5, (index) => TextEditingController());
+      List.generate(7, (index) => TextEditingController());
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final BehaviorSubject<bool> isLoading$ = BehaviorSubject<bool>.seeded(false);
@@ -22,7 +22,9 @@ class UsuarioFormController extends Controller {
     controllers[1].text = infousuario.nombres!;
     controllers[2].text = infousuario.apellidoPaterno!;
     controllers[3].text = infousuario.apellidoMaterno!;
-    controllers[4].text = infousuario.domicilio!;
+    controllers[4].text = infousuario.cp!;
+    controllers[5].text = infousuario.domicilio!;
+    controllers[6].text = infousuario.fechaNacimiento!;
   }
 
   enviar(BuildContext context) {

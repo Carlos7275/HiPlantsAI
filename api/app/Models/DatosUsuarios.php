@@ -16,10 +16,8 @@ class DatosUsuarios extends Model
         'apellido_paterno',
         'apellido_materno',
         'domicilio',
-        "referencia",
         "id_asenta_cpcons",
         "cp",
         'fecha_nacimiento',
-        'telefono',
     ];
 }

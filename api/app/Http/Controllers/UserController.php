@@ -93,9 +93,7 @@ class UserController extends Controller
                     "id_genero" => "required | int",
                     "id_asenta" => "required| int",
                     "cp" => "required| max:6",
-                    "referencia" => "required",
                     'fecha_nacimiento' => 'required|date',
-                    'telefono' => 'required|max:13'
                 ]
             );
 
@@ -150,9 +148,6 @@ class UserController extends Controller
                     'fecha_nacimiento' => 'required|date',
                     "id_asenta" => "required| int",
                     "cp" => "required| max:6",
-                    "referencia" => "required",
-                    "estatus" => 'required',
-                    'telefono' => 'required|max:13'
                 ]
             );
 
@@ -172,18 +167,15 @@ class UserController extends Controller
                     'email' => request("email"),
                     "id_rol" => request("id_rol"),
                     "id_genero" => request("id_genero"),
-                    "estatus" => request("estatus")
                 );
 
                 $arrayDataUser = array(
                     "id" => request("id"),
-                    "telefono" => request("telefono"),
                     "nombres" => request("nombres"),
                     "apellido_paterno" => request("apellido_paterno"),
                     "apellido_materno" => request("apellido_Materno"),
                     "domicilio" => request("domicilio"),
                     "fecha_nacimiento" => request("fecha_nacimiento"),
-                    "referencia" => request("referencia"),
                     "id_asenta_cpcons" => request("id_asenta"),
                     "cp" => request("cp")
                 );

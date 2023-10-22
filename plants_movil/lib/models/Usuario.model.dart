@@ -11,10 +11,8 @@ class Usuario {
   String? apellidoPaterno;
   String? apellidoMaterno;
   String? domicilio;
-  String? referencia;
   int? idAsentaCpcons;
   String? cp;
-  String? telefono;
   String? fechaNacimiento;
 
   Usuario(
@@ -29,10 +27,8 @@ class Usuario {
       this.apellidoPaterno,
       this.apellidoMaterno,
       this.domicilio,
-      this.referencia,
       this.idAsentaCpcons,
       this.cp,
-      this.telefono,
       this.fechaNacimiento});
 
   Usuario.fromJson(Map<String, dynamic> json) {
@@ -48,10 +44,8 @@ class Usuario {
     apellidoPaterno = json['apellido_paterno'];
     apellidoMaterno = json['apellido_materno'];
     domicilio = json['domicilio'];
-    referencia = json['referencia'];
     idAsentaCpcons = json['id_asenta_cpcons'];
     cp = json['cp'];
-    telefono = json['telefono'];
     fechaNacimiento = json['fecha_nacimiento'];
   }
 
@@ -69,10 +63,8 @@ class Usuario {
     data['apellido_paterno'] = apellidoPaterno;
     data['apellido_materno'] = apellidoMaterno;
     data['domicilio'] = domicilio;
-    data['referencia'] = referencia;
     data['id_asenta_cpcons'] = idAsentaCpcons;
     data['cp'] = cp;
-    data['telefono'] = telefono;
     data['fecha_nacimiento'] = fechaNacimiento;
     return data;
   }

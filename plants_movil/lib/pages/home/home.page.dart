@@ -88,13 +88,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
               ListTile(
-                leading: const Icon(Icons.map),
-                title: const Text('Mapa'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
                 leading: const Icon(Icons.data_usage),
                 title: const Text('Recorridos'),
                 onTap: () {

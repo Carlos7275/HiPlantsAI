@@ -1,15 +1,19 @@
 import 'dart:convert';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/generics/widgets/stateful.dart';
+import 'package:plants_movil/models/CodigosPostales.model.dart';
 import 'package:plants_movil/models/Generos.model.dart';
 import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:plants_movil/pages/usuario/usuario_form/usuario.controller.dart';
+import 'package:plants_movil/services/codigospostales.service.dart';
 import 'package:plants_movil/services/generos.service.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
+import 'dart:io';
 
 class UsuarioForm extends StatefulWidget {
   UsuarioForm({super.key, required this.infoUsuario});
@@ -23,18 +27,52 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
   String? imagen;
   String? bytes;
   Generos? _generoSeleccionado;
+  CodigosPostales? _asentamientoSeleccionado;
 
-  List<Generos>? list;
+  List<Generos>? listadoGeneros;
+  List<CodigosPostales>? listadoAsentamientos;
+
   @override
   void initState() {
     super.initState();
+    llenarGeneros();
+    llenarAsentamientos(widget.infoUsuario.cp!, startApp: true);
+  }
+
+  void llenarAsentamientoIngresado(String? cadena) {
     setState(() {
-      llenarGeneros();
+      _asentamientoSeleccionado = null;
+    });
+
+    if (cadena!.length == 5) {
+      listadoAsentamientos = null;
+      llenarAsentamientos(cadena);
+    }
+  }
+
+  Future llenarAsentamientos(String cp, {bool startApp = false}) async {
+    var asentamientos = await CodigosPostalesService().obtenerAsentamientos(cp);
+    setState(() {
+      listadoAsentamientos = asentamientos;
+      if (startApp == true) {
+        _asentamientoSeleccionado = listadoAsentamientos?.firstWhere(
+            (element) =>
+                element.idAsentaCpcons == widget.infoUsuario.idAsentaCpcons);
+      }
     });
   }
 
-  Future<List<Generos>> llenarGeneros() async {
-    return await GenerosService().obtenerGeneros();
+  Future llenarGeneros() async {
+    try {
+      var generos = await GenerosService().obtenerGeneros();
+      setState(() {
+        listadoGeneros = generos;
+        _generoSeleccionado = listadoGeneros?.firstWhere(
+            (element) => element.idGenero == widget.infoUsuario.idGenero);
+      });
+    } catch (e) {
+      print("Error al obtener géneros: $e");
+    }
   }
 
   void getImage(ImageSource media) async {
@@ -114,25 +152,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
   Widget build(BuildContext context) {
     Container spaceBetween = Container(height: 15);
 
-    return FutureBuilder<List<Generos>>(
-      future: llenarGeneros(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: CircularProgressIndicator(
-            color: Enviroment.secondaryColor,
-          ));
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error loading genres: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No genres available.'));
-        } else {
-          list = snapshot.data;
-          return formulario(
-              spaceBetween, context); // Replace this with your form widget
-        }
-      },
-    );
+    return formulario(spaceBetween, context);
   }
 
   Form formulario(Container spaceBetween, BuildContext context) {
@@ -227,14 +247,14 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
             children: [
               Expanded(
                 child: DropdownButton<Generos>(
-                  value: list?.firstWhere((element) =>
-                      element.idGenero == widget.infoUsuario.idGenero),
+                  value: _generoSeleccionado,
                   onChanged: (Generos? newValue) {
                     setState(() {
                       _generoSeleccionado = newValue!;
                     });
                   },
-                  items: list?.map<DropdownMenuItem<Generos>>((Generos genero) {
+                  items: listadoGeneros
+                      ?.map<DropdownMenuItem<Generos>>((Generos genero) {
                     return DropdownMenuItem<Generos>(
                       value: genero,
                       child: Text(genero.descripcion!),
@@ -246,11 +266,59 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
               ),
             ],
           ),
+          DateTimePicker(
+            controller: controller.controllers[6],
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+            dateLabelText: 'Fecha de nacimiento',
+            onChanged: (val) => print(val),
+            validator: (val) {
+              print(val);
+              return null;
+            },
+            onSaved: (val) => print(val),
+          ),
           Row(
             children: [
               Expanded(
                 child: InputText(
                   controller: controller.controllers[4],
+                  callback: Utilities.domicilioValidator,
+                  onchanged: llenarAsentamientoIngresado,
+                  message: "Codigo Postal",
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: DropdownButton<CodigosPostales>(
+                  value: _asentamientoSeleccionado,
+                  onChanged: (CodigosPostales? newValue) {
+                    setState(() {
+                      _asentamientoSeleccionado = newValue!;
+                    });
+                  },
+                  items: listadoAsentamientos
+                      ?.map<DropdownMenuItem<CodigosPostales>>(
+                          (CodigosPostales genero) {
+                    return DropdownMenuItem<CodigosPostales>(
+                      value: genero,
+                      child: Text(genero.dAsenta!),
+                    );
+                  }).toList(),
+                  hint: const Text(
+                      'Selecciona su colonia'), // Texto que se muestra por defecto
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: InputText(
+                  controller: controller.controllers[5],
                   callback: Utilities.domicilioValidator,
                   message: "Domicilio",
                   icon: const Icon(Icons.maps_home_work),

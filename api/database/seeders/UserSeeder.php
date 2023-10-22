@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         CodigoPostales::create([
             "id_asenta_cpcons" => 0,
             "d_asenta" => "NONE",
-            "d_codigo" => "0",
+            "d_codigo" => "00000",
             "d_ciudad" => "NONE",
             "c_oficina" => "NONE",
             "c_estado" => "0",
@@ -39,19 +39,17 @@ class UserSeeder extends Seeder
             "email" => "admin@admin.com",
             "password" => Hash::make("admin"),
             "id_rol" => 1,
-            "id_genero" => 3
+            "id_genero" => 1
         ]);
         DatosUsuarios::create([
             "id" => 1,
-            "nombres" => "Admin",
-            "apellido_paterno" => "admin",
-            "apellido_materno" => "admin",
+            "nombres" => "Carlos Fernando",
+            "apellido_paterno" => "Sandoval",
+            "apellido_materno" => "Lizárraga",
             "domicilio" => "Enrique Segoviano",
-            "referencia" => "Especifique referencia",
             "id_asenta_cpcons" => 0,
-            "cp" => "0",
-            "fecha_nacimiento" => new DateTime("1983-01-01"),
-            "telefono" => "1234567890"
+            "cp" => "00000",
+            "fecha_nacimiento" => new DateTime("2001-02-14")
         ]);
     }
 }
