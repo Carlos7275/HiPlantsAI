@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Usuario? usuario;
-  bool isLoading = true;
 
   @override
   void initState() {
@@ -29,9 +28,18 @@ class _HomePageState extends State<HomePage> {
     UsuarioService().me().then((value) =>
         preferences.setString("info_usuario", jsonEncode(value["data"])));
     usuario = await UsuarioService().obtenerInfoUsuario();
-    setState(() {
-      if (usuario != null) isLoading = false;
-    });
+    setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      setState(() {
+        obtenerInfoUsuario();
+      });
+    }
   }
 
   @override
@@ -43,47 +51,46 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.white),
             ),
             backgroundColor: Enviroment.secondaryColor,
-            shape: const RoundedRectangleBorder()),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ))),
         drawer: Drawer(
             child: ListView(
                 // Important: Remove any padding from the ListView.
                 padding: EdgeInsets.zero,
                 children: [
-              isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(), // Indicador de carga
-                    )
-                  : DrawerHeader(
-                      decoration: const BoxDecoration(
-                        color: Enviroment.secondaryColor,
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundImage: NetworkImage(
-                                Enviroment.server + usuario!.urlImagen!),
-                          ),
-                          Text(
-                            "Hola ${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
-                            style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text(
-                              "Email:${usuario!.email}",
-                              style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      ),
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Enviroment.secondaryColor,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage:
+                          NetworkImage(Enviroment.server + usuario!.urlImagen!),
                     ),
+                    Text(
+                      "Hola ${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
+                      style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(
+                        "Email:${usuario!.email}",
+                        style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              ),
               ListTile(
                 leading: const Icon(Icons.data_usage),
                 title: const Text('Recorridos'),
@@ -96,6 +103,7 @@ class _HomePageState extends State<HomePage> {
                 title: const Text('Configuracion del Usuario'),
                 onTap: () async {
                   Modular.to.pushNamed('/infousuario/', arguments: usuario);
+
                   Navigator.pop(context);
                 },
               ),

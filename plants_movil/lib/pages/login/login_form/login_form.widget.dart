@@ -20,17 +20,6 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
   @override
   void initState() {
     super.initState();
-    logged();
-  }
-
-  void logged() async {
-    controller.isLoading$.add(true);
-    isLogged = await UsuarioService().isLogin();
-    if (isLogged) {
-      Modular.to.pushNamed("home");
-    } else {
-      controller.isLoading$.add(false);
-    }
   }
 
   @override

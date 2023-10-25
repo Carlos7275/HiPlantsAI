@@ -31,8 +31,17 @@ class _UsuarioPageState extends State<UsuarioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Configuracion de Usuario",
-              style: TextStyle(color: Colors.white)),
+          title: const Text(
+            "Configuración de Usuario",
+            style: TextStyle(color: Colors.white),
+          ),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          )),
+          titleSpacing:
+              20, // Espaciado entre el ícono/botón de retroceso y el texto del título
+          centerTitle: false, // Alinea el texto del título a la izquierda
           backgroundColor: Enviroment.secondaryColor,
         ),
         body: isLoading
@@ -41,17 +50,17 @@ class _UsuarioPageState extends State<UsuarioPage> {
               )
             : SingleChildScrollView(
                 child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(children: [
-              Column(children: [
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  child: UsuarioForm(
-                    infoUsuario: usuario!,
-                  ),
-                )
-              ])
-            ]),
+                padding: const EdgeInsets.all(10.0),
+                child: Column(children: [
+                  Column(children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      child: UsuarioForm(
+                        infoUsuario: usuario!,
+                      ),
+                    )
+                  ])
+                ]),
               )));
   }
 }

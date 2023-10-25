@@ -9,10 +9,8 @@ class PlantsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Plants App',
+      title: 'App de Plantas',
       theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(
           seedColor: Enviroment.secondaryColor,
           primary: Enviroment.primaryColor,

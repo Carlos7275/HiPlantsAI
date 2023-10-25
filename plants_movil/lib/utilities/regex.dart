@@ -1,8 +1,7 @@
 class Utilities {
   static final RegExp email = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  static final RegExp names =
-      RegExp(r"^([A-Z][a-z]+)( [A-Z][a-z]+)?( [A-Z][a-z]+)?$");
+  static final RegExp names = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
 
   static String? emailValidator(String? text) {
     if (text != null && email.hasMatch(text)) {

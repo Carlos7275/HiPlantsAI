@@ -77,9 +77,10 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
 
     List<int> imageBytes = await img!.readAsBytes();
     final mimeType = lookupMimeType(img.path);
+
     setState(() {
       bytes = base64Encode(imageBytes);
-      imagen = "data:$mimeType;base64,$bytes";
+      imagen = "data:${mimeType ?? "image/png"};base64,$bytes";
     });
   }
 
@@ -160,11 +161,22 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                       child: Column(
                     children: [
                       bytes != null
-                          ? ClipRRect(
-                              child: Image.memory(
-                              base64Decode(bytes!),
-                              width: 300,
-                            ))
+                          ? CircleAvatar(
+                              backgroundColor: Colors
+                                  .transparent, // Para que el fondo sea transparente
+                              radius: 80,
+                              child: ClipOval(
+                                child: Image.memory(
+                                  base64Decode(bytes!),
+                                  width:
+                                      160, // El ancho de la imagen dentro del círculo
+                                  height:
+                                      160, // La altura de la imagen dentro del círculo
+                                  fit: BoxFit
+                                      .cover, // Para cubrir completamente el espacio del CircleAvatar
+                                ),
+                              ),
+                            )
                           : CircleAvatar(
                               backgroundImage: NetworkImage(
                                 Enviroment.server +
@@ -333,7 +345,6 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                           onPressed: () => setState(() {
                             controller.enviar(context, _generoSeleccionado!,
                                 _asentamientoSeleccionado!, imagen);
-                            controller.obtenerDatos();
                           }),
                           label: const Column(
                             children: [
