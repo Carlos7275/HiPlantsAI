@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/generics/widgets/stateful.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
+import 'package:plants_movil/services/usuario.service.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
 
@@ -13,6 +15,24 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
+  bool isLogged = false;
+
+  @override
+  void initState() {
+    super.initState();
+    logged();
+  }
+
+  void logged() async {
+    controller.isLoading$.add(true);
+    isLogged = await UsuarioService().isLogin();
+    if (isLogged) {
+      Modular.to.pushNamed("home");
+    } else {
+      controller.isLoading$.add(false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Container spaceBetween = Container(height: 15);

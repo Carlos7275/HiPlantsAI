@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class InputText extends StatelessWidget {
   InputText(
       {super.key,
@@ -31,7 +32,7 @@ class InputText extends StatelessWidget {
       decoration: InputDecoration(
           alignLabelWithHint: true,
           border: const UnderlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16))),
+              borderRadius: BorderRadius.all(Radius.circular(3))),
           fillColor: Colors.white,
           filled: true,
           labelText: message,

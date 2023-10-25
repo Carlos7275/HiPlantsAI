@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:plants_movil/generics/persistence/service.dart';
 import 'package:plants_movil/models/CodigosPostales.model.dart';
-import 'package:plants_movil/models/Generos.model.dart';
 import 'package:http/http.dart' as http;
 
 class CodigosPostalesService extends Service<CodigosPostales> {

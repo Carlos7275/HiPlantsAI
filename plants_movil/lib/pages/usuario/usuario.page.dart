@@ -39,20 +39,19 @@ class _UsuarioPageState extends State<UsuarioPage> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Container(
-                child: SingleChildScrollView(
-                    child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(children: [
-                  Column(children: [
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      child: UsuarioForm(
-                        infoUsuario: usuario!,
-                      ),
-                    )
-                  ])
-                ]),
-              ))));
+            : SingleChildScrollView(
+                child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(children: [
+              Column(children: [
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  child: UsuarioForm(
+                    infoUsuario: usuario!,
+                  ),
+                )
+              ])
+            ]),
+              )));
   }
 }

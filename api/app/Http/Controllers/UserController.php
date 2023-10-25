@@ -173,7 +173,7 @@ class UserController extends Controller
                     "id" => request("id"),
                     "nombres" => request("nombres"),
                     "apellido_paterno" => request("apellido_paterno"),
-                    "apellido_materno" => request("apellido_Materno"),
+                    "apellido_materno" => request("apellido_materno"),
                     "domicilio" => request("domicilio"),
                     "fecha_nacimiento" => request("fecha_nacimiento"),
                     "id_asenta_cpcons" => request("id_asenta"),
@@ -207,5 +207,32 @@ class UserController extends Controller
         $estatus = $this->_usuarioRepository->CambiarEstatus($id);
 
         return response()->json(Message::success("¡Se cambio el estatus del usuario a {$estatus}!"));
+    }
+
+    public function CambiarContraseña(Request $request)
+    {
+        try {
+            $request->validate([
+                'PasswordActual' => 'required|min:5|max:12',
+                'PasswordNueva' => 'required|min:5|max:12',
+                'PasswordAuxiliar' => 'required|min:5|max:12'
+            ]);
+
+
+            if ($request->PasswordNueva == $request->PasswordAuxiliar) {
+                $confirmacion = $this->_usuarioRepository->CambiarContraseña($request->PasswordActual, $request->PasswordNueva);
+
+                if ($confirmacion)
+                    return response()->json(Message::success("¡Se cambio la contraseña con exito!"));
+
+                return response()->json(Message::Observation("¡Verifique su Contraseña Actual!"), 400);
+            }
+            return response()->json(Message::Observation("¡Las Contraseñas no coinciden!", 400));
+        } catch (ValidationException $exception) {
+            return response()->json(
+                Message::Error(Utils::ConvertirErroresALinea($exception->errors())),
+                422
+            );
+        }
     }
 }

@@ -59,29 +59,26 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Column(
                         children: <Widget>[
-                          Material(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            elevation: 10,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    Enviroment.server + usuario!.urlImagen!),
-                              ),
-                            ),
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: NetworkImage(
+                                Enviroment.server + usuario!.urlImagen!),
                           ),
                           Text(
-                            "Hola ${usuario!.nombres!}",
+                            "Hola ${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
                             style: const TextStyle(
-                                fontSize: 14, color: Colors.white),
+                                fontSize: 13,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: Text(
                               "Email:${usuario!.email}",
                               style: const TextStyle(
-                                  fontSize: 14, color: Colors.white),
+                                  fontSize: 13,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
                             ),
                           )
                         ],

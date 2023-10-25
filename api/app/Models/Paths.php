@@ -7,6 +7,6 @@ class Paths{
     public static function getRelativePath($path){
      
         $ruta= explode('/',$path);        
-         return "../".array_filter($ruta)[1]."/".array_filter($ruta)[2]."/".array_filter($ruta)[3];
+         return "../public/".array_filter($ruta)[1]."/".array_filter($ruta)[2]."/".array_filter($ruta)[3];
      }
 }

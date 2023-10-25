@@ -19,5 +19,5 @@ List<RouteFunction> myRoutes = [
   RouteFunction('/', (context, args) => const LoginPage(), []),
   RouteFunction('/home', (context, args) => const HomePage(), [IsLoginGuard()]),
   RouteFunction(
-      '/infousuario/', (context, args) => UsuarioPage(), [IsLoginGuard()]),
+      '/infousuario/', (context, args) => const UsuarioPage(), [IsLoginGuard()]),
 ];

@@ -13,8 +13,8 @@ import 'package:plants_movil/services/codigospostales.service.dart';
 import 'package:plants_movil/services/generos.service.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
-import 'dart:io';
 
+// ignore: must_be_immutable
 class UsuarioForm extends StatefulWidget {
   UsuarioForm({super.key, required this.infoUsuario});
   Usuario infoUsuario;
@@ -63,16 +63,12 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
   }
 
   Future llenarGeneros() async {
-    try {
-      var generos = await GenerosService().obtenerGeneros();
-      setState(() {
-        listadoGeneros = generos;
-        _generoSeleccionado = listadoGeneros?.firstWhere(
-            (element) => element.idGenero == widget.infoUsuario.idGenero);
-      });
-    } catch (e) {
-      print("Error al obtener géneros: $e");
-    }
+    var generos = await GenerosService().obtenerGeneros();
+    setState(() {
+      listadoGeneros = generos;
+      _generoSeleccionado = listadoGeneros?.firstWhere(
+          (element) => element.idGenero == widget.infoUsuario.idGenero);
+    });
   }
 
   void getImage(ImageSource media) async {
@@ -152,208 +148,221 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
   Widget build(BuildContext context) {
     Container spaceBetween = Container(height: 15);
 
-    return formulario(spaceBetween, context);
-  }
-
-  Form formulario(Container spaceBetween, BuildContext context) {
-    return Form(
-      key: controller.formKey,
-      child: Column(
-        children: [
-          Center(
+    return StreamBuilder<bool>(
+        stream: controller.isLoading$,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && !snapshot.data!) {
+            return Form(
+              key: controller.formKey,
               child: Column(
-            children: [
-              bytes != null
-                  ? ClipRect(
-                      child: Image.memory(
-                      base64Decode(bytes!),
-                      width: 100,
-                    ))
-                  : CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        Enviroment.server + widget.infoUsuario.urlImagen!,
-                      ),
-                      radius: 50,
-                    ),
-              spaceBetween,
-              ElevatedButton.icon(
-                icon: const Icon(Icons.image),
-                style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5)),
-                    backgroundColor: MaterialStateProperty.all(
-                      Colors.blue,
-                    )),
-                onPressed: () async => pickupImage(),
-                label: const Column(
-                  children: [
-                    Text(
-                      "Cambiar Foto",
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
-          Row(
-            children: [
-              Expanded(
-                child: InputText(
-                  controller: controller.controllers[0],
-                  callback: Utilities.emailValidator,
-                  icon: const Icon(Icons.alternate_email),
-                  message: "Correo Electronico",
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: InputText(
-                  controller: controller.controllers[1],
-                  callback: Utilities.nameValidator,
-                  icon: const Icon(Icons.info),
-                  message: "Nombres",
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: InputText(
-                  controller: controller.controllers[2],
-                  callback: Utilities.apellidoValitador,
-                  message: "Apellido Paterno",
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: InputText(
-                  controller: controller.controllers[3],
-                  callback: Utilities.apellidoValitador,
-                  message: "Apellido Materno",
-                ),
-              ),
-            ],
-          ),
-          spaceBetween,
-          Row(
-            children: [
-              Expanded(
-                child: DropdownButton<Generos>(
-                  value: _generoSeleccionado,
-                  onChanged: (Generos? newValue) {
-                    setState(() {
-                      _generoSeleccionado = newValue!;
-                    });
-                  },
-                  items: listadoGeneros
-                      ?.map<DropdownMenuItem<Generos>>((Generos genero) {
-                    return DropdownMenuItem<Generos>(
-                      value: genero,
-                      child: Text(genero.descripcion!),
-                    );
-                  }).toList(),
-                  hint: const Text(
-                      'Selecciona un género'), // Texto que se muestra por defecto
-                ),
-              ),
-            ],
-          ),
-          DateTimePicker(
-            controller: controller.controllers[6],
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2100),
-            dateLabelText: 'Fecha de nacimiento',
-            onChanged: (val) => print(val),
-            validator: (val) {
-              print(val);
-              return null;
-            },
-            onSaved: (val) => print(val),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: InputText(
-                  controller: controller.controllers[4],
-                  callback: Utilities.domicilioValidator,
-                  onchanged: llenarAsentamientoIngresado,
-                  message: "Codigo Postal",
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: DropdownButton<CodigosPostales>(
-                  value: _asentamientoSeleccionado,
-                  onChanged: (CodigosPostales? newValue) {
-                    setState(() {
-                      _asentamientoSeleccionado = newValue!;
-                    });
-                  },
-                  items: listadoAsentamientos
-                      ?.map<DropdownMenuItem<CodigosPostales>>(
-                          (CodigosPostales genero) {
-                    return DropdownMenuItem<CodigosPostales>(
-                      value: genero,
-                      child: Text(genero.dAsenta!),
-                    );
-                  }).toList(),
-                  hint: const Text(
-                      'Selecciona su colonia'), // Texto que se muestra por defecto
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: InputText(
-                  controller: controller.controllers[5],
-                  callback: Utilities.domicilioValidator,
-                  message: "Domicilio",
-                  icon: const Icon(Icons.maps_home_work),
-                ),
-              ),
-            ],
-          ),
-          spaceBetween,
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.save),
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(vertical: 5)),
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.blue,
-                      )),
-                  onPressed: () => controller.enviar(context),
-                  label: const Column(
+                children: [
+                  Center(
+                      child: Column(
                     children: [
-                      Text(
-                        "Guardar Cambios",
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      bytes != null
+                          ? ClipRRect(
+                              child: Image.memory(
+                              base64Decode(bytes!),
+                              width: 300,
+                            ))
+                          : CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                Enviroment.server +
+                                    widget.infoUsuario.urlImagen!,
+                              ),
+                              radius: 80,
+                            ),
+                      spaceBetween,
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.image),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                          Colors.grey,
+                        )),
+                        onPressed: () async => pickupImage(),
+                        label: const Column(
+                          children: [
+                            Text(
+                              "Cambiar Foto",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 13),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputText(
+                          controller: controller.controllers[0],
+                          callback: Utilities.emailValidator,
+                          icon: const Icon(Icons.alternate_email),
+                          message: "Correo Electronico",
+                        ),
                       ),
                     ],
                   ),
-                ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputText(
+                          controller: controller.controllers[1],
+                          callback: Utilities.nameValidator,
+                          icon: const Icon(Icons.info),
+                          message: "Nombres",
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputText(
+                          controller: controller.controllers[2],
+                          callback: Utilities.apellidoValitador,
+                          message: "Apellido Paterno",
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputText(
+                          controller: controller.controllers[3],
+                          callback: Utilities.apellidoValitador,
+                          message: "Apellido Materno",
+                        ),
+                      ),
+                    ],
+                  ),
+                  spaceBetween,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButton<Generos>(
+                          value: _generoSeleccionado,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          onChanged: (Generos? newValue) {
+                            setState(() {
+                              _generoSeleccionado = newValue!;
+                            });
+                          },
+                          items: listadoGeneros?.map<DropdownMenuItem<Generos>>(
+                              (Generos genero) {
+                            return DropdownMenuItem<Generos>(
+                              value: genero,
+                              child: Text(genero.descripcion!),
+                            );
+                          }).toList(),
+                          hint: const Text(
+                              'Selecciona un género'), // Texto que se muestra por defecto
+                        ),
+                      ),
+                    ],
+                  ),
+                  DateTimePicker(
+                    controller: controller.controllers[6],
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                    dateLabelText: 'Fecha de nacimiento',
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputText(
+                          controller: controller.controllers[4],
+                          callback: Utilities.domicilioValidator,
+                          onchanged: llenarAsentamientoIngresado,
+                          message: "Codigo Postal",
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButton<CodigosPostales>(
+                          value: _asentamientoSeleccionado,
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black),
+                          onChanged: (CodigosPostales? newValue) {
+                            setState(() {
+                              _asentamientoSeleccionado = newValue!;
+                            });
+                          },
+                          items: listadoAsentamientos
+                              ?.map<DropdownMenuItem<CodigosPostales>>(
+                                  (CodigosPostales genero) {
+                            return DropdownMenuItem<CodigosPostales>(
+                              value: genero,
+                              child: Text(genero.dAsenta!),
+                            );
+                          }).toList(),
+                          hint: const Text(
+                              'Selecciona su colonia'), // Texto que se muestra por defecto
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputText(
+                          controller: controller.controllers[5],
+                          callback: Utilities.domicilioValidator,
+                          message: "Domicilio",
+                          icon: const Icon(Icons.maps_home_work),
+                        ),
+                      ),
+                    ],
+                  ),
+                  spaceBetween,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.save),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                            Colors.blue,
+                          )),
+                          onPressed: () => setState(() {
+                            controller.enviar(context, _generoSeleccionado!,
+                                _asentamientoSeleccionado!, imagen);
+                            controller.obtenerDatos();
+                          }),
+                          label: const Column(
+                            children: [
+                              Text(
+                                "Guardar Cambios",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  spaceBetween,
+                ],
               ),
-            ],
-          ),
-          spaceBetween,
-        ],
-      ),
-    );
+            );
+          } else {
+            return SizedBox(
+              height: 100,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                    strokeWidth: 5),
+              ),
+            );
+          }
+        });
   }
 }

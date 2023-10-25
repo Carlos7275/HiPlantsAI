@@ -25,6 +25,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('Usuarios', "ObtenerUsuarios");
     Route::post('Registrar/Usuario', "CrearUsuario");
     Route::put('Modificar/Usuario/{id}', "ModificarUsuario");
+    Route::put("Cambiar/Contraseña/", "CambiarContraseña");
     Route::delete("Cambiar/Estatus/Usuario/{id}", "CambiarEstatus");
 });
 

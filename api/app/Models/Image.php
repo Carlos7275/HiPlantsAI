@@ -5,7 +5,7 @@ namespace App\Models;
 class Image
 {
 
-    const ruta = "../storage/images/";
+    const ruta = "../public/storage/images/";
     //Convierte de Base64 a una ruta
     static public function base64toUrl($base64_image_string)
     {

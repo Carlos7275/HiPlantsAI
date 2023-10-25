@@ -10,9 +10,9 @@ class Generos {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id_genero'] = this.idGenero;
-    data['descripcion'] = this.descripcion;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id_genero'] = idGenero;
+    data['descripcion'] = descripcion;
     return data;
   }
 }

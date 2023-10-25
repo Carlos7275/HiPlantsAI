@@ -30,6 +30,7 @@ class LoginFormController extends Controller {
         UsuarioService().me().then((Map<String, dynamic> resp) async {
           prefs.setString("info_usuario", jsonEncode(resp["data"]));
           isLoading$.add(false);
+
           Modular.to.pushNamed('home');
         }).catchError((error) {
           QuickAlert.show(
@@ -38,6 +39,7 @@ class LoginFormController extends Controller {
             text: jsonDecode(error.body)["message"],
             showConfirmBtn: true,
           );
+          isLoading$.add(false);
         });
       }).catchError((error) {
         QuickAlert.show(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.widget.dart';
-import 'package:plants_movil/services/usuario.service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,25 +12,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
-  bool isLogged = false;
-
-  void logged() async {
-    isLogged = await UsuarioService().isLogin();
-    if (isLogged) {
-      Modular.to.pushNamed("home");
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    logged();
 
     animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 7));
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        animationController.forward(from: 0);
+        animationController.forward(from: 10);
       }
     });
 

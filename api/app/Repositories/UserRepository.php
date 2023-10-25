@@ -5,6 +5,9 @@ namespace App\Repositories;
 use App\Models\Usuarios;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+use function Laravel\Prompts\password;
 
 class UserRepository extends EloquentRepository
 {
@@ -81,5 +84,18 @@ class UserRepository extends EloquentRepository
     public function ValidarToken()
     {
         return auth()->check();
+    }
+
+    public function CambiarContraseña($passwordActual, $passwordNueva)
+    {
+        $id = auth()->user()->id;
+        $usuario = $this->find($id);
+
+        $coinciden = Hash::check($passwordActual, $usuario->password);
+        if ($coinciden) {
+            $this->update($id, ["password" => Hash::make($passwordNueva)]);
+            return true;
+        }
+        return false;
     }
 }

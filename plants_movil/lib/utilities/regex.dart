@@ -2,7 +2,7 @@ class Utilities {
   static final RegExp email = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   static final RegExp names =
-      RegExp(r"^[a-zA-ZÀ-ÖØ-öø-ÿ]+(?:['\-][a-zA-ZÀ-ÖØ-öø-ÿ]+)?$");
+      RegExp(r"^([A-Z][a-z]+)( [A-Z][a-z]+)?( [A-Z][a-z]+)?$");
 
   static String? emailValidator(String? text) {
     if (text != null && email.hasMatch(text)) {
@@ -13,10 +13,10 @@ class Utilities {
   }
 
   static String? passwordValidator(String? text) {
-    if (text != null && text.length >= 3) {
+    if (text != null && text.length >= 5) {
       return null;
     } else {
-      return 'Contraseña minima de 3 caracteres';
+      return 'Contraseña minima de 5 caracteres';
     }
   }
 

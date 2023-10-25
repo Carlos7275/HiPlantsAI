@@ -51,4 +51,30 @@ class UsuarioService extends Service<Usuario> {
       throw resp;
     }
   }
+
+  Future<Map<String, dynamic>> actualizarUsuario(
+      int id, Usuario usuario) async {
+    final parameters = jsonEncode({
+      "email": usuario.email,
+      "nombres": usuario.nombres,
+      "apellido_paterno": usuario.apellidoPaterno,
+      "apellido_materno": usuario.apellidoMaterno,
+      "domicilio": usuario.domicilio,
+      "fecha_nacimiento": usuario.fechaNacimiento,
+      "id_rol": usuario.idRol,
+      "id_genero": usuario.idGenero,
+      "id_asenta": usuario.idAsentaCpcons,
+      "cp": usuario.cp,
+      "imagen": usuario.urlImagen
+    });
+
+    http.Response resp =
+        await httpClient.put(url: 'Modificar/Usuario/$id', body: parameters);
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body) as Map<String, dynamic>;
+    } else {
+      throw resp;
+    }
+  }
 }
