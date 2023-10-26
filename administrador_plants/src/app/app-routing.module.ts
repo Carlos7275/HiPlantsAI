@@ -1,12 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './Components/dashboard/dashboard.component';
-import { UsuariosComponent } from './Components/usuarios/usuarios.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { IniciarSesionComponent } from './components/iniciar-sesion/iniciar-sesion.component';
+import { IsLoginGuard } from './guards/is-login.guard';
+import { ErrorComponent } from './components/error/error.component';
+import { Error500Component } from './components/error500/error500.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'dashboard', pathMatch:'full'},
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'usuarios', component: UsuariosComponent}
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: "login", component: IniciarSesionComponent },
+  {
+    path: 'dashboard', component: DashboardComponent, children: [
+      { path: 'usuarios', component: UsuariosComponent }
+    ], canActivate: [IsLoginGuard]
+  },
+  {
+    path: "error404", component: ErrorComponent
+  },
+  {
+    path: "error500", component: Error500Component
+  },
+  {
+    path: '**',
+    redirectTo: 'error404',
+  }
 ];
 
 @NgModule({

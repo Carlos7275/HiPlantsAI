@@ -1,27 +1,22 @@
-import { Injectable, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { SidenavComponent } from './Components/sidenav/sidenav.component';
-import { UsuariosComponent } from './Components/usuarios/usuarios.component';
-import { DashboardComponent } from './Components/dashboard/dashboard.component';
-import { BodyComponent } from './Components/body/body.component';
+import { MatIconModule } from '@angular/material/icon';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { BodyComponent } from './components/body/body.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSortModule } from '@angular/material/sort';
+import { IniciarSesionComponent } from './components/iniciar-sesion/iniciar-sesion.component';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 @NgModule({
@@ -30,27 +25,31 @@ import { FormsModule } from '@angular/forms';
     SidenavComponent,
     UsuariosComponent,
     DashboardComponent,
-    BodyComponent
+    BodyComponent,
+    IniciarSesionComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatDividerModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
+    BrowserModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
     MatFormFieldModule,
-    MatTableModule, 
-    HttpClientModule
-  ],
+    MatInputModule,
+    HttpClientModule,
+    MatSortModule,
+    MatTableModule,
+  MatIconModule,],
   providers: [
-
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true,
+    }
   ],
   bootstrap: [AppComponent]
 })

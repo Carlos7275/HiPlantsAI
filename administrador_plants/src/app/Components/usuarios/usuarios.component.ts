@@ -1,8 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { UsuarioInfo } from 'src/app/Modelos/Usuario.model';
-import { UsuarioService } from 'src/app/Servicios/Usuario.service';
+import { UsuarioInfo } from 'src/app/models/Usuario.model';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -10,9 +10,10 @@ import { UsuarioService } from 'src/app/Servicios/Usuario.service';
   styleUrls: ['./usuarios.component.scss']
 })
 export class UsuariosComponent {
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(private usuarioService: UsuarioService) { }
 
   columnasMostradas: string[] = [
+    'id_usuario',
     'nombres',
     'apellido_paterno',
     'apellido_materno',
@@ -23,6 +24,12 @@ export class UsuariosComponent {
   ];
   fuenteDatos = new MatTableDataSource<UsuarioInfo>();
 
+  @ViewChild(MatSort, { static: false })
+  set sort(value: MatSort) {
+    if (this.fuenteDatos) {
+      this.fuenteDatos.sort = value;
+    }
+  }
   ngAfterViewInit() {
     this.MostrarUsuarios();
   }
@@ -32,10 +39,9 @@ export class UsuariosComponent {
       error: (error) => {
         console.log(error.error);
       },
-      complete: () => {},
+      complete: () => { },
       next: (response) => {
         this.fuenteDatos.data = response.data;
-        console.log(response);
       },
     });
   }
