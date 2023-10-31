@@ -43,4 +43,14 @@ class Utilities {
       return "Ingrese el Domicilio";
     }
   }
+
+  static String? generosValidator(value) {
+    if (value == null) return "Ingrese el Genero";
+    return null;
+  }
+
+  static String? asentamientoValidator(value) {
+    if (value == null) return "Ingrese la Colonia";
+    return null;
+  }
 }

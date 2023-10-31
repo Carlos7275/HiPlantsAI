@@ -32,7 +32,7 @@ class UsuarioFormController extends Controller {
     controllers[6].text = infousuario.fechaNacimiento!;
   }
 
-  enviar(BuildContext context, Generos genero, CodigosPostales asentamiento,
+  enviar(BuildContext context, Generos? genero, CodigosPostales? asentamiento,
       String? imagen) {
     if (formKey.currentState!.validate()) {
       isLoading$.add(true);
@@ -44,8 +44,8 @@ class UsuarioFormController extends Controller {
           cp: controllers[4].text,
           domicilio: controllers[5].text,
           fechaNacimiento: controllers[6].text,
-          idAsentaCpcons: asentamiento.idAsentaCpcons,
-          idGenero: genero.idGenero,
+          idAsentaCpcons: asentamiento!.idAsentaCpcons,
+          idGenero: genero!.idGenero,
           idRol: infousuario.idRol,
           urlImagen: imagen);
 
@@ -72,7 +72,6 @@ class UsuarioFormController extends Controller {
         prefs.setString("info_usuario", jsonEncode(resp["data"]));
         isLoading$.add(false);
       });
-      
     }
   }
 }

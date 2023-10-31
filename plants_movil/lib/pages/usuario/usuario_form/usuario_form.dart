@@ -254,8 +254,9 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                   Row(
                     children: [
                       Expanded(
-                        child: DropdownButton<Generos>(
+                        child: DropdownButtonFormField<Generos>(
                           value: _generoSeleccionado,
+                          validator: Utilities.generosValidator,
                           style: const TextStyle(
                               fontSize: 14, color: Colors.black),
                           onChanged: (Generos? newValue) {
@@ -263,6 +264,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                               _generoSeleccionado = newValue!;
                             });
                           },
+
                           items: listadoGeneros?.map<DropdownMenuItem<Generos>>(
                               (Generos genero) {
                             return DropdownMenuItem<Generos>(
@@ -297,7 +299,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                   Row(
                     children: [
                       Expanded(
-                        child: DropdownButton<CodigosPostales>(
+                        child: DropdownButtonFormField<CodigosPostales>(
                           value: _asentamientoSeleccionado,
                           style: const TextStyle(
                               fontSize: 14, color: Colors.black),
@@ -306,6 +308,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                               _asentamientoSeleccionado = newValue!;
                             });
                           },
+                          validator: Utilities.asentamientoValidator,
                           items: listadoAsentamientos
                               ?.map<DropdownMenuItem<CodigosPostales>>(
                                   (CodigosPostales genero) {
@@ -343,8 +346,8 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                             Colors.blue,
                           )),
                           onPressed: () => setState(() {
-                            controller.enviar(context, _generoSeleccionado!,
-                                _asentamientoSeleccionado!, imagen);
+                            controller.enviar(context, _generoSeleccionado,
+                                _asentamientoSeleccionado, imagen);
                           }),
                           label: const Column(
                             children: [
