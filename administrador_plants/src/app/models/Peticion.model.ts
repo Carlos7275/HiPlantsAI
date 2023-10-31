@@ -1,12 +1,11 @@
 export class Peticion<T>
 {
-  message:String;
-  data:T;
-
+  message: String;
+  data: T;
 };
 
-export class PetitionConArreglo<T>
+export class PeticionConArreglo<T>
 {
-  message:String;
-  data:Array<T>;
+  message: String;
+  data: Array<T>;
 };

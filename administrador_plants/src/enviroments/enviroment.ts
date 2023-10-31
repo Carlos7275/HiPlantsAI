@@ -1,6 +1,5 @@
-
-export const environment = {
-    production: false,
-    urlApi: "http://localhost/api/",
-    version: "1.0.0"
-  };
+export class Environment {
+  public static url = "http://localhost";
+  public static urlApi = `${Environment.url}/api/`;
+  public static version = "1.0.0";
+}

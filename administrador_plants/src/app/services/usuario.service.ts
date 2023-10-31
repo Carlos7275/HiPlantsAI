@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { environment } from 'src/enviroments/enviroment.prod';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioInfo } from '../models/Usuario.model';
-import { Peticion, PetitionConArreglo } from '../models/Peticion.model';
+import { Peticion, PeticionConArreglo } from '../models/Peticion.model';
+import { Environment } from 'src/enviroments/enviroment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class UsuarioService {
   constructor(private cliente: HttpClient) { }
 
   iniciarSesion(data: any): Observable<Peticion<any>> {
-    return this.cliente.post<any>(environment.urlApi + 'auth/login', JSON.stringify(data));
+    return this.cliente.post<any>(Environment.urlApi + 'auth/login', JSON.stringify(data));
   }
 
   inicioSesion() {
@@ -30,14 +30,14 @@ export class UsuarioService {
   }
 
   Me() {
-    return this.cliente.get<Peticion<UsuarioInfo>>(environment.urlApi + 'auth/me', { headers: this.cabecera })
+    return this.cliente.get<Peticion<UsuarioInfo>>(Environment.urlApi + 'auth/me', { headers: this.cabecera })
   }
 
   GuardarUsuarioInfo(info_usuario: UsuarioInfo) {
     localStorage.setItem('info_usuario', JSON.stringify(info_usuario));
   }
-  ObtenerUsuarios(): Observable<PetitionConArreglo<UsuarioInfo>> {
-    return this.cliente.get<PetitionConArreglo<UsuarioInfo>>(environment.urlApi + 'Usuarios', {
+  ObtenerUsuarios(): Observable<PeticionConArreglo<UsuarioInfo>> {
+    return this.cliente.get<PeticionConArreglo<UsuarioInfo>>(Environment.urlApi + 'Usuarios', {
       headers: this.cabecera
     });
   }

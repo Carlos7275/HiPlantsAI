@@ -13,23 +13,18 @@ export class UsuariosComponent {
   constructor(private usuarioService: UsuarioService) { }
 
   columnasMostradas: string[] = [
-    'id_usuario',
+    'id',
     'nombres',
     'apellido_paterno',
     'apellido_materno',
     'email',
     'id_rol',
+    'url_imagen',
     'id_genero',
-    'estatus'
+    'estatus',
+    'acciones'
   ];
   fuenteDatos = new MatTableDataSource<UsuarioInfo>();
-
-  @ViewChild(MatSort, { static: false })
-  set sort(value: MatSort) {
-    if (this.fuenteDatos) {
-      this.fuenteDatos.sort = value;
-    }
-  }
   ngAfterViewInit() {
     this.MostrarUsuarios();
   }

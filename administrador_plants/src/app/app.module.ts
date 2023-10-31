@@ -17,6 +17,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { IniciarSesionComponent } from './components/iniciar-sesion/iniciar-sesion.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { LoaderComponent } from './components/loader/loader.component';
+import { GenericCrudComponent } from './components/generic-crud/generic-crud.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -28,6 +30,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     BodyComponent,
     IniciarSesionComponent,
     LoaderComponent,
+    GenericCrudComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     HttpClientModule,
     MatSortModule,
     MatTableModule,
-  MatIconModule,],
+    MatPaginatorModule,
+    MatIconModule,],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
