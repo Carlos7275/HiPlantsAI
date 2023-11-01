@@ -1,5 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UsuarioInfo } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -9,7 +8,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss']
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnInit {
   constructor(private usuarioService: UsuarioService) { }
 
   columnasMostradas: string[] = [
@@ -25,10 +24,10 @@ export class UsuariosComponent {
     'acciones'
   ];
   fuenteDatos = new MatTableDataSource<UsuarioInfo>();
-  ngAfterViewInit() {
+  ngOnInit() {
     this.MostrarUsuarios();
   }
-
+ 
   MostrarUsuarios() {
     this.usuarioService.ObtenerUsuarios().subscribe({
       error: (error) => {

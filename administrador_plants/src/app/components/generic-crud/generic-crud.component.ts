@@ -11,16 +11,21 @@ import { Environment } from 'src/enviroments/enviroment.prod';
   styleUrls: ['./generic-crud.component.scss']
 })
 export class GenericCrudComponent<T> {
-  @Input() Entidad:String;
-  @Input() EntidadSingular:String;
-  @Input() columnasMostradas: string[] ;
+  @Input() Entidad: String;
+  @Input() EntidadSingular: String;
+  @Input() columnasMostradas: string[];
   @Input() fuenteDatos = new MatTableDataSource<T>();
-  Url:String=Environment.url;
+  Url: String = Environment.url;
+  @Input() editar:Function;
+  @Input() eliminar:Function;
+  @Input()  registrar:Function;
 
-  constructor(MatPaginator:MatPaginatorIntl){
-    MatPaginator.nextPageLabel="Siguiente Página";
-    MatPaginator.firstPageLabel="Primera Página";
-    MatPaginator.itemsPerPageLabel="Registros por Página"
+
+
+  constructor(MatPaginator: MatPaginatorIntl) {
+    MatPaginator.nextPageLabel = "Siguiente Página";
+    MatPaginator.firstPageLabel = "Primera Página";
+    MatPaginator.itemsPerPageLabel = "Registros por Página"
   }
 
   @ViewChild(MatSort, { static: false })
@@ -40,4 +45,6 @@ export class GenericCrudComponent<T> {
     const filterValue = (event.target as HTMLInputElement).value;
     this.fuenteDatos.filter = filterValue.trim().toLowerCase();
   }
+
+ 
 }

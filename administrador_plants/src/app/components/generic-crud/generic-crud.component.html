@@ -10,7 +10,7 @@
     </mat-form-field>
 
     <div class="example-container " style="font-size:16px" appearance="fill">
-      <button class="btn btn-primary" style="float:right;margin-top: 25px;"> <mat-icon
+      <button class="btn btn-primary" style="float:right;margin-top: 25px;" (click)="registrar()"> <mat-icon
           style="vertical-align:middle;">add</mat-icon>Registrar {{EntidadSingular}}</button>
       <br>
       <br>
@@ -32,11 +32,11 @@
             </ng-container>
           </ng-container>
           <ng-template #accionesColumna>
-            <div class="btn-group mb-2">
-              <button class="btn btn-warning">
+            <div class="btn-group mb-2"  >
+              <button  (click)="editar(items)" class="btn btn-warning" >
                 <mat-icon>edit</mat-icon> 
               </button>
-              <button class="btn btn-danger">
+              <button (click)="eliminar(items)" class="btn btn-danger">
                 <mat-icon>delete</mat-icon> 
               </button>
             </div>
