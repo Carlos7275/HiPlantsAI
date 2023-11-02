@@ -1,0 +1,26 @@
+<div class="split-button" data-aos="fade-left" *ngIf="flag">
+
+    <img loading="true" [src]="this.url+this.datosUsuario().url_imagen" class="img-thumbnail " width="55px" height="60px"
+        style="width: 55px; height: 60px;">
+    <button>{{this.datosUsuario().nombres }}</button>
+    <button (click)="toggleDropdown()">
+        <span id="chevron" class="chevron material-symbols-outlined">
+            expand_more
+
+        </span>
+    </button>
+    <div id="menu" class="menu">
+
+
+        <button routerLink="config" (click)="disableDropdown()">
+            <span class="material-symbols-outlined"> build </span>
+            Configuracion de Usuario
+        </button>
+
+        <button (click)="logout()" (click)="disableDropdown()">
+            <span class="material-symbols-outlined"> logout </span>
+            Cerrar Sesion
+        </button>
+
+    </div>
+</div>

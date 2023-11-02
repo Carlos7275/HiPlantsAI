@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -32,5 +30,15 @@ body {
         padding: 1rem 1.5rem;
     }
 }
+
+.enlaces {
+    color: rgb(34, 143, 110);
+    font-size: 1rem;
+    text-align: left;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
 
 @import 'bootstrap/scss/bootstrap';

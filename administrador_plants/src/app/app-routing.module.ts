@@ -6,10 +6,11 @@ import { IniciarSesionComponent } from './components/iniciar-sesion/iniciar-sesi
 import { IsLoginGuard } from './guards/is-login.guard';
 import { ErrorComponent } from './components/error/error.component';
 import { Error500Component } from './components/error500/error500.component';
+import { IsNotLoginGuard } from './guards/is-not-login.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: "login", component: IniciarSesionComponent },
+  { path: "login", component: IniciarSesionComponent,canActivate:[IsNotLoginGuard]},
   {
     path: 'dashboard', component: DashboardComponent, children: [
       { path: 'usuarios', component: UsuariosComponent }

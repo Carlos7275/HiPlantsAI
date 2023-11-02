@@ -18,7 +18,7 @@
 
   </div>
 
-    <table mat-table [dataSource]="fuenteDatos"  mat-table="auto" matSort style="max-width: 800px;">
+    <table mat-table [dataSource]="fuenteDatos"  mat-table="auto" matSort >
 
       <ng-container *ngFor="let columna of columnasMostradas" matColumnDef="{{columna}}">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{columna}} </th>
@@ -33,10 +33,10 @@
           </ng-container>
           <ng-template #accionesColumna>
             <div class="btn-group mb-2"  >
-              <button  (click)="editar(items)" class="btn btn-warning" >
+              <button  (click)="editar(items)" class="btn btn-warning btn-sm" >
                 <mat-icon>edit</mat-icon> 
               </button>
-              <button (click)="eliminar(items)" class="btn btn-danger">
+              <button (click)="eliminar(items)" class="btn btn-danger btn-sm">
                 <mat-icon>delete</mat-icon> 
               </button>
             </div>

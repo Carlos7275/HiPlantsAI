@@ -1,6 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, OnInit, Output, signal } from '@angular/core';
 import { navbarData } from './nav-data';
 import { animate, animation, keyframes, style, transition, trigger } from '@angular/animations';
+import { UsuarioInfo } from 'src/app/models/Usuario.model';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { ErrorHandlerService } from 'src/app/services/errorHandling.service';
+import { Environment } from 'src/enviroments/enviroment.prod';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -43,6 +47,7 @@ export class SidenavComponent implements OnInit {
   screenWidth = 0;
   navData = navbarData;
 
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = window.innerWidth;
@@ -54,6 +59,7 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+
   }
 
   toggleCollapse(): void {

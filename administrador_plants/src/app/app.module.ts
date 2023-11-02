@@ -19,6 +19,9 @@ import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { LoaderComponent } from './components/loader/loader.component';
 import { GenericCrudComponent } from './components/generic-crud/generic-crud.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FooterComponent } from './components/footer/footer.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 
 @NgModule({
@@ -31,6 +34,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     IniciarSesionComponent,
     LoaderComponent,
     GenericCrudComponent,
+    FooterComponent,
+    DropdownComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSortModule,
     MatTableModule,
     MatPaginatorModule,
-    MatIconModule,],
+    MatIconModule,
+    MatSnackBarModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

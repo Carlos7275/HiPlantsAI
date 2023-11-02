@@ -19,7 +19,6 @@ export class UsuariosComponent implements OnInit {
     'email',
     'id_rol',
     'url_imagen',
-    'id_genero',
     'estatus',
     'acciones'
   ];

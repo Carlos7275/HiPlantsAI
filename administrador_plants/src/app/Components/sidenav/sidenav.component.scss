@@ -111,3 +111,36 @@
         color: black;
     }
 }
+
+.sidenav li.profile {
+    position: fixed;
+    width: 78px;
+    left: 0;
+    bottom: -5px;
+    padding: 10px 14px;
+    background: #fffeff;
+    transition: all 0.5s ease;
+    overflow: hidden;
+}
+
+.sidenav-collapsed li.profile {
+    width: 250px;
+}
+
+.image {
+    width: 55px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.sidenav li.profile .name,
+.sidenav li.profile .job {
+    font-size: 13px;
+    padding: 10px;
+    color: #000000;
+    white-space: nowrap;
+}
+
+.sidebar li.profile .job {
+    font-size: 12px;
+}

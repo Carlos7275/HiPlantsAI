@@ -6,8 +6,7 @@ use App\Models\Usuarios;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
-use function Laravel\Prompts\password;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class UserRepository extends EloquentRepository
 {
@@ -61,6 +60,15 @@ class UserRepository extends EloquentRepository
         return auth()->refresh();
     }
 
+    public function ObtenerTokenEmail($email)
+    {
+        $datos = $this->model->where("email", "=", $email)->first();
+
+        if ($datos)
+            return JWTAuth::fromUser($datos);
+
+        return null;
+    }
     public function me()
     {
         $id = auth()->user()->id;
