@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/models/Usuario.model.dart';
+import 'package:plants_movil/pages/maps/maps.page.dart';
 import 'package:plants_movil/services/usuario.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Usuario? usuario;
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) super.setState(fn);
+  }
 
   @override
   void initState() {
@@ -55,6 +61,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(20),
             ))),
+        body: const MapsPage(),
         drawer: Drawer(
             child: ListView(
                 // Important: Remove any padding from the ListView.
