@@ -69,14 +69,14 @@ class _LoginPageState extends State<LoginPage>
                       children: <Widget>[
                         Text(
                           "Iniciar Sesión",
-                          style: TextStyle(color: Colors.white, fontSize: 30),
+                          style: TextStyle(fontSize: 30),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
-                          "Bienvenido a Plants",
-                          style: TextStyle(color: Colors.white, fontSize: 22),
+                          "Bienvenido a Hi Plants AI",
+                          style: TextStyle(fontSize: 22),
                         ),
                       ],
                     ),
