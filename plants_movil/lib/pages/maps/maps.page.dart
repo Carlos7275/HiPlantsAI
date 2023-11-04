@@ -51,7 +51,6 @@ class _MapsPageState extends State<MapsPage> {
       case PermissionStatus.permanentlyDenied:
       case PermissionStatus.provisional:
     }
-    ;
   }
 
   Future<void> _getUserLocation() async {
