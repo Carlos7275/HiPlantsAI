@@ -17,7 +17,7 @@ import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
 // ignore: must_be_immutable
 class UsuarioForm extends StatefulWidget {
   UsuarioForm({super.key, required this.infoUsuario});
-  Usuario infoUsuario;
+  Usuario? infoUsuario;
   @override
   State<UsuarioForm> createState() => _UsuarioFormState();
 }
@@ -35,14 +35,13 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
   @override
   void initState() {
     super.initState();
+    controller.isLoading$.add(true);
     llenarGeneros();
-    llenarAsentamientos(widget.infoUsuario.cp!, startApp: true);
+    llenarAsentamientos(widget.infoUsuario!.cp!, startApp: true);
   }
 
   void llenarAsentamientoIngresado(String? cadena) {
-    setState(() {
-      _asentamientoSeleccionado = null;
-    });
+    _asentamientoSeleccionado = null;
 
     if (cadena!.length == 5) {
       listadoAsentamientos = null;
@@ -57,7 +56,8 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
       if (startApp == true) {
         _asentamientoSeleccionado = listadoAsentamientos?.firstWhere(
             (element) =>
-                element.idAsentaCpcons == widget.infoUsuario.idAsentaCpcons);
+                element.idAsentaCpcons == widget.infoUsuario!.idAsentaCpcons);
+        controller.isLoading$.add(false);
       }
     });
   }
@@ -67,7 +67,8 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
     setState(() {
       listadoGeneros = generos;
       _generoSeleccionado = listadoGeneros?.firstWhere(
-          (element) => element.idGenero == widget.infoUsuario.idGenero);
+          (element) => element.idGenero == widget.infoUsuario!.idGenero);
+      controller.isLoading$.add(false);
     });
   }
 
@@ -180,7 +181,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                           : CircleAvatar(
                               backgroundImage: NetworkImage(
                                 Enviroment.server +
-                                    widget.infoUsuario.urlImagen!,
+                                    widget.infoUsuario!.urlImagen!,
                               ),
                               radius: 80,
                             ),

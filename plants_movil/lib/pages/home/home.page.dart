@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/env/local.env.dart';
@@ -17,11 +15,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Usuario? usuario;
+  bool isLoading = true;
 
-  @override
-  void setState(VoidCallback fn) {
-    if (mounted) super.setState(fn);
-  }
+  // @override
+  // void setState(VoidCallback fn) {
+  //   if (mounted) super.setState(fn);
+  // }
 
   @override
   void initState() {
@@ -30,11 +29,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void obtenerInfoUsuario() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    UsuarioService().me().then((value) =>
-        preferences.setString("info_usuario", jsonEncode(value["data"])));
     usuario = await UsuarioService().obtenerInfoUsuario();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -53,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
             title: const Text(
-              "Plants",
+              "Hi Plants AI",
               style: TextStyle(color: Colors.white),
             ),
             backgroundColor: Enviroment.secondaryColor,
@@ -67,37 +65,39 @@ class _HomePageState extends State<HomePage> {
                 // Important: Remove any padding from the ListView.
                 padding: EdgeInsets.zero,
                 children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Enviroment.secondaryColor,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage:
-                          NetworkImage(Enviroment.server + usuario!.urlImagen!),
-                    ),
-                    Text(
-                      "Hola ${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
-                      style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        "Email:${usuario!.email}",
-                        style: const TextStyle(
-                            fontSize: 13,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+              isLoading
+                  ? const CircularProgressIndicator()
+                  : DrawerHeader(
+                      decoration: const BoxDecoration(
+                        color: Enviroment.secondaryColor,
                       ),
-                    )
-                  ],
-                ),
-              ),
+                      child: Column(
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage: NetworkImage(
+                                Enviroment.server + usuario!.urlImagen!),
+                          ),
+                          Text(
+                            "Hola ${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
+                            style: const TextStyle(
+                                fontSize: 13,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              "Email:${usuario!.email}",
+                              style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
               ListTile(
                 leading: const Icon(Icons.data_usage),
                 title: const Text('Recorridos'),

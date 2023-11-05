@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:plants_movil/generics/widgets/controller.dart';
 import 'package:plants_movil/models/CodigosPostales.model.dart';
@@ -21,6 +20,7 @@ class UsuarioFormController extends Controller {
   UsuarioFormController() {
     obtenerDatos();
   }
+
   void obtenerDatos() async {
     infousuario = await UsuarioService().obtenerInfoUsuario();
     controllers[0].text = infousuario.email!;
@@ -36,6 +36,7 @@ class UsuarioFormController extends Controller {
       String? imagen) {
     if (formKey.currentState!.validate()) {
       isLoading$.add(true);
+
       Usuario usuario = Usuario(
           email: controllers[0].text,
           nombres: controllers[1].text,

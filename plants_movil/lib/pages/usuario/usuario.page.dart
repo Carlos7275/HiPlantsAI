@@ -13,7 +13,6 @@ class UsuarioPage extends StatefulWidget {
 
 class _UsuarioPageState extends State<UsuarioPage> {
   Usuario? usuario;
-  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -22,9 +21,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
 
   void obtenerInfoUsuario() async {
     usuario = await UsuarioService().obtenerInfoUsuario();
-    setState(() {
-      if (usuario != null) isLoading = false;
-    });
+    setState(() {});
   }
 
   @override
@@ -44,23 +41,19 @@ class _UsuarioPageState extends State<UsuarioPage> {
           centerTitle: false, // Alinea el texto del título a la izquierda
           backgroundColor: Enviroment.secondaryColor,
         ),
-        body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
+        body: SingleChildScrollView(
+            child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(children: [
+            Column(children: [
+              Container(
+                padding: const EdgeInsets.all(5),
+                child: UsuarioForm(
+                  infoUsuario: usuario,
+                ),
               )
-            : SingleChildScrollView(
-                child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(children: [
-                  Column(children: [
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      child: UsuarioForm(
-                        infoUsuario: usuario!,
-                      ),
-                    )
-                  ])
-                ]),
-              )));
+            ])
+          ]),
+        )));
   }
 }

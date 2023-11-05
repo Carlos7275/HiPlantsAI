@@ -1,11 +1,8 @@
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_cache/flutter_map_cache.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:path_provider/path_provider.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({Key? key}) : super(key: key);
@@ -15,54 +12,52 @@ class MapsPage extends StatefulWidget {
 }
 
 class _MapsPageState extends State<MapsPage> {
-  String? path;
   final MapController _mapController = MapController();
   LatLng _currentLocation =
-      const LatLng(25.781862, -108.990188); // Ubicación inicial en el ecuador
-
-  Future<void> getPath() async {
-    final cacheDirectory = await getTemporaryDirectory();
-    path = cacheDirectory.path;
-  }
+      const LatLng(25.781862, -108.990188); // Ubicación inicial en mochis
 
   @override
   void initState() {
     super.initState();
-    askPermission();
-    getPath();
+    preguntarPermisos();
   }
 
+/*Sobreescritura de metodo setState con validacion para volver a inicializar el }
+widget
+*/
   @override
   void setState(VoidCallback fn) {
     if (mounted) super.setState(fn);
   }
 
-  Future<void> askPermission() async {
+  Future<void> preguntarPermisos() async {
     final status = await Permission.location.request();
-    switch (status) {
-      case PermissionStatus.denied:
-        askPermission();
-        break;
-      case PermissionStatus.granted:
-        _getUserLocation();
-        break;
-      case PermissionStatus.restricted:
-      case PermissionStatus.limited:
-      case PermissionStatus.permanentlyDenied:
-      case PermissionStatus.provisional:
+    if (status case PermissionStatus.denied) {
+      preguntarPermisos();
+    } else if (status case PermissionStatus.granted) {
+      obtenerUbicacionUsuario();
     }
   }
 
-  Future<void> _getUserLocation() async {
-    const settings = LocationSettings(
-      accuracy: LocationAccuracy.best,
-      distanceFilter: 10,
-    );
-    Geolocator.getPositionStream(locationSettings: settings).listen((position) {
-      setState(() {
-        _currentLocation = LatLng(position.latitude, position.longitude);
+  Future<void> obtenerUbicacionUsuario() async {
+    bool servicio = await Geolocator.isLocationServiceEnabled();
+
+    if (servicio) {
+      const settings = LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      );
+
+      //Obtiene la Ubicacion en tiempo real
+      Geolocator.getPositionStream(locationSettings: settings)
+          .listen((position) {
+        setState(() {
+          _currentLocation = LatLng(position.latitude, position.longitude);
+        });
       });
-    });
+    } else {
+      preguntarPermisos();
+    }
   }
 
   @override
@@ -75,9 +70,9 @@ class _MapsPageState extends State<MapsPage> {
               double mapWidth, mapHeight;
               if (orientation == Orientation.portrait) {
                 mapWidth = constraints.maxWidth;
-                mapHeight = constraints.maxHeight * 0.7;
+                mapHeight = constraints.maxHeight * 0.65;
               } else {
-                mapWidth = constraints.maxWidth * 0.7;
+                mapWidth = constraints.maxWidth * 0.85;
                 mapHeight = constraints.maxHeight;
               }
 
@@ -94,15 +89,6 @@ class _MapsPageState extends State<MapsPage> {
                       children: [
                         TileLayer(
                           userAgentPackageName: "com.example.app",
-                          tileProvider: CachedTileProvider(
-                            // maxStale keeps the tile cached for the given Duration and
-                            // tries to revalidate the next time it gets requested
-                            maxStale: const Duration(days: 30),
-                            store: HiveCacheStore(
-                              path,
-                              hiveBoxName: 'HiveCacheStore',
-                            ),
-                          ),
                           urlTemplate:
                               'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                           subdomains: const ['a', 'b', 'c'],
