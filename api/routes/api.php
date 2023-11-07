@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CodigoPostalController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GenerosController;
+use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\RolesController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ Route::group([
 });
 Route::middleware(['role:1'])->group(function () {
     Route::get("Roles", [RolesController::class, "ObtenerRoles"]);
+    Route::get("Recorridos", [RecorridoController::class, "ObtenerRecorridos"]);
 });
 
 Route::controller(UserController::class)->group(function () {
@@ -27,7 +29,14 @@ Route::controller(UserController::class)->group(function () {
     Route::post('Registrar/Usuario', "CrearUsuario");
     Route::put('Modificar/Usuario/{id}', "ModificarUsuario");
     Route::put("Cambiar/Contraseña/", "CambiarContraseña");
+    Route::put("Crear/Contraseña/", "CrearContraseña");
+    Route::get("Validar/Token/", "ValidarJWT");
     Route::delete("Cambiar/Estatus/Usuario/{id}", "CambiarEstatus");
+});
+
+Route::controller(RecorridoController::class)->group(function () {
+    Route::post("Registrar/Recorrido", "RegistrarRecorrido");
+    Route::get("MisRecorridos", "ObtenerMisRecorridos");
 });
 
 Route::controller(CodigoPostalController::class)->group(function () {

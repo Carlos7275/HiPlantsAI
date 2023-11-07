@@ -94,6 +94,12 @@ class UserRepository extends EloquentRepository
         return auth()->check();
     }
 
+    public function CrearContraseña($passwordNueva)
+    {
+        $id = auth()->user()->id;
+
+        $this->update($id, ["password" => Hash::make($passwordNueva)]);
+    }
     public function CambiarContraseña($passwordActual, $passwordNueva)
     {
         $id = auth()->user()->id;

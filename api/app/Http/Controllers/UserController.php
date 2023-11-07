@@ -209,6 +209,28 @@ class UserController extends Controller
         return response()->json(Message::success("¡Se cambio el estatus del usuario a {$estatus}!"));
     }
 
+    public function CrearContraseña(Request $request)
+    {
+        try {
+            $request->validate([
+                'PasswordNueva' => 'required|min:5|max:12',
+                'PasswordAuxiliar' => 'required|min:5|max:12'
+            ]);
+
+
+            if ($request->PasswordNueva == $request->PasswordAuxiliar) {
+                $this->_usuarioRepository->CrearContraseña($request->PasswordNueva);
+
+                return response()->json(Message::success("¡Se cambio la contraseña con exito!"));
+            }
+            return response()->json(Message::Observation("¡Las Contraseñas no coinciden!", 400));
+        } catch (ValidationException $exception) {
+            return response()->json(
+                Message::Error(Utils::ConvertirErroresALinea($exception->errors())),
+                422
+            );
+        }
+    }
     public function CambiarContraseña(Request $request)
     {
         try {
@@ -234,5 +256,13 @@ class UserController extends Controller
                 422
             );
         }
+    }
+
+    public function ValidarJWT()
+    {
+        if ($this->_usuarioRepository->ValidarToken())
+            return response()->json(Message::success(true));
+        
+        return response()->json(Message::Forbidden(), 403);
     }
 }

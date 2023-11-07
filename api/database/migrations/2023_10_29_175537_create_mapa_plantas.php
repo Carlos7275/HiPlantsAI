@@ -19,7 +19,7 @@ return new class extends Migration
             $table->double("latitud");
             $table->double("longitud");
             $table->string("url_imagen");
-            $table->string("estatus")->default("Activa");
+            $table->integer("estatus")->default(1);
             $table->timestamps();
         });
     }
