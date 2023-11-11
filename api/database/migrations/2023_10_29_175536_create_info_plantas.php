@@ -16,17 +16,17 @@ return new class extends Migration
             $table->primary("id");
             $table->string("nombre_planta");
             $table->string("nombre_cientifico");
-            $table->string("toxicidad");
-            $table->year("año");
+            $table->string("toxicidad")->nullable(true);
+            $table->integer("año");
             $table->string("familia");
-            $table->json("nombres_comunes");
-            $table->json("distribucion");
-            $table->string("color");
-            $table->string("humedad_atmosferica");
-            $table->string("cantidad_luz");
-            $table->json("meses_crecimiento");
-            $table->string("genero");
-            $table->string("estatus");
+            $table->json("nombres_comunes")->nullable(true);
+            $table->json("distribucion")->nullable(true);
+            $table->json("colores")->nullable(true);
+            $table->string("humedad_atmosferica")->nullable(true);
+            $table->string("cantidad_luz")->nullable(true);
+            $table->json("meses_crecimiento")->nullable(true);
+            $table->string("genero")->nullable(true);
+            $table->string("estatus")->nullable(true);
             $table->timestamps();
         });
     }

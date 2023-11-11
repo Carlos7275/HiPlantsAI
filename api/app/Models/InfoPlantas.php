@@ -12,14 +12,14 @@ class InfoPlantas extends Model
 
     protected $fillable = [
         "id",
-        "nombre",
+        "nombre_planta",
         "nombre_cientifico",
         "toxicidad",
         "año",
         "familia",
         "nombres_comunes",
         "distribucion",
-        "color",
+        "colores",
         "humedad_atmosferica",
         "cantidad_luz",
         "meses_crecimiento",
@@ -27,6 +27,12 @@ class InfoPlantas extends Model
         "estatus"
     ];
 
+    protected $casts = [
+        'colores' => 'json',
+        'nombres_comunes' => 'json',
+        'distribucion' => 'json',
+        'meses_crecimiento' => 'json'
+    ];
     protected $hidden = [
         "created_at",
         "updated_at"

@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CodigoPostalController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GenerosController;
+use App\Http\Controllers\MapaController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\RolesController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,11 @@ Route::controller(RecorridoController::class)->group(function () {
     Route::post("Registrar/Recorrido", "RegistrarRecorrido");
     Route::get("MisRecorridos", "ObtenerMisRecorridos");
 });
+
+Route::controller(MapaController::class)->group(function () {
+    Route::post("Registrar/Planta", "RegistrarPlanta");
+});
+
 
 Route::controller(CodigoPostalController::class)->group(function () {
     Route::get("CodigosPostales", "ObtenerCP");
