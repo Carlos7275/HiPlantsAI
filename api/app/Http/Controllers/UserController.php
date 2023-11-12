@@ -97,7 +97,7 @@ class UserController extends Controller
                 ]
             );
 
-            $idrol = $this->_usuarioRepository->ValidarToken() ? $request->Id_Rol : 2;
+            $idrol = $this->_usuarioRepository->ValidarToken() ? $request->id_rol : 2;
 
             DB::transaction(function () use ($idrol) { // Si falla la transaccion no se registrara nada
 
@@ -262,7 +262,7 @@ class UserController extends Controller
     {
         if ($this->_usuarioRepository->ValidarToken())
             return response()->json(Message::success(true));
-        
+
         return response()->json(Message::Forbidden(), 403);
     }
 }
