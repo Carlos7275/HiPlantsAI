@@ -3,13 +3,16 @@ import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
 import 'package:plants_movil/pages/usuario/usuario_form/usuario.controller.dart';
 import 'package:plants_movil/routes.dart';
 import 'package:plants_movil/services/usuario.service.dart';
+import 'package:plants_movil/pages/registrar_usuario/registrar_usuario_form/registrar_usuario.controller.dart';
+
 
 class PlantsModule extends Module {
   @override
   List<Bind> get binds => [
         Bind.singleton((i) => UsuarioService()),
         Bind.factory((i) => LoginFormController()),
-        Bind.factory((i) => UsuarioFormController())
+        Bind.factory((i) => UsuarioFormController()),
+        Bind.factory((i) => RegistrarUsuarioController ())
       ];
 
   @override

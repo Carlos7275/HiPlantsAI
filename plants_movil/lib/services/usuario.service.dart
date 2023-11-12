@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:plants_movil/generics/persistence/service.dart';
+import 'package:plants_movil/models/RegistrarUsuario.model.dart';
 import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,6 +71,33 @@ class UsuarioService extends Service<Usuario> {
 
     http.Response resp =
         await httpClient.put(url: 'Modificar/Usuario/$id', body: parameters);
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body) as Map<String, dynamic>;
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<Map<String, dynamic>> registrarUsuario(
+       RegistrarUsuarioModel usuario) async {
+    final parameters = jsonEncode({
+      "email": usuario.email,
+      "password":usuario.password,
+      "nombres": usuario.nombres,
+      "apellido_paterno": usuario.apellidoPaterno,
+      "apellido_materno": usuario.apellidoMaterno,
+      "domicilio": usuario.domicilio,
+      "fecha_nacimiento": usuario.fechaNacimiento,
+      "id_rol": 2,
+      "id_genero": usuario.idGenero,
+      "id_asenta": usuario.idAsentaCpcons,
+      "cp": usuario.cp,
+    
+    });
+
+    http.Response resp =
+        await httpClient.post(url: 'Registrar/Usuario/', body: parameters);
 
     if (resp.statusCode == 200) {
       return json.decode(resp.body) as Map<String, dynamic>;

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/generics/widgets/stateful.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
 import 'package:plants_movil/utilities/regex.dart';
@@ -113,7 +114,8 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                               Theme.of(context).colorScheme.secondary),
                         ),
                         onPressed: () {
-                          exit(1);
+                          Modular.to.pushNamed('/registrar');
+
                         },
                         label: const Text(
                           "Registrarse",

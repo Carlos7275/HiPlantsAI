@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Enviroment {
   //Constantes para el Servidor
-  static const String server = "http://192.168.0.8";
+  static const String server = "http://192.168.1.72";
   static const String serverUrl = "$server/api/";
   //Constantes de Colores para la App
   static const Color primaryColor = Colors.white;
