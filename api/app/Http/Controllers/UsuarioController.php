@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class UserController extends Controller
+class UsuarioController extends Controller
 {
     private $_usuarioRepository, $_datosUsuarioRepository;
 
@@ -205,8 +205,10 @@ class UserController extends Controller
     public function CambiarEstatus($id)
     {
         $estatus = $this->_usuarioRepository->CambiarEstatus($id);
-
-        return response()->json(Message::success("¡Se cambio el estatus del usuario a {$estatus}!"));
+        if (isset($estatus))
+            return response()->json(Message::success("¡Se cambio el estatus del usuario a {$estatus}!"));
+        
+        return response()->json(Message::notFound(), 404);
     }
 
     public function CrearContraseña(Request $request)

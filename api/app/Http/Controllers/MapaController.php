@@ -92,13 +92,28 @@ class MapaController extends Controller
 
     public function ObtenerPlantas()
     {
+        return response()->json(Message::success($this->_mapaRepository->all()));
     }
 
-    public function ObtenerPlantaEspecifica($id)
+    public function ObtenerPlantasActivas()
     {
+        return response()->json(Message::success($this->_mapaRepository->ObtenerPlantasActivas()));
     }
 
-    public function DarBajaPlanta($id)
+
+    public function ObtenerPlanta($id)
     {
+        $planta = $this->_mapaRepository->find($id);
+        if (isset($planta))
+            return response()->json(Message::success($planta));
+        return response()->json(Message::notFound(), 404);
+    }
+
+    public function CambiarEstatusPlanta($id)
+    {
+        $estatus = $this->_mapaRepository->CambiarEstatus($id);
+        if (isset($estatus))
+            return response()->json(Message::success("¡Se cambio el estatus de la planta a {$estatus}!"));
+        return response()->json(Message::notFound(), 404);
     }
 }

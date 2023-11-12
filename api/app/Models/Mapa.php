@@ -22,4 +22,9 @@ class Mapa extends Model
     protected $hidden = [
         "updated_at"
     ];
+
+    public function InfoPlantas()
+    {
+        return $this->hasOne(InfoPlantas::class, "id", "id_planta");
+    }
 }

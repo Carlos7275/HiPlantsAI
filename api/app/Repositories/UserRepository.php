@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Response\Message;
 use App\Models\Usuarios;
 use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +74,7 @@ class UserRepository extends EloquentRepository
     {
         $id = auth()->user()->id;
 
-        return Usuarios::select("usuarios.*")
+        return $this->model::select("usuarios.*")
             ->find($id)
             ->join('datos_usuarios', "usuarios.id", "=", ".datos_usuarios.id")
             ->find($id); //Obtendremos 
@@ -83,10 +84,13 @@ class UserRepository extends EloquentRepository
     {
         $usuario = $this->find($id);
 
-        $estatus = ($usuario->estatus == "ACTIVO") ? "INACTIVO" : "ACTIVO";
-        $this->update($id, ["estatus" => $estatus]);
+        if (isset($usuario)) {
+            $estatus = ($usuario->estatus == "ACTIVO") ? "INACTIVO" : "ACTIVO";
+            $this->update($id, ["estatus" => $estatus]);
+            return $estatus;
+        }
 
-        return $estatus;
+        return null;
     }
 
     public function ValidarToken()

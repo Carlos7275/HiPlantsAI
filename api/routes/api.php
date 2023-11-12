@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CodigoPostalController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GenerosController;
@@ -11,20 +11,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'auth' //Le asignamos el prefijo auth ejemplo api/auth/login
+    'prefix' => 'auth'
 ], function ($router) {
-    Route::post("login", [UserController::class, "IniciarSesion"]);
-    Route::post('logout', [UserController::class, 'CerrarSesion']);
-    Route::post('refresh', [UserController::class, 'RefrescarToken']);
-    Route::get('me', [UserController::class, 'me']);
-    Route::post('valid', [UserController::class, 'ValidarToken']);
+    Route::post("login", [UsuarioController::class, "IniciarSesion"]);
+    Route::post('logout', [UsuarioController::class, 'CerrarSesion']);
+    Route::post('refresh', [UsuarioController::class, 'RefrescarToken']);
+    Route::get('me', [UsuarioController::class, 'me']);
+    Route::post('valid', [UsuarioController::class, 'ValidarToken']);
 });
 Route::middleware(['role:1'])->group(function () {
     Route::get("Roles", [RolesController::class, "ObtenerRoles"]);
     Route::get("Recorridos", [RecorridoController::class, "ObtenerRecorridos"]);
+    Route::get("Mapa/Plantas", [MapaController::class, "ObtenerPlantas"]);
 });
 
-Route::controller(UserController::class)->group(function () {
+Route::controller(UsuarioController::class)->group(function () {
     Route::get('Usuario/{id}', "ObtenerUsuarioEspecifico");
     Route::get('Usuarios', "ObtenerUsuarios");
     Route::post('Registrar/Usuario', "CrearUsuario");
@@ -32,7 +33,7 @@ Route::controller(UserController::class)->group(function () {
     Route::put("Cambiar/Contraseña/", "CambiarContraseña");
     Route::put("Crear/Contraseña/", "CrearContraseña");
     Route::get("Validar/Token/", "ValidarJWT");
-    Route::delete("Cambiar/Estatus/Usuario/{id}", "CambiarEstatus");
+    Route::put("Cambiar/Estatus/Usuario/{id}", "CambiarEstatus");
 });
 
 Route::controller(RecorridoController::class)->group(function () {
@@ -42,6 +43,9 @@ Route::controller(RecorridoController::class)->group(function () {
 
 Route::controller(MapaController::class)->group(function () {
     Route::post("Registrar/Planta", "RegistrarPlanta");
+    Route::get("Mapa/Plantas/Activas", "ObtenerPlantasActivas");
+    Route::get("Mapa/Planta/{id}", "ObtenerPlanta");
+    Route::put("Cambiar/Estatus/Planta/{id}", "CambiarEstatusPlanta");
 });
 
 
