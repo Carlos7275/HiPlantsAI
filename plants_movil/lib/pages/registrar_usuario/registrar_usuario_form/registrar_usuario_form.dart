@@ -67,10 +67,10 @@ class _RegistraUsuarioState
               child: Column(
                 children: [
                   ClipRRect(
-                    child: Image.asset('assets/images/user.png',
-                        height: 250, width: 350),
+                    borderRadius: BorderRadius.circular(50),
+                    child: Image.asset('assets/images/user.png', width: 150),
                   ),
-
+                  spaceBetween,
                   Row(
                     children: [
                       Expanded(
@@ -179,6 +179,7 @@ class _RegistraUsuarioState
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2100),
                     dateLabelText: 'Fecha de nacimiento',
+                    validator: Utilities.fechaNacimientoValidator,
                   ),
 
                   Row(

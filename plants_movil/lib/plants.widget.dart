@@ -11,6 +11,7 @@ class PlantsWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'App de Plantas',
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Enviroment.secondaryColor,
           primary: Enviroment.primaryColor,

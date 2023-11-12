@@ -61,7 +61,7 @@ class RegistrarUsuarioController extends Controller {
   String? verificarPassword(String? password) {
     if (password!.isEmpty) {
       return "Ingrese la Contraseña";
-    } else if (password == controllers[8].text) {
+    } else if (password == controllers[1].text) {
       return null;
     } else {
       return "Las contraseñas no coinciden";

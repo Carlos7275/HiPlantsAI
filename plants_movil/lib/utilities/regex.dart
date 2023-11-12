@@ -2,7 +2,7 @@ class Utilities {
   static final RegExp email = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   static final RegExp names = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
-   static final RegExp codigopostal = RegExp(r'^\d{5}$');
+  static final RegExp codigopostal = RegExp(r'^\d{5}$');
 
   static String? emailValidator(String? text) {
     if (text != null && email.hasMatch(text)) {
@@ -45,6 +45,20 @@ class Utilities {
     }
   }
 
+  static String? fechaNacimientoValidator(String? text) {
+    if (text == null)
+      return "Ingrese su Fecha de nacimiento";
+    else {
+      DateTime fechaNacimiento = DateTime.parse(text);
+
+      if (DateTime.now().year - fechaNacimiento.year >= 10) {
+        return null;
+      } else {
+        return "Para registrarse necesita ser de 9 años de edad";
+      }
+    }
+  }
+
   static String? generosValidator(value) {
     if (value == null) return "Ingrese el Genero";
     return null;
@@ -54,6 +68,7 @@ class Utilities {
     if (value == null) return "Ingrese la Colonia";
     return null;
   }
+
   static String? codigopostalValidator(String? text) {
     if (text != null && codigopostal.hasMatch(text)) {
       return null;

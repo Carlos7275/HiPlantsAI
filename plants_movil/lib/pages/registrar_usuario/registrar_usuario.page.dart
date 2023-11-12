@@ -15,7 +15,7 @@ class _UsuarioPageState extends State<RegistrarUsuarioPage> {
     super.initState();
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(

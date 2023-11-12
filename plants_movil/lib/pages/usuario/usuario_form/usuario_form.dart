@@ -284,6 +284,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2100),
                     dateLabelText: 'Fecha de nacimiento',
+                    validator: Utilities.fechaNacimientoValidator,
                   ),
                   Row(
                     children: [
