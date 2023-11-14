@@ -1,0 +1,138 @@
+<div class="dialog-title">
+  <h1 mat-dialog-title>
+    {{title}}
+  </h1>
+  <button mat-stroked-button aria-label="close dialog" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+
+</div>
+
+<div mat-dialog-content>
+  <form class="example-form" aria-required="true" [formGroup]="frmDatos" (ngSubmit)="submit()">
+    <div class="example-container__centrado ">
+
+      <mat-form-field appearance="fill" class="example-full-width" appearance="fill" style="font-size:16px; width:100%">
+        <mat-label>Ingrese su Email</mat-label>
+        <input type="email" formControlName="Email" matInput required>
+        <mat-error *ngIf="frmDatos.invalid"> Ingrese un Email Valido</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field *ngIf="this.flag" appearance="fill" class="example-full-width" appearance="fill"
+        style="font-size:16px; width:100%">
+        <mat-label>Contraseña</mat-label>
+        <input [type]="hide ? 'password' : 'text'" formControlName="Password" matInput required>
+        <button type="button" style="border: none" mat-icon-button matSuffix (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error *ngIf="frmDatos.invalid"> Ingrese la contraseña</mat-error>
+      </mat-form-field>
+      <br *ngIf="this.flag">
+
+      <mat-form-field *ngIf="this.flag" appearance="fill" class="example-full-width" appearance="fill"
+        style="font-size:16px; width:100%">
+        <mat-label>Confirme su contraseña</mat-label>
+        <input [type]="hide2 ? 'password' : 'text'" formControlName="Password2" matInput required>
+        <button type="button" style="border: none" mat-icon-button matSuffix (click)="hide2 = !hide2"
+          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+          <mat-icon>{{ hide2 ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error *ngIf="frmDatos.invalid"> {{getPasswordConfirmationErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <br *ngIf="this.flag">
+
+      <mat-form-field appearance="fill" class="example-full-width" appearance="fill" style="font-size:16px;">
+        <mat-label>Nombre(s)</mat-label>
+        <input type="text" formControlName="Nombres" matInput required>
+        <mat-error *ngIf="frmDatos.invalid">Ingrese su Nombre</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="example-full-width" appearance="fill"
+        style="font-size:16px; margin-left:20px">
+        <mat-label>Apellido Paterno</mat-label>
+        <input type="text" formControlName="ApellidoPaterno" matInput required>
+        <mat-error *ngIf="frmDatos.invalid">Ingrese su Apellido Paterno</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field appearance="fill" class="example-full-width" appearance="fill" style="font-size:16px;">
+        <mat-label>Apellido Materno</mat-label>
+        <input type="text" formControlName="ApellidoMaterno" matInput required>
+        <mat-error *ngIf="frmDatos.invalid"> Ingrese su Apellido Materno</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="example-full-width" appearance="fill"
+        style="font-size:16px; margin-left:20px">
+        <mat-label>Fecha de Nacimiento:</mat-label>
+        <input type="date" formControlName="FechaNacimiento" matInput>
+        <mat-error *ngIf="frmDatos.invalid"> Ingrese su Fecha de Nacimiento</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field appearance="fill" class="example-full-width" appearance="fill" style="font-size:16px; width:100%">
+        <mat-label>Domicilio:</mat-label>
+        <textarea matInput formControlName="Domicilio">
+      </textarea>
+        <mat-error *ngIf="frmDatos.invalid">Ingrese la Direccion del usuario</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field appearance="fill" style="font-size:16px;">
+        <mat-label>C.P</mat-label>
+        <input type="text" matInput formControlName="CP" (keyup)="buscarCP($event)">
+        <mat-error *ngIf="frmDatos.invalid"> Ingrese el Codigo Postal!!! </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="font-size:16px; margin-left:20px">
+        <mat-label>Asentamiento</mat-label>
+        <mat-select formControlName="Asentamiento">
+          <mat-option *ngFor="let asentamiento of asentamientos;" [value]="asentamiento.id_asenta_cpcons">
+            {{asentamiento.d_asenta}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="frmDatos.invalid"> Asentamiento por favor!!!! </mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <label>Rol:</label>
+        <mat-select formControlName="Roles">
+          <mat-option *ngFor="let item of this.roles" [value]="item.id_rol">
+            {{item.nombre}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="frmDatos.invalid">Seleccione un rol de usuario</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill" style="font-size:16px; margin-left:20px">
+        <label>Genero:</label>
+        <mat-select formControlName="Generos">
+          <mat-option *ngFor="let item of this.generos" [value]="item.id_genero">
+            {{item.descripcion}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="frmDatos.invalid">Seleccione su genero</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field *ngIf="!this.flag" appearance="fill">
+        <mat-label>Estatus</mat-label>
+        <mat-select formControlName="Estatus">
+          <mat-option value="ACTIVO">Activo</mat-option>
+          <mat-option value="INACTIVO">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <div class="btn-group mb-3">
+    <button class="btn btn-primary" (click)="submit()">Guardar Datos</button>
+    <button class="btn btn-warning" (click)="LimpiarCampos()">Limpiar Datos</button>
+  </div>
+</div>

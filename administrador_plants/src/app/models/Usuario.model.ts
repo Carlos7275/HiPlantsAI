@@ -1,5 +1,5 @@
 export interface UsuarioInfo {
-  id_usuario: number;
+  id: number;
   email: string;
   url_imagen: string;
   id_rol: number;

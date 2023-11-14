@@ -1,6 +1,6 @@
 export class Peticion<T>
 {
-  message: String;
+  message: string;
   data: T;
 };
 

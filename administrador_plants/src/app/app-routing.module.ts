@@ -7,6 +7,7 @@ import { IsLoginGuard } from './guards/is-login.guard';
 import { ErrorComponent } from './components/error/error.component';
 import { Error500Component } from './components/error500/error500.component';
 import { IsNotLoginGuard } from './guards/is-not-login.guard';
+import { ModalRegistroUsuarioComponent } from './components/modal-registro-usuario/modal-registro-usuario.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -25,7 +26,8 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'error404',
-  }
+  },
+  { path: "RegistroUsuarios", component: ModalRegistroUsuarioComponent}
 ];
 
 @NgModule({

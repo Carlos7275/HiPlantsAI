@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioInfo } from '../models/Usuario.model';
 import { Peticion, PeticionConArreglo } from '../models/Peticion.model';
-import { Environment } from 'src/enviroments/enviroment.prod';
+import { Environment } from 'src/enviroments/enviroment';
+import { Rol } from '../models/Rol.model';
+import { Genero } from '../models/Genero.model';
+import { CP } from '../models/CodigoP.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +53,52 @@ export class UsuarioService {
       headers: this.cabecera
     });
   }
+
+  RegistrarUsuario(data:any):Observable<Peticion<UsuarioInfo>>{
+    console.table(data);
+    return this.cliente.post<Peticion<UsuarioInfo>>(Environment.urlApi+"Registrar/Usuario",JSON.stringify(data),
+    {headers:this.cabecera} ).pipe(
+      tap(() => {
+        this.refresh.next();
+      })
+    );
+  }
+
+  EliminarUsuario(id:number):Observable<Peticion<UsuarioInfo>>{
+    return this.cliente.delete<Peticion<UsuarioInfo>>(Environment.urlApi+`Cambiar/Estatus/Usuario/${id}`,
+    {headers:this.cabecera} ).pipe(
+      tap(() => {
+        this.refresh.next();
+      })
+    );
+  }
+
+  ModificarUsuario(id:number, data:any):Observable<Peticion<UsuarioInfo>>{
+    return this.cliente.put<Peticion<UsuarioInfo>>(Environment.urlApi+`Modificar/Usuario/${id}`,JSON.stringify(data),
+    {headers:this.cabecera} ).pipe(
+      tap(() => {
+        this.refresh.next();
+      })
+    );
+  }
+
+  ObtenerRoles(): Observable<PeticionConArreglo<Rol>> {
+    return this.cliente.get<PeticionConArreglo<Rol>>(Environment.urlApi + 'Roles', {
+      headers: this.cabecera});
+  }
+
+  ObtenerGeneros(): Observable<PeticionConArreglo<Genero>> {
+    return this.cliente.get<PeticionConArreglo<Genero>>(Environment.urlApi + 'Generos', {
+      headers: this.cabecera});
+  }
+
+  ObtenerCPEsp(cp:String): Observable<PeticionConArreglo<CP>> {
+    return this.cliente.get<PeticionConArreglo<CP>>(Environment.urlApi + `CodigoPostal/${cp}`);
+  }
+
+ 
+
+
+
 }
 

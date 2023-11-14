@@ -40,5 +40,60 @@ body {
     display: block;
 }
 
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+mat-icon {
+    vertical-align: middle;
+}
+
+
+.box {
+    width: 60%;
+    background-color: rgba(255, 255, 255, 0.493);
+    border-radius: 25px;
+    margin: 10px;
+}
+
+.derecha {
+    margin: auto;
+    padding: auto;
+
+}
+
+.roundedImage {
+    width: 250px;
+    border-radius: 15px;
+    margin: 0 auto;
+    padding: 50px;
+    float: right;
+    border: 1px solid gainsboro;
+
+}
+
+.derecha img {
+    padding: 20px;
+    width: 27%;
+    border-radius: 100px;
+
+}
+
+.miniIcon {
+    margin: 1px;
+    width: 25px;
+    border-radius: 10px;
+
+}
+
+.logo {
+    border-radius: 40px;
+    float: right;
+    width: min(70vw, 300px);
+    margin-right: 30px;
+    padding: 20px;
+}
 
 @import 'bootstrap/scss/bootstrap';

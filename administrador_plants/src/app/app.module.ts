@@ -22,7 +22,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
-
+import { ModalRegistroUsuarioComponent } from './components/modal-registro-usuario/modal-registro-usuario.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     GenericCrudComponent,
     FooterComponent,
     DropdownComponent,
+    ModalRegistroUsuarioComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,11 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
-    MatSnackBarModule],
+    MatDialogModule,
+    MatSnackBarModule,
+    MatSelectModule,
+    MatButtonModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
