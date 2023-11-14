@@ -12,7 +12,7 @@ import { CP } from '../models/CodigoP.model';
   providedIn: 'root'
 })
 export class UsuarioService {
-  cabecera = new HttpHeaders().set("authorization", `bearer ${localStorage.getItem("token")!}`);
+  cabecera = new HttpHeaders().set("Authorization", `bearer ${localStorage.getItem("token")!}`);
   private _$refresh = new Subject<void>();
 
   get refresh() {
@@ -54,51 +54,47 @@ export class UsuarioService {
     });
   }
 
-  RegistrarUsuario(data:any):Observable<Peticion<UsuarioInfo>>{
-    console.table(data);
-    return this.cliente.post<Peticion<UsuarioInfo>>(Environment.urlApi+"Registrar/Usuario",JSON.stringify(data),
-    {headers:this.cabecera} ).pipe(
-      tap(() => {
-        this.refresh.next();
-      })
-    );
+  RegistrarUsuario(data: any): Observable<Peticion<UsuarioInfo>> {
+    return this.cliente.post<Peticion<UsuarioInfo>>(Environment.urlApi + "Registrar/Usuario", JSON.stringify(data),
+      { headers: this.cabecera }).pipe(
+        tap(() => {
+          this.refresh.next();
+        })
+      );
   }
 
-  EliminarUsuario(id:number):Observable<Peticion<UsuarioInfo>>{
-    return this.cliente.delete<Peticion<UsuarioInfo>>(Environment.urlApi+`Cambiar/Estatus/Usuario/${id}`,
-    {headers:this.cabecera} ).pipe(
-      tap(() => {
-        this.refresh.next();
-      })
-    );
+  EliminarUsuario(id: number): Observable<Peticion<UsuarioInfo>> {
+    return this.cliente.put<Peticion<UsuarioInfo>>(Environment.urlApi + `Cambiar/Estatus/Usuario/${id}`,null,
+      { headers: this.cabecera }).pipe(
+        tap(() => {
+          this.refresh.next();
+        })
+      );
   }
 
-  ModificarUsuario(id:number, data:any):Observable<Peticion<UsuarioInfo>>{
-    return this.cliente.put<Peticion<UsuarioInfo>>(Environment.urlApi+`Modificar/Usuario/${id}`,JSON.stringify(data),
-    {headers:this.cabecera} ).pipe(
-      tap(() => {
-        this.refresh.next();
-      })
-    );
+  ModificarUsuario(id: number, data: any): Observable<Peticion<UsuarioInfo>> {
+    return this.cliente.put<Peticion<UsuarioInfo>>(Environment.urlApi + `Modificar/Usuario/${id}`, JSON.stringify(data),
+      { headers: this.cabecera }).pipe(
+        tap(() => {
+          this.refresh.next();
+        })
+      );
   }
 
   ObtenerRoles(): Observable<PeticionConArreglo<Rol>> {
     return this.cliente.get<PeticionConArreglo<Rol>>(Environment.urlApi + 'Roles', {
-      headers: this.cabecera});
+      headers: this.cabecera
+    });
   }
 
   ObtenerGeneros(): Observable<PeticionConArreglo<Genero>> {
     return this.cliente.get<PeticionConArreglo<Genero>>(Environment.urlApi + 'Generos', {
-      headers: this.cabecera});
+      headers: this.cabecera
+    });
   }
 
-  ObtenerCPEsp(cp:String): Observable<PeticionConArreglo<CP>> {
+  ObtenerCPEsp(cp: String): Observable<PeticionConArreglo<CP>> {
     return this.cliente.get<PeticionConArreglo<CP>>(Environment.urlApi + `CodigoPostal/${cp}`);
   }
-
- 
-
-
-
 }
 
