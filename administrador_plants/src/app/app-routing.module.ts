@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: "login", component: IniciarSesionComponent,canActivate:[IsNotLoginGuard]},
   {
-    path: 'dashboard', component: DashboardComponent, children: [
+    path: 'inicio', component: DashboardComponent, children: [
       { path: 'usuarios', component: UsuariosComponent }
     ], canActivate: [IsLoginGuard]
   },
@@ -27,7 +27,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'error404',
   },
-  { path: "RegistroUsuarios", component: ModalRegistroUsuarioComponent}
 ];
 
 @NgModule({
