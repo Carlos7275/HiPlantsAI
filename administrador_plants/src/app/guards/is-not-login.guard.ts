@@ -12,7 +12,7 @@ export class IsNotLoginGuard {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         if (this.userService.inicioSesion()) {
-            this.router.navigateByUrl("/dashboard");
+            this.router.navigateByUrl("/inicio");
             return false;
         }
 
