@@ -1,0 +1,16 @@
+.rounded-image {
+  width: 150px; /* Cambia el tamaño de la imagen según tus necesidades */
+  height: 150px;
+  border-radius: 50%; /* Hace que la imagen sea redonda */
+  object-fit: cover; /* Ajusta la imagen para llenar el círculo */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: transform 0.2s;
+  border: 1px solid gray;
+}
+.rounded-image:hover {
+  transform: scale(1.1); /* Escala la imagen al 110% en el hover */
+}
+
+.margin4{
+  margin:4px;
+}

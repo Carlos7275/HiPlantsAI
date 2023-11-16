@@ -1,0 +1,100 @@
+<div class="container" style="border: 1px solid blue;">
+  <h1 class="text-center">Datos de usuario</h1>
+    <div class="text-center">
+      <img *ngIf="imgURL" [src]="imgURL" accept="image/*" class="rounded-image" id="cambiarImagen" alt="Imagen Redonda">
+      <div> <input #file id="seleccionArchivos" class="custom-file-upload" type="file"
+        (change)="preview(file.files)" required></div>
+    </div>
+    <h2>Datos personales</h2>
+    <form aria-required="true" [formGroup]="frmUsuario" (ngSubmit)="Submit()">
+
+      <mat-form-field class="example-form margin4">
+        <input matInput placeholder="Correo electrónico" formControlName="Email">
+        <mat-error *ngIf="frmUsuario.invalid">{{(ObtenerErrorEmail())}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-form margin4">
+        <input matInput placeholder="Nombre(s)" class="" formControlName="Nombre">
+        <mat-error *ngIf="frmUsuario.invalid">Ingrese su(s) nombre(s)</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-form margin4">
+        <input matInput placeholder="Apellido Paterno" class="" formControlName="ApellidoPaterno">
+        <mat-error *ngIf="frmUsuario.invalid">Inserte su apellido</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="example-form margin4">
+        <input matInput placeholder="Apellido Materno" class="" formControlName="ApellidoMaterno">
+        <mat-error *ngIf="frmUsuario.invalid">Ingrese su apellido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="margin4">
+        <mat-label>Rol</mat-label>
+        <mat-select formControlName="Rol">
+            <mat-option matInput *ngFor="let rol of ArrayRoles()"
+                [value]=rol.id_rol>
+                {{rol.nombre}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="margin4">
+      <mat-label>Genero</mat-label>
+      <mat-select formControlName="Genero">
+          <mat-option matInput *ngFor="let genero of ArrayGeneros()"
+              [value]=genero.id_genero>
+              {{genero.descripcion}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="margin4">
+      <span matSuffix>
+          <mat-icon>date_range</mat-icon>
+      </span>
+      <mat-label>Fecha de Nacimiento:</mat-label>
+
+      <input type="date" formControlName="FechaNacimiento" class="example-full-width" matInput>
+      <mat-error *ngIf="frmUsuario.invalid"> Ingrese su Fecha de Nacimiento</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="margin4">
+    <mat-label>Genero</mat-label>
+    <mat-select formControlName="Estatus">
+        <mat-option matInput *ngFor="let estado of ArrayEstatus"
+            [value]=estado.value>
+            {{estado.viewValue}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+
+
+
+      <h2>Domicilio</h2>
+
+      <mat-form-field class="example-form margin4">
+        <input matInput placeholder="C.P." class="" formControlName="CP" name="CP">
+        <mat-error *ngIf="frmUsuario.invalid">{{(ObtenerErrorCP())}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="margin4">
+        <mat-label>Asentamiento</mat-label>
+        <mat-select formControlName="Asentamiento">
+            <mat-option matInput *ngFor="let asentamiento of ArrayAsentamientos()"
+                [value]=asentamiento.id_asenta_cpcons>
+                {{asentamiento.d_asenta}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+        <mat-form-field class="example-form margin4">
+        <input matInput placeholder="Direccion" class="" formControlName="Direccion" name="Direccion">
+        <mat-error *ngIf="frmUsuario.invalid">Ingrese su dirección</mat-error>
+      </mat-form-field>
+
+      <button class="btn btn-success btn-block fa-lg" type="submit">Guardar Cambios</button>
+
+
+    </form>
+  </div>

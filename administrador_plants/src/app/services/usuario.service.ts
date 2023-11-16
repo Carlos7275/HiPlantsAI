@@ -96,5 +96,17 @@ export class UsuarioService {
   ObtenerCPEsp(cp: String): Observable<PeticionConArreglo<CP>> {
     return this.cliente.get<PeticionConArreglo<CP>>(Environment.urlApi + `CodigoPostal/${cp}`);
   }
+
+
+  EnviarCorreoRecuperacion(correo:any):Observable<Peticion<any>>{
+    return this. cliente.post<Peticion<any>>(Environment.urlApi+'Recuperar/Cuenta',JSON.stringify(correo),{headers:this.cabecera});
+  }
+
+  RestablecerPassword(passwords:any):Observable<Peticion<any>>{
+    return this.cliente.put<Peticion<any>>(Environment.urlApi+'Crear/Contraseña',JSON.stringify(passwords),{headers:this.cabecera});
+  }
+  CambiarPassword(credenciales:any):Observable<Peticion<any>>{
+    return this.cliente.put<Peticion<any>>(Environment.urlApi+'Cambiar/Contraseña',JSON.stringify(credenciales),{headers:this.cabecera});
+  }
 }
 

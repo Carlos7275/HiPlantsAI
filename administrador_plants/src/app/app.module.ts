@@ -26,6 +26,11 @@ import { ModalRegistroUsuarioComponent } from './components/modal-registro-usuar
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { InfoUsuarioComponent } from './Components/info-usuario/info-usuario.component';
+import { MenuConfigUsuarioComponent } from './Components/menu-config-usuario/menu-config-usuario.component';
+import { CambioPasswordComponent } from './Components/cambio-password/cambio-password.component';
+import { RecuperarCuentaComponent } from './Components/recuperar-cuenta/recuperar-cuenta.component';
+import { RecuperarPasswordComponent } from './Components/recuperar-password/recuperar-password.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +45,11 @@ import { MatButtonModule } from '@angular/material/button';
     FooterComponent,
     DropdownComponent,
     ModalRegistroUsuarioComponent,
+    InfoUsuarioComponent,
+    MenuConfigUsuarioComponent,
+    CambioPasswordComponent,
+    RecuperarCuentaComponent,
+    RecuperarPasswordComponent,
   ],
   imports: [
     BrowserModule,
