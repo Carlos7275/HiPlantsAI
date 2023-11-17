@@ -11,6 +11,7 @@ import { MenuConfigUsuarioComponent } from './components/menu-config-usuario/men
 import { InfoUsuarioComponent } from './components/info-usuario/info-usuario.component';
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RecuperarCuentaComponent } from './components/recuperar-cuenta/recuperar-cuenta.component';
+import { MapaComponent } from './components/mapa/mapa.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,7 +19,11 @@ const routes: Routes = [
   { path: "recuperarcuenta", component: RecuperarCuentaComponent, canActivate: [IsNotLoginGuard] },
   {
     path: 'inicio', component: DashboardComponent, children: [
+      {
+        path: '', redirectTo: "mapa", pathMatch: "full"
+      },
       { path: 'usuarios', component: UsuariosComponent },
+      { path: "mapa", component: MapaComponent },
       {
         path: 'configuracion', component: MenuConfigUsuarioComponent,
         children: [
@@ -30,7 +35,9 @@ const routes: Routes = [
         ],
       }
     ], canActivate: [IsLoginGuard]
+
   },
+
   {
     path: "error404", component: ErrorComponent
   },

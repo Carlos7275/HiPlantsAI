@@ -31,6 +31,7 @@ import { MenuConfigUsuarioComponent } from './components/menu-config-usuario/men
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RecuperarCuentaComponent } from './components/recuperar-cuenta/recuperar-cuenta.component';
 import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
+import { MapaComponent } from './components/mapa/mapa.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { RecuperarPasswordComponent } from './components/recuperar-password/recu
     CambioPasswordComponent,
     RecuperarCuentaComponent,
     RecuperarPasswordComponent,
+    MapaComponent,
   ],
   imports: [
     BrowserModule,

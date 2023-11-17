@@ -2,7 +2,7 @@ export const navbarData = [
     {
         routelink: '/inicio',
         icon: 'fal fa-home',
-        label: 'Dashboard'
+        label: 'Inicio'
     },
     {
         routelink: 'usuarios',
