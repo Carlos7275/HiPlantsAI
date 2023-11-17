@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CP } from 'src/app/models/CodigoP.model';
-import { Genero} from 'src/app/models/Genero.model';
+import { Genero } from 'src/app/models/Genero.model';
 import { Rol } from 'src/app/models/Rol.model';
 import { UsuarioInfo } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -12,20 +12,14 @@ import Swal from 'sweetalert2';
   templateUrl: './info-usuario.component.html',
   styleUrls: ['./info-usuario.component.scss']
 })
-export class InfoUsuarioComponent implements OnInit{
+export class InfoUsuarioComponent implements OnInit {
 
-  frmUsuario: FormGroup;
-  InfoUsuarioLocalStorage:UsuarioInfo;
-  ArrayRoles=signal<Rol[]>([]);
-  ArrayGeneros=signal<Genero[]>([]);
-  ArrayAsentamientos=signal<CP[]>([]);
+  frmDatosUsuario: FormGroup;
+  DatosUsuario = signal<UsuarioInfo>(JSON.parse(localStorage.getItem("info_usuario")!));
+  ArrayRoles = signal<Rol[]>([]);
+  ArrayGeneros = signal<Genero[]>([]);
+  ArrayAsentamientos = signal<CP[]>([]);
   reader = new FileReader();
-  ArrayEstatus: any[] = [
-    {value: 'ACTIVO', viewValue: 'ACTIVO'},
-    {value: 'INACTIVO', viewValue: 'INACTIVO'},
-  ];
-
-
 
   public imagePath: any;
   imgURL: any;
@@ -35,7 +29,6 @@ export class InfoUsuarioComponent implements OnInit{
     private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
-    this.InfoUsuarioLocalStorage= JSON.parse(localStorage.getItem('info_usuario')!);
     this.CrearFormulario();
     this.ObtenerRoles();
     this.ObtenerGeneros();
@@ -43,37 +36,47 @@ export class InfoUsuarioComponent implements OnInit{
     this.SetDatos();
 
   }
+
+  BuscarCP(event: any) {
+    if (this.frmDatosUsuario.controls["CP"].value.length == 5) {
+      this.frmDatosUsuario.controls["ID_Asentamiento"].setValue("");
+      this.usuarioService.ObtenerCPEsp(event.target.value).subscribe(x => {
+        this.ArrayAsentamientos.set(x.data);
+      }
+      );
+    }
+  }
+
   CrearFormulario() {
-    this.imgURL=Environment.url+this.InfoUsuarioLocalStorage.url_imagen;
-    this.frmUsuario = this.fb.group({
-      Email: ['', [Validators.required, Validators.email]],
-      Nombre: ['', Validators.required],
+    this.imgURL = Environment.url + this.DatosUsuario().url_imagen;
+    this.frmDatosUsuario = this.fb.group({
+      Correo: ['', [Validators.required, Validators.email]],
+      Nombres: ['', Validators.required],
       ApellidoPaterno: ['', Validators.required],
       ApellidoMaterno: ['', Validators.required],
-      CP:['',[Validators.minLength(5),Validators.maxLength(5),Validators.required,Validators.pattern('^[0-9]*$')]],
-      Direccion:['',Validators.required],
-      Rol:['',Validators.required],
-      Genero:['',Validators.required],
-      Asentamiento:['',Validators.required],
-      Estatus:['',Validators.required],
-      FechaNacimiento:['',Validators.required],
+      CP: ['', [Validators.minLength(5), Validators.maxLength(5), Validators.required, Validators.pattern('^[0-9]*$')]],
+      Direccion: ['', Validators.required],
+      Rol: ['', Validators.required],
+      Genero: ['', Validators.required],
+      Asentamiento: ['', Validators.required],
+      FechaNacimiento: ['', Validators.required],
     });
   }
-  ObtenerRoles(){
+  ObtenerRoles() {
     this.usuarioService.ObtenerRoles().subscribe(x => {
       this.ArrayRoles.set(x.data);
 
     }, error => console.log(error))
   }
-  ObtenerGeneros(){
+  ObtenerGeneros() {
     this.usuarioService.ObtenerGeneros().subscribe(x => {
       this.ArrayGeneros.set(x.data);
 
     }, error => console.log(error))
   }
 
-  ObtenerColonias(){
-    this.usuarioService.ObtenerCPEsp(this.InfoUsuarioLocalStorage.cp).subscribe(x => {
+  ObtenerColonias() {
+    this.usuarioService.ObtenerCPEsp(this.DatosUsuario().cp).subscribe(x => {
       this.ArrayAsentamientos.set(x.data);
     }, error => console.log(error))
   }
@@ -98,93 +101,60 @@ export class InfoUsuarioComponent implements OnInit{
     };
   }
 
-
-  ObtenerErrorCP(){
-    if (this.frmUsuario.controls["CP"].hasError('required')) {
-      return 'El C.P. es requerido';
-    }else if(this.frmUsuario.controls["CP"].hasError('pattern')){
-      return 'Ingrese solamente números'
-    }else{
-      return 'Longitud de 5 caracteres'
-    }
-  }
-
-  ObtenerErrorEmail() {
-    if (this.frmUsuario.controls["Email"].hasError('required')) {
-      return 'El correo es requerido';
-    }
-
-    return this.frmUsuario.controls["Email"].hasError('email') ? 'Ingrese un correo válido' : '';
-  }
-
-
-
-
   SetDatos() {
-
-
-      this.frmUsuario.controls["Email"].setValue(this.InfoUsuarioLocalStorage.email);
-      this.frmUsuario.controls["Nombre"].setValue(this.InfoUsuarioLocalStorage.nombres);
-      this.frmUsuario.controls["ApellidoPaterno"].setValue(this.InfoUsuarioLocalStorage.apellido_paterno);
-      this.frmUsuario.controls["ApellidoMaterno"].setValue(this.InfoUsuarioLocalStorage.apellido_materno)
-      this.frmUsuario.controls["CP"].setValue(this.InfoUsuarioLocalStorage.cp);
-      this.frmUsuario.controls["Direccion"].setValue(this.InfoUsuarioLocalStorage.domicilio,Validators.required);
-      this.frmUsuario.controls["Rol"].setValue(this.InfoUsuarioLocalStorage.id_rol);
-      this.frmUsuario.controls["Genero"].setValue(this.InfoUsuarioLocalStorage.id_genero);
-      this.frmUsuario.controls["Asentamiento"].setValue(this.InfoUsuarioLocalStorage.id_asenta_cpcons);
-      this.frmUsuario.controls["Estatus"].setValue(this.InfoUsuarioLocalStorage.estatus);
-      this.frmUsuario.controls["FechaNacimiento"].setValue(this.InfoUsuarioLocalStorage.fecha_nacimiento);
-    ;
+    this.frmDatosUsuario.controls["Correo"].setValue(this.DatosUsuario().email);
+    this.frmDatosUsuario.controls["Nombres"].setValue(this.DatosUsuario().nombres);
+    this.frmDatosUsuario.controls["ApellidoPaterno"].setValue(this.DatosUsuario().apellido_paterno);
+    this.frmDatosUsuario.controls["ApellidoMaterno"].setValue(this.DatosUsuario().apellido_materno)
+    this.frmDatosUsuario.controls["CP"].setValue(this.DatosUsuario().cp);
+    this.frmDatosUsuario.controls["Direccion"].setValue(this.DatosUsuario().domicilio, Validators.required);
+    this.frmDatosUsuario.controls["Rol"].setValue(this.DatosUsuario().id_rol);
+    this.frmDatosUsuario.controls["Genero"].setValue(this.DatosUsuario().id_genero);
+    this.frmDatosUsuario.controls["Asentamiento"].setValue(this.DatosUsuario().id_asenta_cpcons);
+    this.frmDatosUsuario.controls["FechaNacimiento"].setValue(this.DatosUsuario().fecha_nacimiento);
   }
 
-Submit(){
-  if(this.frmUsuario.valid)
-  this.EditarUsuario();
-}
+  Submit() {
+    if (this.frmDatosUsuario.valid)
+      this.EditarUsuario();
+  }
 
-EditarUsuario(){
+  LimpiarCampos() {
+    this.frmDatosUsuario.reset();
+  }
 
-  this.usuarioService.ModificarUsuario(this.InfoUsuarioLocalStorage.id,{
-    nombres:this.frmUsuario.controls["Nombre"].value,
-    email:this.frmUsuario.controls["Email"].value,
-    apellido_materno:this.frmUsuario.controls["ApellidoMaterno"].value,
-    apellido_paterno:this.frmUsuario.controls["ApellidoPaterno"].value,
-    domicilio:this.frmUsuario.controls["Direccion"].value,
-    fecha_nacimiento:this.frmUsuario.controls["FechaNacimiento"].value,
-    id_rol:this.frmUsuario.controls["Rol"].value,
-    id_genero:this.frmUsuario.controls["Genero"].value,
-    id_asenta:this.frmUsuario.controls["Asentamiento"].value,
-    cp:this.frmUsuario.controls["CP"].value,
-    url_imagen:this.reader.result,
-    estatus:this.frmUsuario.controls["Estatus"]
-  }).subscribe((x)=>{
-    this.usuarioService.Me().subscribe(y => {
-      localStorage.setItem('info_usuario', JSON.stringify(y.data));
-      Swal.fire("¡Operacion Exitosa!", x.data.toString(), "success").then(function () {
-        // window.location.reload();
+  EditarUsuario() {
 
-      })
-    },error=>{
-      Swal.fire({
-        title: 'Alerta',
-        html: 'Error: ' + error.error.message,
-        icon: 'error',
-        customClass: {
-          container: 'my-swal',
-        },
-      })
+    this.usuarioService.ModificarUsuario(this.DatosUsuario().id, {
+      nombres: this.frmDatosUsuario.controls["Nombres"].value,
+      email: this.frmDatosUsuario.controls["Correo"].value,
+      apellido_materno: this.frmDatosUsuario.controls["ApellidoMaterno"].value,
+      apellido_paterno: this.frmDatosUsuario.controls["ApellidoPaterno"].value,
+      domicilio: this.frmDatosUsuario.controls["Direccion"].value,
+      fecha_nacimiento: this.frmDatosUsuario.controls["FechaNacimiento"].value,
+      id_rol: this.frmDatosUsuario.controls["Rol"].value,
+      id_genero: this.frmDatosUsuario.controls["Genero"].value,
+      id_asenta: this.frmDatosUsuario.controls["Asentamiento"].value,
+      cp: this.frmDatosUsuario.controls["CP"].value,
+      imagen: this.reader.result,
+      estatus: this.DatosUsuario().estatus
+    }).subscribe((x) => {
+      this.usuarioService.Me().subscribe(y => {
+        localStorage.setItem('info_usuario', JSON.stringify(y.data));
+        Swal.fire("¡Operacion Exitosa!", x.data.toString(), "success");
+
+      }, error => {
+        Swal.fire({
+          title: 'Alerta',
+          html: 'Error: ' + error.error.message,
+          icon: 'error',
+          customClass: {
+            container: 'my-swal',
+          },
+        })
+      });
     });
-  },error=>{
-    Swal.fire({
-      title: 'Alerta',
-      html: 'Error: ' + error.error.message,
-      icon: 'error',
-      customClass: {
-        container: 'my-swal',
-      },
-    })
-  });
-}
+  }
 
 
 }

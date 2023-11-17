@@ -46,9 +46,9 @@ class Utilities {
   }
 
   static String? fechaNacimientoValidator(String? text) {
-    if (text == null)
+    if (text == null) {
       return "Ingrese su Fecha de nacimiento";
-    else {
+    } else {
       DateTime fechaNacimiento = DateTime.parse(text);
 
       if (DateTime.now().year - fechaNacimiento.year >= 10) {

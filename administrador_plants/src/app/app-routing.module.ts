@@ -7,14 +7,28 @@ import { IsLoginGuard } from './guards/is-login.guard';
 import { ErrorComponent } from './components/error/error.component';
 import { Error500Component } from './components/error500/error500.component';
 import { IsNotLoginGuard } from './guards/is-not-login.guard';
-import { ModalRegistroUsuarioComponent } from './components/modal-registro-usuario/modal-registro-usuario.component';
+import { MenuConfigUsuarioComponent } from './components/menu-config-usuario/menu-config-usuario.component';
+import { InfoUsuarioComponent } from './components/info-usuario/info-usuario.component';
+import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
+import { RecuperarCuentaComponent } from './components/recuperar-cuenta/recuperar-cuenta.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: "login", component: IniciarSesionComponent,canActivate:[IsNotLoginGuard]},
+  { path: "login", component: IniciarSesionComponent, canActivate: [IsNotLoginGuard] },
+  { path: "recuperarcuenta", component: RecuperarCuentaComponent, canActivate: [IsNotLoginGuard] },
   {
     path: 'inicio', component: DashboardComponent, children: [
-      { path: 'usuarios', component: UsuariosComponent }
+      { path: 'usuarios', component: UsuariosComponent },
+      {
+        path: 'configuracion', component: MenuConfigUsuarioComponent,
+        children: [
+          { path: 'infoUsuario', component: InfoUsuarioComponent },
+          { path: "cambiarPassword", component: CambioPasswordComponent },
+          {
+            path: '', redirectTo: "infoUsuario", pathMatch: "full"
+          },
+        ],
+      }
     ], canActivate: [IsLoginGuard]
   },
   {

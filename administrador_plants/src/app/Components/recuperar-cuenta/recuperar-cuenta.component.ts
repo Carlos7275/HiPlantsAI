@@ -14,45 +14,38 @@ export class RecuperarCuentaComponent {
 
     this.CrearFormulario();
   }
-constructor(private fb: FormBuilder,
-  private usuarioService: UsuarioService){}
+  constructor(private fb: FormBuilder,
+    private usuarioService: UsuarioService) { }
 
 
-CrearFormulario(){
-  this.frmRecuperar = this.fb.group({
-    Email: ['', [Validators.required, Validators.email]]
-  });
-}
+  CrearFormulario() {
+    this.frmRecuperar = this.fb.group({
+      Correo: ['', [Validators.required, Validators.email]]
+    });
+  }
 
 
-submit(){
-if(this.frmRecuperar.valid)
-this.EnviarCorreoRecuperacion();
-}
+  submit() {
+    if (this.frmRecuperar.valid)
+      this.EnviarCorreoRecuperacion();
+  }
 
-EnviarCorreoRecuperacion(){
-this.usuarioService.EnviarCorreoRecuperacion({
-  email:this.frmRecuperar.controls["Email"].value
-}).subscribe((x)=>
-{
-  Swal.fire({
-    title: 'Operación Exitosa',
-    html: x.data,
-    icon: 'success',
-    customClass: {
-      container: 'my-swal',
-    },
-  });
-},(error) => {
-  Swal.fire({
-    title: 'Alerta',
-    html: 'Error: ' + error.error.message,
-    icon: 'error',
-    customClass: {
-      container: 'my-swal',
-    },
-  })
-})
-}
+  EnviarCorreoRecuperacion() {
+    this.usuarioService.EnviarCorreoRecuperacion({
+      email: this.frmRecuperar.controls["Correo"].value
+    }).subscribe((x) => {
+      Swal.fire({
+        title: 'Operación Exitosa',
+        html: x.data,
+        icon: 'success',
+      });
+    }, (error) => {
+      Swal.fire({
+        title: 'Alerta',
+        html: 'Error: ' + error.error.message,
+        icon: 'error',
+      })
+    })
+  }
 
 }
