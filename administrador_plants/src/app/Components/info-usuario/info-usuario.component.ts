@@ -32,18 +32,14 @@ export class InfoUsuarioComponent implements OnInit {
     this.CrearFormulario();
     this.ObtenerRoles();
     this.ObtenerGeneros();
-    this.ObtenerColonias();
     this.SetDatos();
-
+    this.ObtenerColonias(this.DatosUsuario().cp);
   }
 
   BuscarCP(event: any) {
-    if (this.frmDatosUsuario.controls["CP"].value.length == 5) {
-      this.frmDatosUsuario.controls["ID_Asentamiento"].setValue("");
-      this.usuarioService.ObtenerCPEsp(event.target.value).subscribe(x => {
-        this.ArrayAsentamientos.set(x.data);
-      }
-      );
+    this.frmDatosUsuario.controls["Asentamiento"].setValue("");
+    if (event.target.value.length == 5) {
+      this.ObtenerColonias(event.target.value);
     }
   }
 
@@ -65,18 +61,16 @@ export class InfoUsuarioComponent implements OnInit {
   ObtenerRoles() {
     this.usuarioService.ObtenerRoles().subscribe(x => {
       this.ArrayRoles.set(x.data);
-
     }, error => console.log(error))
   }
   ObtenerGeneros() {
     this.usuarioService.ObtenerGeneros().subscribe(x => {
       this.ArrayGeneros.set(x.data);
-
     }, error => console.log(error))
   }
 
-  ObtenerColonias() {
-    this.usuarioService.ObtenerCPEsp(this.DatosUsuario().cp).subscribe(x => {
+  ObtenerColonias(cp: string) {
+    this.usuarioService.ObtenerCPEsp(cp).subscribe(x => {
       this.ArrayAsentamientos.set(x.data);
     }, error => console.log(error))
   }
@@ -148,9 +142,6 @@ export class InfoUsuarioComponent implements OnInit {
           title: 'Alerta',
           html: 'Error: ' + error.error.message,
           icon: 'error',
-          customClass: {
-            container: 'my-swal',
-          },
         })
       });
     });

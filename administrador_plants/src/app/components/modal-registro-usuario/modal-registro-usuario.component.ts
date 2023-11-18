@@ -27,8 +27,12 @@ export class ModalRegistroUsuarioComponent implements OnInit {
   hide: boolean = true;
   hide2: boolean = true;
 
-  constructor(private fb: FormBuilder, private usuarioService: UsuarioService, public dialogRef: MatDialogRef<ModalRegistroUsuarioComponent>
-    , @Inject(MAT_DIALOG_DATA) public dataModal: any) { }
+  constructor(
+    private fb: FormBuilder,
+    private usuarioService: UsuarioService,
+    public dialogRef: MatDialogRef<ModalRegistroUsuarioComponent>,
+    @Inject(MAT_DIALOG_DATA) public dataModal: any
+  ) { }
 
   ngOnInit(): void {
     if (this.dataModal == 'Registrar') {
@@ -75,8 +79,7 @@ export class ModalRegistroUsuarioComponent implements OnInit {
       this.frmDatos.controls["CP"].setValue(data.cp);
     this.frmDatos.controls["Asentamiento"].setValue(data.id_asenta_cpcons, { onlySelf: true }),
       this.frmDatos.controls["FechaNacimiento"].setValue(data.fecha_nacimiento),
-      this.frmDatos.controls["Estatus"].setValue(data.estatus);
-    this.mostrarAsentamientos(this.frmDatos.controls["CP"].value);
+      this.mostrarAsentamientos(this.frmDatos.controls["CP"].value);
   }
 
   registrarForm() {
@@ -120,7 +123,6 @@ export class ModalRegistroUsuarioComponent implements OnInit {
       Generos: ['', Validators.required],
       Asentamiento: ['', Validators.required],
       CP: ['', Validators.required],
-      Estatus: ['', Validators.required]
     })
   }
 
@@ -156,7 +158,6 @@ export class ModalRegistroUsuarioComponent implements OnInit {
         id_genero: this.frmDatos.controls["Generos"].value,
         id_asenta: this.frmDatos.controls["Asentamiento"].value,
         cp: this.frmDatos.controls["CP"].value,
-        estatus: this.frmDatos.controls["Estatus"].value
       }).subscribe((s) => {
         Swal.fire(s.message, s.data.toString(), "success").then(() => {
           this.dialogRef.close();
@@ -180,7 +181,7 @@ export class ModalRegistroUsuarioComponent implements OnInit {
   }
 
   buscarCP(event: any) {
-    if (event.target.value.length >= 5) {
+    if (event.target.value.length == 5) {
       this.frmDatos.controls["Asentamiento"].setValue("");
       this.mostrarAsentamientos(event.target.value);
     }

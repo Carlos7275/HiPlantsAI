@@ -27,11 +27,13 @@
         cursor: pointer;
         border: none;
     }
+    .logo:hover{
+        background-color: rgb(91, 187, 115);
+    }
 
     .logo-text {
-        margin-left: 1.5rem;
-        font-size: 24px;
-        font-weight: 700;
+        font-size: 22px;
+        font-weight: 500;
         color: white;
     }
 
@@ -118,7 +120,6 @@
     left: 0;
     bottom: -5px;
     padding: 10px 14px;
-    background: #fffeff;
     transition: all 0.5s ease;
     overflow: hidden;
 }

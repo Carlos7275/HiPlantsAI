@@ -24,7 +24,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     'acciones'
   ];
   fuenteDatos = new MatTableDataSource<UsuarioInfo>();
-  subscripcion : Subscription;
+  subscripcion: Subscription;
   ngOnInit() {
     this.MostrarUsuarios();
     this.actualizarUsuarios();
@@ -46,23 +46,23 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     });
   }
 
-  actualizarUsuarios(){
-    this.subscripcion = this.usuarioService.refresh.subscribe(()=>{this.MostrarUsuarios()});
+  actualizarUsuarios() {
+    this.subscripcion = this.usuarioService.refresh.subscribe(() => { this.MostrarUsuarios() });
   }
 
-  ModificarEstatus(data:any){
+  ModificarEstatus(data: any) {
     let infoUsuario = JSON.parse(localStorage.getItem("info_usuario")!);
-    if(infoUsuario.id != data.id){
+    if (infoUsuario.id != data.id) {
       Swal.fire({
         title: 'Atención',
         html: '¿Está seguro de hacer esta operación?',
-        showDenyButton : true,
+        showDenyButton: true,
         confirmButtonText: 'Si',
-        denyButtonText :'No',
+        denyButtonText: 'No',
         icon: 'info'
 
       }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
           this.usuarioService.EliminarUsuario(data.id).subscribe(s => {
             Swal.fire(s.message, s.data.toString(), 'success')
           })

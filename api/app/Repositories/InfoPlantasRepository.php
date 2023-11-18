@@ -13,7 +13,15 @@ class InfoPlantasRepository  extends EloquentRepository
         parent::__construct($infoPlantas);
     }
 
+    public function ObtenerPlantasRegistradas()
+    {
+        return $this->model::select()->join("mapa", "mapa.id_planta", "=", "info_plantas.id")->get();
+    }
 
+    public function ObtenerPlantasEspecifica($id)
+    {
+        return $this->model::select()->find($id)->join("mapa", "mapa.id_planta", "=", "info_plantas.id")->get();
+    }
     public function IdentificarPlantaConImagen($imagen)
     {
         $PROJECT = "all"; // try "weurope" or "canada"

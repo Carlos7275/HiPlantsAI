@@ -13,5 +13,6 @@ export class DashboardComponent {
   onToggleSideNav(data: SideNavToggle): void {
     this.screenWidth = data.screenWidth;
     this.isSideNavCollapsed = data.collapsed;
+    console.log(data);
   }
 }

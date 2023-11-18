@@ -12,11 +12,14 @@ import { InfoUsuarioComponent } from './components/info-usuario/info-usuario.com
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RecuperarCuentaComponent } from './components/recuperar-cuenta/recuperar-cuenta.component';
 import { MapaComponent } from './components/mapa/mapa.component';
+import { InfoPlantasComponent } from './components/info-plantas/info-plantas.component';
+import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: "login", component: IniciarSesionComponent, canActivate: [IsNotLoginGuard] },
   { path: "recuperarcuenta", component: RecuperarCuentaComponent, canActivate: [IsNotLoginGuard] },
+  { path: "cambiarcontraseña/:token", component: RecuperarPasswordComponent },
   {
     path: 'inicio', component: DashboardComponent, children: [
       {
@@ -24,6 +27,7 @@ const routes: Routes = [
       },
       { path: 'usuarios', component: UsuariosComponent },
       { path: "mapa", component: MapaComponent },
+      { path: "plantas", component: InfoPlantasComponent },
       {
         path: 'configuracion', component: MenuConfigUsuarioComponent,
         children: [

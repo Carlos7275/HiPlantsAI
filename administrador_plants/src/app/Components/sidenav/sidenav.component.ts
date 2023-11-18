@@ -1,10 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, HostListener, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output, signal } from '@angular/core';
 import { navbarData } from './nav-data';
-import { animate, animation, keyframes, style, transition, trigger } from '@angular/animations';
-import { UsuarioInfo } from 'src/app/models/Usuario.model';
-import { UsuarioService } from 'src/app/services/usuario.service';
-import { ErrorHandlerService } from 'src/app/services/errorHandling.service';
-import { Environment } from 'src/enviroments/enviroment.prod';
+import { animate, keyframes, style, transition, trigger } from '@angular/animations';
+
 
 interface SideNavToggle {
   screenWidth: number;
@@ -65,6 +62,13 @@ export class SidenavComponent implements OnInit {
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.onToggleSidenav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
+    let menu = document.getElementById("menu");
+    let clase = document.getElementById("chevron");
+    menu?.classList.remove("open");
+
+    clase!.innerHTML = !menu?.classList.contains("open")
+      ? "expand_more"
+      : "close";
   }
 
 

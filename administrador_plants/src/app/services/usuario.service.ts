@@ -12,7 +12,7 @@ import { Service } from './service';
   providedIn: 'root'
 })
 export class UsuarioService extends Service {
-  
+
   iniciarSesion(data: any): Observable<Peticion<any>> {
     return this.cliente.post<any>(Environment.urlApi + 'auth/loginAdmin', JSON.stringify(data));
   }
@@ -25,6 +25,13 @@ export class UsuarioService extends Service {
     localStorage.setItem('token', data);
   }
 
+  ValidarToken(token: string) {
+    return this.cliente.get(Environment.urlApi+"Validar/Token", {
+      headers: {
+        "Authorization": `bearer ${token}
+    `}
+    })
+  }
   BorrarDatos(): void {
     localStorage.clear();
   }
@@ -35,6 +42,11 @@ export class UsuarioService extends Service {
     });
   }
 
+  DarBajaToken(token: string) {
+    return this.cliente.post<Peticion<UsuarioInfo>>(Environment.urlApi + "auth/logout", null, {
+      headers: { "Authorization": `bearer ${token}` }
+    });
+  }
 
   Me() {
     return this.cliente.get<Peticion<UsuarioInfo>>(Environment.urlApi + 'auth/me', { headers: { authorization: `bearer ${localStorage.getItem("token")!}` } })
@@ -56,7 +68,7 @@ export class UsuarioService extends Service {
   }
 
   EliminarUsuario(id: number): Observable<Peticion<UsuarioInfo>> {
-    return this.cliente.put<Peticion<UsuarioInfo>>(Environment.urlApi + `Cambiar/Estatus/Usuario/${id}`,null,
+    return this.cliente.put<Peticion<UsuarioInfo>>(Environment.urlApi + `Cambiar/Estatus/Usuario/${id}`, null,
       { headers: this.cabecera }).pipe(
         tap(() => {
           this.refresh.next();
@@ -90,15 +102,14 @@ export class UsuarioService extends Service {
   }
 
 
-  EnviarCorreoRecuperacion(correo:any):Observable<Peticion<any>>{
-    return this. cliente.post<Peticion<any>>(Environment.urlApi+'Recuperar/Cuenta',JSON.stringify(correo),{headers:this.cabecera});
+  EnviarCorreoRecuperacion(correo: any): Observable<Peticion<any>> {
+    return this.cliente.post<Peticion<any>>(Environment.urlApi + 'Recuperar/Cuenta', JSON.stringify(correo), { headers: this.cabecera });
   }
 
-  RestablecerPassword(passwords:any):Observable<Peticion<any>>{
-    return this.cliente.put<Peticion<any>>(Environment.urlApi+'Crear/Contraseña',JSON.stringify(passwords),{headers:this.cabecera});
+  RestablecerPassword(token: string, passwords: any): Observable<Peticion<any>> {
+    return this.cliente.put<Peticion<any>>(Environment.urlApi + 'Crear/Contraseña', JSON.stringify(passwords), { headers: { "Authorization": `bearer ${token}` } });
   }
-  CambiarPassword(credenciales:any):Observable<Peticion<any>>{
-    return this.cliente.put<Peticion<any>>(Environment.urlApi+'Cambiar/Contraseña',JSON.stringify(credenciales),{headers:this.cabecera});
+  CambiarPassword(credenciales: any): Observable<Peticion<any>> {
+    return this.cliente.put<Peticion<any>>(Environment.urlApi + 'Cambiar/Contraseña', JSON.stringify(credenciales), { headers: this.cabecera });
   }
 }
-

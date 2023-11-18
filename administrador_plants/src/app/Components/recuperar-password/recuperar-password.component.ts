@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import { ConfirmedValidator } from '../validators/CustomValidator';
+import { TitleService } from 'src/app/services/title.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 @Component({
   selector: 'app-recuperar-password',
   templateUrl: './recuperar-password.component.html',
@@ -9,71 +14,72 @@ import Swal from 'sweetalert2';
 })
 export class RecuperarPasswordComponent {
 
-  constructor(private fb:FormBuilder,private usuarioService:UsuarioService){}
-  OcultaOjo = true;
-  OcultaOjo2=true;
-  frmRecuperarPassword: FormGroup;
-  ngOnInit(): void {
-    this.CrearFormulario();
+  frmRecover: FormGroup;
+  hide = true;
+  hide2 = true;
+  valid: boolean;
+  token: string;
+
+  constructor(
+    private titleService: TitleService,
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UsuarioService,
+    private jwtHelper: JwtHelperService
+  ) {
+
+    this.titleService.setTitle("Recuperar Cuenta");
+    this.setToken();
+    this.VerifiedToken();
+    this.createForm();
+
   }
+  VerifiedToken() {
+    this.userService.ValidarToken(this.token).subscribe(x => {
 
-CrearFormulario(){
-  this.frmRecuperarPassword = this.fb.group({
-    PasswordAuxiliar: ['', [Validators.required,Validators.minLength(8)]],
-    PasswordNueva: ['', [Validators.required,Validators.minLength(8)]],
+      if (this.jwtHelper.isTokenExpired(this.token))
+        this.router.navigate(["/"]);
+    }, error => this.router.navigate(["/"]));
 
-  });
-}
-
-obtenerErrorPassword() {
-  if (this.frmRecuperarPassword.controls["password"].hasError('required')) {
-    return 'El campo es requerido';
-  }else{
-    return 'La contraseña debe ser de mínimo 8 caractéres'
   }
-}
-obtenerErrorPassword2() {
-  if (this.frmRecuperarPassword.controls["password2"].hasError('required')) {
-    return 'El campo es requerido';
-  }else{
-    return 'La contraseña debe ser de mínimo 8 caractéres'
+  setToken() {
+    this.route.paramMap.subscribe((param) => (this.token = param.get('token')!));
   }
-}
-
-submit(){
-  if(this.frmRecuperarPassword.valid)
-  this.RecuperarPassword();
-}
-
-RecuperarPassword(){
-  this.usuarioService.RestablecerPassword({
-    PasswordNueva:this.frmRecuperarPassword.controls["PasswordNueva"].value,
-    PasswordAuxiliar:this.frmRecuperarPassword.controls["PasswordAuxiliar"].value
-  }).subscribe((x)=>
-  {
-    Swal.fire({
-      title: 'Operación Exitosa',
-      html: x.data,
-      icon: 'success',
-      customClass: {
-        container: 'my-swal',
-      },
-    });
-    //redirigimos al login no se me olvideko
-    //window.location.reload();
-  },(error) => {
-    Swal.fire({
-      title: 'Alerta',
-      html: 'Error: ' + error.error.message,
-      icon: 'error',
-      customClass: {
-        container: 'my-swal',
-      },
-    })
+  createForm() {
+    this.frmRecover = this.fb.group({
+      Password: ['', [Validators.minLength(8), Validators.required]],
+      Password2: ['', [Validators.minLength(8), Validators.required]],
+    }, {
+      validators: ConfirmedValidator("Password", "Password2")
+    }
+    )
   }
+  public getPasswordConfirmationErrorMessage() {
 
-  )
-}
+    if (this.frmRecover.get('Password2')?.hasError('required')) {
+      return 'Ingresa la contrasena';
+    } else if (this.frmRecover.get('validators')?.errors) {
+      return 'Las contrasenas no coinciden';
+    }
+    return ""
+  }
+  submit() {
+    if (this.frmRecover.valid)
+      this.CambiarContraseña();
+  }
+  CambiarContraseña() {
+    this.userService.RestablecerPassword(this.token, {
+      PasswordNueva: this.frmRecover.controls["Password"].value,
+      PasswordAuxiliar: this.frmRecover.controls["Password2"].value
+    }).subscribe(x => {
+      this.userService.DarBajaToken(this.token).subscribe(() => { });
+      Swal.fire(x.message, x.data, "success").then(function () {
+
+        window.location.href = "/login";
+      })
+    }, error => Swal.fire(error.error.message, error.error.data, "error"))
+  }
 
 
 }

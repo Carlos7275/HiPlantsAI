@@ -10,7 +10,7 @@
     </mat-form-field>
 
     <div class="example-container " style="font-size:16px" appearance="fill">
-      <button class="btn btn-primary" style="float:right;margin-top: 25px;" (click)="abrir()"> <mat-icon
+      <button *ngIf="!SinModal" class="btn btn-primary" style="float:right;margin-top: 25px;" (click)="abrir()"> <mat-icon
           style="vertical-align:middle;">add</mat-icon>Registrar {{EntidadSingular}}</button>
       <br>
       <br>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Service } from './service';
 import { Observable, tap } from 'rxjs';
 import { Peticion, PeticionConArreglo } from '../models/Peticion.model';
-import { Mapa } from '../models/Mapa.model';
+import { InfoPlantas, InformacionPlanta, Mapa } from '../models/Mapa.model';
 import { Environment } from 'src/enviroments/enviroment.prod';
 
 @Injectable({
@@ -12,6 +12,10 @@ export class MapaService extends Service {
 
   ObtenerPlantas(): Observable<PeticionConArreglo<Mapa>> {
     return this.cliente.get<PeticionConArreglo<Mapa>>(Environment.urlApi + "Mapa/Plantas", { headers: this.cabecera });
+  }
+
+  ObtenerInfoPlantas(): Observable<PeticionConArreglo<InformacionPlanta>> {
+    return this.cliente.get<PeticionConArreglo<InformacionPlanta>>(Environment.urlApi + "Plantas");
   }
   ObtenerEstatus(Estatus: number) {
     const estatusTextos = [

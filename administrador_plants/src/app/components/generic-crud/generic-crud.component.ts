@@ -19,6 +19,7 @@ export class GenericCrudComponent<T> implements OnInit {
   @Input() columnasMostradas: string[];
   @Input() fuenteDatos = new MatTableDataSource<T>();
   @Input() componenteModal: any;
+  @Input() SinModal:Boolean=false;
   Url: String = Environment.url;
   @Input() eliminar: Function;
 

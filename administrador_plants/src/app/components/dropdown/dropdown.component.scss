@@ -17,10 +17,8 @@
     height: 100%;
     border: 0;
     background: transparent;
-    cursor: pointer;
     color: #f9f9f9;
-    
-  
+    padding: 15px;
   }
   
   .split-button > button:nth-child(1) {
@@ -32,12 +30,22 @@
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-  
-  .menu {
-    position: fixed;
+  .sidenav .menu{
+     position: fixed; /* or position: fixed; depending on your layout needs */
     left: 239px;
     z-index: 4;
-    transform: translate(0, -30px); /* Cambiado de translate a transform */
+    transform: translate(0, -30px);
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.45);
+    transition: 0.3s;
+  }
+  .menu {
+    position: fixed; /* or position: fixed; depending on your layout needs */
+    left: 239px;
+    z-index: 4;
+    transform: translate(0, -30px);
     opacity: 0;
     visibility: hidden;
     border-radius: 8px;

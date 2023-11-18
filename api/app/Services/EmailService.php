@@ -34,7 +34,7 @@ class EmailService extends Mailable
      */
     public function build()
     {
-        $this->url = "http://{$_SERVER["HTTP_HOST"]}:4200/recuperarCuenta/" . $this->token;
+        $this->url = "http://{$_SERVER["HTTP_HOST"]}:4200/cambiarcontraseña/" . $this->token;
         $this->subject('Recuperar Cuenta');
         return $this->from("ruizelizaldeyilma@gmail.com", env('MAIL_FROM_NAME'))
             ->view('correo')

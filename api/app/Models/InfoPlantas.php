@@ -34,7 +34,6 @@ class InfoPlantas extends Model
         'meses_crecimiento' => 'json'
     ];
     protected $hidden = [
-        "created_at",
         "updated_at"
     ];
 }

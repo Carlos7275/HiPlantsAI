@@ -32,6 +32,8 @@ import { CambioPasswordComponent } from './components/cambio-password/cambio-pas
 import { RecuperarCuentaComponent } from './components/recuperar-cuenta/recuperar-cuenta.component';
 import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
 import { MapaComponent } from './components/mapa/mapa.component';
+import { InfoPlantasComponent } from './components/info-plantas/info-plantas.component';
+import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { MapaComponent } from './components/mapa/mapa.component';
     RecuperarCuentaComponent,
     RecuperarPasswordComponent,
     MapaComponent,
+    InfoPlantasComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,14 +75,17 @@ import { MapaComponent } from './components/mapa/mapa.component';
     MatDialogModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    JwtModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
       multi: true,
-    }
+    },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService
   ],
   bootstrap: [AppComponent]
 })
