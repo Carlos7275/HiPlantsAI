@@ -20,7 +20,7 @@ class InfoPlantasRepository  extends EloquentRepository
         $API_URL = 'https://my-api.plantnet.org/v2/identify/' . $PROJECT . '?api-key=';
         $API_PRIVATE_KEY = env("PlantsNetToken");
         $API_SIMSEARCH_OPTION = '&include-related-images=true'; // optional: get most similar images
-        $API_LANG = '&lang=fr'; // default: en
+        $API_LANG = '&lang=es'; // default: en
 
         $client = new GuzzleHttp\Client();
         $apiRequest = $client->request(

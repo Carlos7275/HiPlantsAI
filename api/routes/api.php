@@ -14,6 +14,7 @@ Route::group([
     'prefix' => 'auth'
 ], function ($router) {
     Route::post("login", [UsuarioController::class, "IniciarSesion"]);
+    Route::post("loginAdmin", [UsuarioController::class, "IniciarSesionAdmin"]);
     Route::post('logout', [UsuarioController::class, 'CerrarSesion']);
     Route::post('refresh', [UsuarioController::class, 'RefrescarToken']);
     Route::get('me', [UsuarioController::class, 'me']);

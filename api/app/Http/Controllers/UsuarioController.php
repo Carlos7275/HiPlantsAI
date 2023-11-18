@@ -24,7 +24,7 @@ class UsuarioController extends Controller
     ) {
         $this->_usuarioRepository = $usuarioRepository;
         $this->_datosUsuarioRepository = $datosUsuarioRepository;
-        $this->middleware('auth:api', ['except' => ['IniciarSesion', 'TokenValido', 'CrearUsuario']]);
+        $this->middleware('auth:api', ['except' => ['IniciarSesion', 'IniciarSesionAdmin', 'TokenValido', 'CrearUsuario']]);
     }
 
     public function ObtenerUsuarioEspecifico($id)
@@ -52,6 +52,29 @@ class UsuarioController extends Controller
 
             $credentials = $request->only('email', 'password');
             $token = $this->_usuarioRepository->Login($credentials);
+            if ($token)
+                return response()->json(Message::success($token));
+
+            return response()->json(Message::Observation("¡Verifique sus credenciales!"), 400);
+        } catch (ValidationException $exception) {
+
+            return response()->json(
+                Message::Error(Utils::ConvertirErroresALinea($exception->errors())),
+                422
+            );
+        }
+    }
+
+    public function IniciarSesionAdmin(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|string|email',
+                'password' => 'required|string',
+            ]);
+
+            $credentials = $request->only('email', 'password');
+            $token = $this->_usuarioRepository->LoginAdmin($credentials);
             if ($token)
                 return response()->json(Message::success($token));
 
@@ -207,7 +230,7 @@ class UsuarioController extends Controller
         $estatus = $this->_usuarioRepository->CambiarEstatus($id);
         if (isset($estatus))
             return response()->json(Message::success("¡Se cambio el estatus del usuario a {$estatus}!"));
-        
+
         return response()->json(Message::notFound(), 404);
     }
 

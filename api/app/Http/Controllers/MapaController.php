@@ -40,7 +40,9 @@ class MapaController extends Controller
             $url = Image::base64toUrl($request->imagen);
 
             $nombrePlanta = $this->_infoPlantasRepository->IdentificarPlantaConImagen(Paths::getRelativePath($url))->bestMatch;
+
             $infoPlanta = $this->_infoPlantasRepository->ObtenerInformacionPlanta($nombrePlanta);
+
             $idPlanta = $infoPlanta["data"][0]["id"];
             if (!$this->_infoPlantasRepository->exists($idPlanta)) {
                 $nombreCientifico = $infoPlanta["data"][0]["slug"];
@@ -112,8 +114,9 @@ class MapaController extends Controller
     public function CambiarEstatusPlanta($id)
     {
         $estatus = $this->_mapaRepository->CambiarEstatus($id);
+        $msgEstatus = $estatus == 1 ? "Activo" : "Inactivo";
         if (isset($estatus))
-            return response()->json(Message::success("¡Se cambio el estatus de la planta a {$estatus}!"));
+            return response()->json(Message::success("¡Se cambio el estatus de la planta a {$msgEstatus}!"));
         return response()->json(Message::notFound(), 404);
     }
 }

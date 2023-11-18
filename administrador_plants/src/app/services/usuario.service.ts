@@ -1,28 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 import { UsuarioInfo } from '../models/Usuario.model';
 import { Peticion, PeticionConArreglo } from '../models/Peticion.model';
 import { Environment } from 'src/enviroments/enviroment';
 import { Rol } from '../models/Rol.model';
 import { Genero } from '../models/Genero.model';
 import { CP } from '../models/CodigoP.model';
+import { Service } from './service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
-  cabecera = new HttpHeaders().set("Authorization", `bearer ${localStorage.getItem("token")!}`);
-  private _$refresh = new Subject<void>();
-
-  get refresh() {
-    return this._$refresh;
-  }
-
-  constructor(private cliente: HttpClient) { }
-
+export class UsuarioService extends Service {
+  
   iniciarSesion(data: any): Observable<Peticion<any>> {
-    return this.cliente.post<any>(Environment.urlApi + 'auth/login', JSON.stringify(data));
+    return this.cliente.post<any>(Environment.urlApi + 'auth/loginAdmin', JSON.stringify(data));
   }
 
   inicioSesion(): boolean {

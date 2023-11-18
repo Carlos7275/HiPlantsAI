@@ -51,6 +51,23 @@ class UserRepository extends EloquentRepository
         return $token;
     }
 
+    public function LoginAdmin($credentials)
+    {
+        $token = Auth::attempt([
+            "email" => $credentials["email"],
+            "password" => $credentials["password"],
+            "estatus" => function ($query) {
+                $query->where("estatus", "!=", "INACTIVO")
+                    ->where("id_rol", "1");
+            }
+        ]);
+
+        if (!$token)
+            return null;
+
+        return $token;
+    }
+
     public function logout()
     {
         auth()->logout();
