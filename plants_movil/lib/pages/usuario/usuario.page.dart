@@ -12,16 +12,10 @@ class UsuarioPage extends StatefulWidget {
 }
 
 class _UsuarioPageState extends State<UsuarioPage> {
-  Usuario? usuario;
+  Usuario usuario = Usuario();
   @override
   void initState() {
     super.initState();
-    obtenerInfoUsuario();
-  }
-
-  void obtenerInfoUsuario() async {
-    usuario = await UsuarioService().obtenerInfoUsuario();
-    setState(() {});
   }
 
   @override
@@ -48,8 +42,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
             Column(children: [
               Container(
                 padding: const EdgeInsets.all(5),
-                child: UsuarioForm(
-                  infoUsuario: usuario,
+                child: const UsuarioForm(
                 ),
               )
             ])

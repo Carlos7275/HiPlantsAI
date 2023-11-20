@@ -17,11 +17,6 @@ class _HomePageState extends State<HomePage> {
   Usuario? usuario;
   bool isLoading = true;
 
-  // @override
-  // void setState(VoidCallback fn) {
-  //   if (mounted) super.setState(fn);
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -109,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                 leading: const Icon(Icons.supervised_user_circle_outlined),
                 title: const Text('Configuracion del Usuario'),
                 onTap: () async {
-                  Modular.to.pushNamed('/infousuario/', arguments: usuario);
+                  Modular.to.pushNamed('/infousuario/');
 
                   Navigator.pop(context);
                 },

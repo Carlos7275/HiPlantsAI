@@ -11,19 +11,20 @@ import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:plants_movil/pages/usuario/usuario_form/usuario.controller.dart';
 import 'package:plants_movil/services/codigospostales.service.dart';
 import 'package:plants_movil/services/generos.service.dart';
+import 'package:plants_movil/services/usuario.service.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
 
 // ignore: must_be_immutable
 class UsuarioForm extends StatefulWidget {
-  UsuarioForm({super.key, required this.infoUsuario});
-  Usuario? infoUsuario;
+  const UsuarioForm({super.key});
   @override
   State<UsuarioForm> createState() => _UsuarioFormState();
 }
 
 class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
   Usuario? infoUsuario;
+
   String? imagen;
   String? bytes;
   Generos? _generoSeleccionado;
@@ -35,9 +36,22 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
   @override
   void initState() {
     super.initState();
+    _init();
+  }
+
+  Future<void> _init() async {
     controller.isLoading$.add(true);
-    llenarGeneros();
-    llenarAsentamientos(widget.infoUsuario!.cp!, startApp: true);
+
+    await obtenerUsuario();
+    await llenarGeneros();
+    await llenarAsentamientos(infoUsuario!.cp!, startApp: true);
+
+    controller.isLoading$.add(false);
+  }
+
+  Future<void> obtenerUsuario() async {
+    infoUsuario = await UsuarioService().obtenerInfoUsuario();
+    setState(() {});
   }
 
   void llenarAsentamientoIngresado(String? cadena) {
@@ -55,8 +69,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
       listadoAsentamientos = asentamientos;
       if (startApp == true) {
         _asentamientoSeleccionado = listadoAsentamientos?.firstWhere(
-            (element) =>
-                element.idAsentaCpcons == widget.infoUsuario!.idAsentaCpcons);
+            (element) => element.idAsentaCpcons == infoUsuario!.idAsentaCpcons);
         controller.isLoading$.add(false);
       }
     });
@@ -66,8 +79,8 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
     var generos = await GenerosService().obtenerGeneros();
     setState(() {
       listadoGeneros = generos;
-      _generoSeleccionado = listadoGeneros?.firstWhere(
-          (element) => element.idGenero == widget.infoUsuario!.idGenero);
+      _generoSeleccionado = listadoGeneros
+          ?.firstWhere((element) => element.idGenero == infoUsuario!.idGenero);
       controller.isLoading$.add(false);
     });
   }
@@ -180,8 +193,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                             )
                           : CircleAvatar(
                               backgroundImage: NetworkImage(
-                                Enviroment.server +
-                                    widget.infoUsuario!.urlImagen!,
+                                Enviroment.server + infoUsuario!.urlImagen!,
                               ),
                               radius: 80,
                             ),
