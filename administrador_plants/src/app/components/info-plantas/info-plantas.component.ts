@@ -11,7 +11,7 @@ import { MapaService } from 'src/app/services/mapa.service';
 export class InfoPlantasComponent {
 
   columnasMostradas: string[] = [
-    'id_planta',
+    'id',
     'nombre_planta',
     'nombre_cientifico',
     'url_imagen',

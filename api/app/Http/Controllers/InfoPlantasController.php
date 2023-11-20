@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Response\Message;
 use App\Repositories\InfoPlantasRepository;
-use Illuminate\Http\Request;
 
 class InfoPlantasController extends Controller
 {

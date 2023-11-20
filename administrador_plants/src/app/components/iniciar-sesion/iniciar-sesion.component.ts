@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TitleService } from 'src/app/services/title.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
@@ -13,8 +14,12 @@ export class IniciarSesionComponent {
   OcultaOjo = true;
   frmLogin: FormGroup;
 
-  constructor(private fb: FormBuilder,
-    private usuarioService: UsuarioService, private tituloService:TitleService) { }
+  constructor(
+    private fb: FormBuilder,
+    private usuarioService: UsuarioService,
+    private tituloService: TitleService,
+    private matSnackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
     this.tituloService.setTitle("Iniciar Sesión")
@@ -22,26 +27,21 @@ export class IniciarSesionComponent {
   }
 
   IniciarSesion() {
-    this.usuarioService.iniciarSesion({
+    this.usuarioService.iniciarSesion(
+      {
       "email": this.frmLogin.controls["email"].value,
       "password": this.frmLogin.controls["password"].value
-    }).subscribe(
+      }
+    ).subscribe(
       (x) => {
         this.usuarioService.GuardarToken(x.data);
-
+        
         this.usuarioService.Me().subscribe(y => {
           localStorage.setItem('info_usuario', JSON.stringify(y.data));
           window.location.reload();
         });
       }, (error) => {
-        Swal.fire({
-          title: 'Alerta',
-          html: 'Error: ' + error.error.message,
-          icon: 'error',
-          customClass: {
-            container: 'my-swal',
-          },
-        })
+        this.matSnackBar.open(error.error.message,"X",{duration:5000})
       }
     );
   }
@@ -53,7 +53,7 @@ export class IniciarSesionComponent {
 
     return this.frmLogin.controls["email"].hasError('email') ?
       'Ingrese un correo válido' :
-      '';
+      null;
   }
 
   CrearFormulario() {

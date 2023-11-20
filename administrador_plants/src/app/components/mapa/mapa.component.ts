@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as L from 'leaflet';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { IpLocationService } from 'src/app/services/iplocation.service';
@@ -17,6 +18,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   constructor(
     private mapaService: MapaService,
     private ipLocationService: IpLocationService,
+    private matSnackBar: MatSnackBar
   ) { }
 
   ngAfterViewInit(): void {
@@ -57,7 +59,8 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
         tiles.addTo(this.map);
       },
       error => {
-        console.error('Error al Obtener la Localizacion IP:', error);
+        this.matSnackBar.open("Error al Recibir las Coordenadas por IP: " + error.toString(), "X", { duration: 5000 });
+
       }
     );
 
@@ -66,9 +69,9 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   CambiarEstatus(id: number) {
     this.mapaService.CambiarEstatusPlanta(id)
       .subscribe(x => Swal.fire(x.message, x.data.toString(), 'success'),
-        error => Swal.fire('¡Atención!', error.error.message
-        ))
+        error => this.matSnackBar.open("Atencion:" + error.error.message, "X", { duration: 5000 }))
   }
+
   CargarPlantas() {
     var Marker: L.Marker;
 
@@ -103,7 +106,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
           });
         });
 
-    })
+    }, error => this.matSnackBar.open("Atencion:" + error.error.message, "X", { duration: 5000 }))
   }
 
 

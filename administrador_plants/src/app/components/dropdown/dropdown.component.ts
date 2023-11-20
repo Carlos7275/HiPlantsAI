@@ -11,17 +11,19 @@ import { Environment } from 'src/enviroments/enviroment.prod';
   styleUrls: ['./dropdown.component.scss']
 })
 
-export class DropdownComponent implements OnInit,OnDestroy {
+export class DropdownComponent implements OnInit, OnDestroy {
   datosUsuario = signal<UsuarioInfo>(this.ObtenerDatos() ?? null);
   flag: boolean;
   subscription: Subscription;
-  url=Environment.url;
-  constructor(private userService: UsuarioService, private errorService: ErrorHandlerService) {
-  }
+  url = Environment.url;
+  constructor(
+    private userService: UsuarioService,
+    private errorService: ErrorHandlerService
+  ) { }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 
   ngOnInit(): void {
     this.actualizarDatos();

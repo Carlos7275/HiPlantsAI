@@ -16,6 +16,7 @@ return new class extends Migration
             $table->primary("id");
             $table->string("nombre_planta");
             $table->string("nombre_cientifico");
+            $table->string("url_imagen");
             $table->string("toxicidad")->nullable(true);
             $table->integer("año");
             $table->string("familia");

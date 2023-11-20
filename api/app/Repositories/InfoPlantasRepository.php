@@ -15,20 +15,20 @@ class InfoPlantasRepository  extends EloquentRepository
 
     public function ObtenerPlantasRegistradas()
     {
-        return $this->model::select()->join("mapa", "mapa.id_planta", "=", "info_plantas.id")->get();
+        return $this->model->all();
     }
 
     public function ObtenerPlantasEspecifica($id)
     {
-        return $this->model::select()->find($id)->join("mapa", "mapa.id_planta", "=", "info_plantas.id")->get();
+        return $this->model->find($id);
     }
     public function IdentificarPlantaConImagen($imagen)
     {
-        $PROJECT = "all"; // try "weurope" or "canada"
+        $PROJECT = "all";
         $API_URL = 'https://my-api.plantnet.org/v2/identify/' . $PROJECT . '?api-key=';
         $API_PRIVATE_KEY = env("PlantsNetToken");
-        $API_SIMSEARCH_OPTION = '&include-related-images=true'; // optional: get most similar images
-        $API_LANG = '&lang=es'; // default: en
+        $API_SIMSEARCH_OPTION = '&include-related-images=true';
+        $API_LANG = '&lang=es';
 
         $client = new GuzzleHttp\Client();
         $apiRequest = $client->request(
@@ -51,18 +51,21 @@ class InfoPlantasRepository  extends EloquentRepository
 
     public function ObtenerInformacionPlanta($nombre)
     {
+        $sanitizeNombre = urlencode($nombre);
         $response = Http::withHeaders([
             'Authorization' => env("TrefleToken")
-        ])->get(env("TreffleURL") . "/v1/plants/search?q=$nombre&limit=1");
+        ])->get(env("TreffleURL") . "/v1/plants/search?q=$sanitizeNombre&limit=1");
 
         return json_decode($response, true);
     }
 
     public function ObtenerInformacionEspecie($especie)
     {
+        $sanitizeEspecie = urlencode($especie);
+
         $response = Http::withHeaders([
             'Authorization' => env("TrefleToken")
-        ])->get(env("TreffleURL") . "/v1/species/$especie");
+        ])->get(env("TreffleURL") . "/v1/species/$sanitizeEspecie");
 
         return json_decode($response, true);
     }

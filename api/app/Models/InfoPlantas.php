@@ -15,6 +15,7 @@ class InfoPlantas extends Model
         "nombre_planta",
         "nombre_cientifico",
         "toxicidad",
+        "url_imagen",
         "año",
         "familia",
         "nombres_comunes",

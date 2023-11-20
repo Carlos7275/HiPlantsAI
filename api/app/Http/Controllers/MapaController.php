@@ -39,10 +39,11 @@ class MapaController extends Controller
 
             $url = Image::base64toUrl($request->imagen);
 
-            $nombrePlanta = $this->_infoPlantasRepository->IdentificarPlantaConImagen(Paths::getRelativePath($url))->bestMatch;
+            $Planta = $this->_infoPlantasRepository->IdentificarPlantaConImagen(Paths::getRelativePath($url));
+
+            $nombrePlanta = $Planta->results[0]->species->scientificNameWithoutAuthor;
 
             $infoPlanta = $this->_infoPlantasRepository->ObtenerInformacionPlanta($nombrePlanta);
-
             $idPlanta = $infoPlanta["data"][0]["id"];
             if (!$this->_infoPlantasRepository->exists($idPlanta)) {
                 $nombreCientifico = $infoPlanta["data"][0]["slug"];
@@ -52,6 +53,7 @@ class MapaController extends Controller
                     "id" => $idPlanta,
                     "nombre_planta" => $nombrePlanta,
                     "nombre_cientifico" => $nombreCientifico,
+                    "url_imagen" => $infoPlanta["data"][0]["image_url"],
                     "toxicidad" => $especie["data"]["specifications"]["toxicity"],
                     "año" => intval($infoPlanta["data"][0]["year"]),
                     "familia" => $infoPlanta["data"][0]["family"],
@@ -84,6 +86,8 @@ class MapaController extends Controller
                 DB::commit();
                 return response()->json(Message::success($this->_infoPlantasRepository->find($idPlanta)), 201);
             } catch (\Exception $e) {
+                Image::DeleteImage(Paths::getRelativePath($url));
+
                 DB::rollBack();
                 throw $e;
             }
