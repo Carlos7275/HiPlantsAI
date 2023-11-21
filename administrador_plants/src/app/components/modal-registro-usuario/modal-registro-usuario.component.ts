@@ -6,8 +6,8 @@ import { Genero } from 'src/app/models/Genero.model';
 import { Rol } from 'src/app/models/Rol.model';
 import { UsuarioInfo } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { ConfirmedValidator } from 'src/app/validators/CustomValidator';
 import Swal from 'sweetalert2';
-import { ConfirmedValidator } from '../validators/CustomValidator';
 
 @Component({
   selector: 'app-modal-registro-usuario',

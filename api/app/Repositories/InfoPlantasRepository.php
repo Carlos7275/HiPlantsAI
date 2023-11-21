@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Configuracion;
 use App\Models\InfoPlantas;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp;
@@ -24,9 +25,11 @@ class InfoPlantasRepository  extends EloquentRepository
     }
     public function IdentificarPlantaConImagen($imagen)
     {
+        $token = Configuracion::find(1);
+
         $PROJECT = "all";
         $API_URL = 'https://my-api.plantnet.org/v2/identify/' . $PROJECT . '?api-key=';
-        $API_PRIVATE_KEY = env("PlantsNetToken");
+        $API_PRIVATE_KEY = $token->tokenplantsnet;
         $API_SIMSEARCH_OPTION = '&include-related-images=true';
         $API_LANG = '&lang=es';
 
@@ -51,9 +54,11 @@ class InfoPlantasRepository  extends EloquentRepository
 
     public function ObtenerInformacionPlanta($nombre)
     {
+        $token = Configuracion::find(1);
+
         $sanitizeNombre = urlencode($nombre);
         $response = Http::withHeaders([
-            'Authorization' => env("TrefleToken")
+            'Authorization' => $token->tokentreffle
         ])->get(env("TreffleURL") . "/v1/plants/search?q=$sanitizeNombre&limit=1");
 
         return json_decode($response, true);
@@ -61,10 +66,12 @@ class InfoPlantasRepository  extends EloquentRepository
 
     public function ObtenerInformacionEspecie($especie)
     {
+        $token = Configuracion::find(1);
+
         $sanitizeEspecie = urlencode($especie);
 
         $response = Http::withHeaders([
-            'Authorization' => env("TrefleToken")
+            'Authorization' => $token->tokentreffle
         ])->get(env("TreffleURL") . "/v1/species/$sanitizeEspecie");
 
         return json_decode($response, true);

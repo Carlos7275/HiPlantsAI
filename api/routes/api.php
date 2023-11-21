@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CodigoPostalController;
+use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GenerosController;
 use App\Http\Controllers\InfoPlantasController;
+use App\Http\Controllers\LocalizacionIPController;
 use App\Http\Controllers\MapaController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\RolesController;
@@ -25,6 +27,9 @@ Route::middleware(['role:1'])->group(function () {
     Route::get("Roles", [RolesController::class, "ObtenerRoles"]);
     Route::get("Recorridos", [RecorridoController::class, "ObtenerRecorridos"]);
     Route::get("Mapa/Plantas", [MapaController::class, "ObtenerPlantas"]);
+    Route::put("Actualizar/Configuracion", [ConfiguracionController::class, "ActualizarConfiguracion"]);
+
+
 });
 
 Route::controller(UsuarioController::class)->group(function () {
@@ -43,9 +48,8 @@ Route::controller(RecorridoController::class)->group(function () {
     Route::get("MisRecorridos", "ObtenerMisRecorridos");
 });
 Route::controller(InfoPlantasController::class)->group(function () {
-    Route::get("Plantas","ObtenerPlantas");
-    Route::get("Planta/{id}","ObtenerPlanta");
-
+    Route::get("Plantas", "ObtenerPlantas");
+    Route::get("Planta/{id}", "ObtenerPlanta");
 });
 
 Route::controller(MapaController::class)->group(function () {
@@ -68,4 +72,12 @@ Route::controller(GenerosController::class)->group(function () {
 
 Route::controller(EmailController::class)->group(function () {
     Route::post("Recuperar/Cuenta", "RecuperarCuenta");
+});
+
+Route::controller(LocalizacionIPController::class)->group(function () {
+    Route::get("Coordenadas", "ObtenerCoordenadas");
+});
+
+Route::controller(ConfiguracionController::class)->group(function () {
+    Route::get("Distancias", "ObtenerConfiguracion");
 });

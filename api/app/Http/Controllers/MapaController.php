@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\Paths;
 use App\Models\Response\Message;
+use App\Repositories\ConfiguracionRepository;
 use App\Repositories\InfoPlantasRepository;
 use App\Repositories\MapaRepository;
 use App\Utils\Utils;
@@ -15,15 +16,18 @@ use Illuminate\Validation\ValidationException;
 class MapaController extends Controller
 {
     private MapaRepository $_mapaRepository;
+    private ConfiguracionRepository $_configuracionRepository;
     private InfoPlantasRepository $_infoPlantasRepository;
 
     public function __construct(
         MapaRepository $mapaRepository,
-        InfoPlantasRepository $infoPlantasRepository
+        InfoPlantasRepository $infoPlantasRepository,
+        ConfiguracionRepository $configuracionRepository
     ) {
         $this->middleware('auth:api', ['except' => ["ObtenerPlantas,ObtenerPlantaEspecifica"]]);
         $this->_mapaRepository = $mapaRepository;
         $this->_infoPlantasRepository = $infoPlantasRepository;
+        $this->_configuracionRepository = $configuracionRepository;
     }
 
     public function RegistrarPlanta(Request $request)
@@ -34,6 +38,14 @@ class MapaController extends Controller
                 "longitud" => 'required|numeric',
                 "imagen" => 'required',
             ]);
+
+            $configuracion = $this->_configuracionRepository->find(1);
+
+            if (!isset($configuracion->tokentreffle))
+                return response()->json(Message::Observation("Para poder registrar Plantas es necesario ingresar el token de trefle."), 400);
+
+            if (!isset($configuracion->tokenplantsnet))
+                return response()->json(Message::Observation("Para poder registrar plantas es necesario ingresar el token de pl@ntsnet."), 400);
 
             $zona = $this->_mapaRepository->ObtenerZona($request->latitud, $request->longitud);
 

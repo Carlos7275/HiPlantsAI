@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\RepositoryInterface;
 use App\Repository\EloquentRepository;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Sanctum::ignoreMigrations();
         $this->app->bind(RepositoryInterface::class, EloquentRepository::class);
     }
     /**

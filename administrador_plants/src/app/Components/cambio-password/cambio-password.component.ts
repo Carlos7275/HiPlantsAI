@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { ConfirmedValidator } from 'src/app/validators/CustomValidator';
 import Swal from 'sweetalert2';
-import { ConfirmedValidator } from '../validators/CustomValidator';
 @Component({
   selector: 'app-cambio-password',
   templateUrl: './cambio-password.component.html',
