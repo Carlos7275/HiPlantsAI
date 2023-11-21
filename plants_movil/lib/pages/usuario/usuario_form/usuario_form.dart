@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mime/mime.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -345,6 +346,32 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                           callback: Utilities.domicilioValidator,
                           message: "Domicilio",
                           icon: const Icon(Icons.maps_home_work),
+                        ),
+                      ),
+                    ],
+                  ),
+                  spaceBetween,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.open_in_new),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                            const Color.fromARGB(255, 96, 172, 149),
+                          )),
+                          onPressed: () {
+                          Modular.to.pushNamed('/cambiarcontra');
+                          },
+                          label: const Column(
+                            children: [
+                              Text(
+                                "Cambiar contraseña",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/guards/islogin.guard.dart';
 import 'package:plants_movil/guards/isnotlogin.guard.dart';
+import 'package:plants_movil/pages/cambiar_contra/cambiar_contra.page.dart';
 import 'package:plants_movil/pages/home/home.page.dart';
 import 'package:plants_movil/pages/login/login.page.dart';
 import 'package:plants_movil/pages/registrar_usuario/registrar_usuario.page.dart';
@@ -22,7 +23,8 @@ List<RouteFunction> myRoutes = [
   RouteFunction('/home', (context, args) => const HomePage(), [IsLoginGuard()]),
   RouteFunction('/infousuario/', (context, args) => const UsuarioPage(),
       [IsLoginGuard()]),
- RouteFunction(
+  RouteFunction(
       '/registrar', (context, args) => const RegistrarUsuarioPage(), []),
-      
+  RouteFunction('/cambiarcontra', (context, args) => const CambiarContraPage(),
+      [IsLoginGuard()])
 ];

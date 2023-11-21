@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:plants_movil/pages/cambiar_contra/cambiar_contra_form/cambiar_contra.controller.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
 import 'package:plants_movil/pages/usuario/usuario_form/usuario.controller.dart';
 import 'package:plants_movil/routes.dart';
@@ -12,7 +13,8 @@ class PlantsModule extends Module {
         Bind.singleton((i) => UsuarioService()),
         Bind.factory((i) => LoginFormController()),
         Bind.factory((i) => UsuarioFormController()),
-        Bind.factory((i) => RegistrarUsuarioController ())
+        Bind.factory((i) => RegistrarUsuarioController ()),
+        Bind.factory((i) => CambiarContraController()),
       ];
 
   @override

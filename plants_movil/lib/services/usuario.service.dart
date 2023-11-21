@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:plants_movil/generics/persistence/service.dart';
+import 'package:plants_movil/models/Contra.model.dart';
 import 'package:plants_movil/models/RegistrarUsuario.model.dart';
 import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:http/http.dart' as http;
@@ -98,6 +99,23 @@ class UsuarioService extends Service<Usuario> {
 
     http.Response resp =
         await httpClient.post(url: 'Registrar/Usuario/', body: parameters);
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body) as Map<String, dynamic>;
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<Map<String, dynamic>> cambiarContra(ContrasModel contras) async {
+    final parameters = jsonEncode({
+      "PasswordActual": contras.passwordActual,
+      "PasswordNueva":contras.passwordNueva,
+      "PasswordAuxiliar": contras.passwordAuxiliar,    
+    });
+
+    http.Response resp =
+        await httpClient.put(url: 'Cambiar/Contraseña/', body: parameters);
 
     if (resp.statusCode == 200) {
       return json.decode(resp.body) as Map<String, dynamic>;
