@@ -32,7 +32,7 @@ class ConfiguracionController extends Controller
             ]);
 
             $this->_configuracionRepository->update(1, $request->json()->all());
-            return response()->json(Message::success("¡Se guardaron la configuracion con exito!"));
+            return response()->json(Message::success("¡Se guardo la configuracion con exito!"));
         } catch (ValidationException $e) {
             return response()->json(Message::Error(Utils::ConvertirErroresALinea($e->errors())), 422);
         }
