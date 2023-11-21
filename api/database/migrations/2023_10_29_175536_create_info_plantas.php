@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string("nombre_cientifico");
             $table->string("url_imagen");
             $table->string("toxicidad")->nullable(true);
+            $table->boolean("comestible");
+            $table->boolean("vegetable");
             $table->integer("año");
             $table->string("familia");
             $table->json("nombres_comunes")->nullable(true);

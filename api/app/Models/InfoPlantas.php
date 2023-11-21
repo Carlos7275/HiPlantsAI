@@ -16,6 +16,8 @@ class InfoPlantas extends Model
         "nombre_cientifico",
         "toxicidad",
         "url_imagen",
+        "vegetable",
+        "comestible",
         "año",
         "familia",
         "nombres_comunes",
@@ -32,7 +34,9 @@ class InfoPlantas extends Model
         'colores' => 'json',
         'nombres_comunes' => 'json',
         'distribucion' => 'json',
-        'meses_crecimiento' => 'json'
+        'meses_crecimiento' => 'json',
+        'comestible' => 'boolean',
+        'vegetable' => 'boolean'
     ];
     protected $hidden = [
         "updated_at"

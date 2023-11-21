@@ -42,4 +42,9 @@ class ConfiguracionController extends Controller
     {
         return response()->json(Message::success($this->_configuracionRepository->find(1)));
     }
+
+    public function ObtenerDistancias()
+    {
+        return response()->json(Message::success($this->_configuracionRepository->ObtenerDistancias()));
+    }
 }

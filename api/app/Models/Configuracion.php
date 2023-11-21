@@ -20,9 +20,6 @@ class Configuracion extends Model
 
     protected $hidden = [
         'id',
-        'tokentreffle',
-        'tokenplantsnet',
-        'tokenipinfo',
         "created_at",
         "updated_at"
     ];

@@ -9,36 +9,37 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CambiarContraController extends Controller{
+class CambiarContraController extends Controller {
   final BehaviorSubject<bool> isLoading$ = BehaviorSubject<bool>.seeded(false);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<TextEditingController> controllers =
-      List.generate(9, (index) => TextEditingController());
+      List.generate(3, (index) => TextEditingController());
 
-  enviar(BuildContext context){
-    if (formKey.currentState!.validate()){
+  enviar(BuildContext context) {
+    if (formKey.currentState!.validate()) {
+      isLoading$.add(true);
       ContrasModel contras = ContrasModel(
-        passwordActual: controllers[0].text,
-        passwordNueva: controllers[1].text,
-        passwordAuxiliar: controllers[2].text);
+          passwordActual: controllers[0].text,
+          passwordNueva: controllers[1].text,
+          passwordAuxiliar: controllers[2].text);
 
       UsuarioService().cambiarContra(contras).then((value) {
-          QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.success,
-                  title: "¡Operación Exitosa!",
-                  text: value["data"])
-              .then((value) => Modular.to.pushNamed('/'));
-        }).catchError((error) {
-          isLoading$.add(false);
+        QuickAlert.show(
+                context: context,
+                type: QuickAlertType.success,
+                title: "¡Operación Exitosa!",
+                text: value["data"])
+            .then((value) => {Modular.to.pushNamed("infousuario")});
+      }).catchError((error) {
+        isLoading$.add(false);
 
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            text: jsonDecode(error.body)["message"],
-            showConfirmBtn: true,
-          );
-        });      
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: jsonDecode(error.body)["message"],
+          showConfirmBtn: true,
+        );
+      });
     }
   }
 
@@ -51,6 +52,4 @@ class CambiarContraController extends Controller{
       return "Las contraseñas no coinciden";
     }
   }
-
-
 }

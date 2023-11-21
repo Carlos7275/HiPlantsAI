@@ -11,4 +11,9 @@ class ConfiguracionRepository extends EloquentRepository
     {
         parent::__construct($configuracion);
     }
+
+    public function ObtenerDistancias()
+    {
+        return $this->model->select("distanciamin", "distanciamax")->first();
+    }
 }

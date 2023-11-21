@@ -58,7 +58,6 @@ widget
         accuracy: LocationAccuracy.high,
         distanceFilter: 10,
       );
-
       //Obtiene la Ubicacion en tiempo real
       Geolocator.getPositionStream(locationSettings: settings)
           .listen((position) {

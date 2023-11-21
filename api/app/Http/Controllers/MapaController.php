@@ -69,6 +69,8 @@ class MapaController extends Controller
                     "toxicidad" => $especie["data"]["specifications"]["toxicity"],
                     "año" => intval($infoPlanta["data"][0]["year"]),
                     "familia" => $infoPlanta["data"][0]["family"],
+                    "vegetable" => $especie["data"]["vegetable"],
+                    "comestible" => $especie["data"]["edible"],
                     "nombres_comunes" => $especie["data"]["common_names"],
                     "distribucion" => $especie["data"]["distributions"],
                     "colores" => $especie["data"]["flower"]["color"],

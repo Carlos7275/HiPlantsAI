@@ -79,5 +79,6 @@ Route::controller(LocalizacionIPController::class)->group(function () {
 });
 
 Route::controller(ConfiguracionController::class)->group(function () {
-    Route::get("Distancias", "ObtenerConfiguracion");
+    Route::get("Distancias", "ObtenerDistancias");
+    Route::get("Configuracion","ObtenerConfiguracion");
 });
