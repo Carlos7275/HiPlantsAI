@@ -34,6 +34,7 @@ import { RecuperarPasswordComponent } from './components/recuperar-password/recu
 import { MapaComponent } from './components/mapa/mapa.component';
 import { InfoPlantasComponent } from './components/info-plantas/info-plantas.component';
 import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { ConfiguracionesPanelComponent } from './Components/configuraciones-panel/configuraciones-panel.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
     RecuperarPasswordComponent,
     MapaComponent,
     InfoPlantasComponent,
+    ConfiguracionesPanelComponent,
   ],
   imports: [
     BrowserModule,

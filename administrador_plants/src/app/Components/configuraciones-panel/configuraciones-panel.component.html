@@ -1,0 +1,71 @@
+<div class="container w-60 mt-1 rounded-4 shadow gris" id="login">
+
+
+  <div class="row gx-5 align-items-stretch bg-white">
+    <div class="col bg-white p-1 rounded-end">
+
+      <h1 class="fw-bold text-center py-5">Configuración de panel</h1>
+
+      <form class="example-form" aria-required="true" [formGroup]="frmConfiguracion" (ngSubmit)="submit()">
+        <div class="example-container ">
+          <h2>Tokens</h2>
+
+
+
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Token para Treffle</mat-label>
+            <input matInput type="text"[(ngModel)]="valorInput" formControlName="TokenTreffle">
+            <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="valorInput = ''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="frmConfiguracion.invalid">Este campo es requerido</mat-error>
+          </mat-form-field><br>
+
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Token para PlantsNet</mat-label>
+            <input matInput type="text"[(ngModel)]="valorInput2" formControlName="TokenPlants">
+            <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="valorInput2 = ''">
+              <mat-icon>close</mat-icon>
+
+            </button>
+            <mat-error *ngIf="frmConfiguracion.invalid">Este campo es requerido</mat-error>
+          </mat-form-field><br>
+
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Token para ip de mapa</mat-label>
+            <input matInput type="text"[(ngModel)]="valorInput3" formControlName="TokenIpInfo">
+            <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="valorInput3 = ''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="frmConfiguracion.invalid">Este campo es requerido</mat-error>
+          </mat-form-field>
+          <h2>Distancias</h2>
+          <mat-form-field class="example-full-width p-2" appearance="fill">
+            <mat-label>Distancia mínima</mat-label>
+            <input matInput type="text" formControlName="DistanciaMinima">
+            <mat-error *ngIf="frmConfiguracion.invalid">Ingrese solo números</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Distancia máxima</mat-label>
+            <input matInput type="text" formControlName="DistanciaMaxima">
+            <mat-error *ngIf="frmConfiguracion.invalid">Ingrese solo números</mat-error>
+
+          </mat-form-field>
+        </div>
+        <div class="text-center">
+          <button class="btn btn-primary"><mat-icon>save</mat-icon>Guardar</button>
+
+        </div>
+
+      </form>
+
+
+    </div>
+
+    <div class="col-md-4"style="display:flex; justify-content:left;
+    align-items:center;">
+      <img src="../../../assets/configadmin.jpg" class="img-responsive w-50 " alt="">
+    </div>
+
+  </div>
