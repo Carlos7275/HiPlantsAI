@@ -112,8 +112,6 @@ export class UsuarioService extends Service {
   CambiarPassword(credenciales: any): Observable<Peticion<any>> {
     return this.cliente.put<Peticion<any>>(Environment.urlApi + 'Cambiar/Contraseña', JSON.stringify(credenciales), { headers: this.cabecera });
   }
-  ConfigurarPanel(data:any):Observable<Peticion<any>>{
-    return this.cliente.put<Peticion<any>>(Environment.urlApi+'Actualizar/Configuracion',JSON.stringify(data),{headers:this.cabecera});
-  }
+
 
 }

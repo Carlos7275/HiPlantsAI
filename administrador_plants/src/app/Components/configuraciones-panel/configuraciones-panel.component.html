@@ -14,8 +14,8 @@
 
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Token para Treffle</mat-label>
-            <input matInput type="text"[(ngModel)]="valorInput" formControlName="TokenTreffle">
-            <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="valorInput = ''">
+            <input matInput type="text" formControlName="TokenTreffle">
+            <button type="button" matSuffix mat-icon-button aria-label="Clear">
               <mat-icon>close</mat-icon>
             </button>
             <mat-error *ngIf="frmConfiguracion.invalid">Este campo es requerido</mat-error>
@@ -23,8 +23,8 @@
 
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Token para PlantsNet</mat-label>
-            <input matInput type="text"[(ngModel)]="valorInput2" formControlName="TokenPlants">
-            <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="valorInput2 = ''">
+            <input matInput type="text" formControlName="TokenPlants">
+            <button type="button" matSuffix mat-icon-button aria-label="Clear">
               <mat-icon>close</mat-icon>
 
             </button>
@@ -33,8 +33,8 @@
 
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Token para ip de mapa</mat-label>
-            <input matInput type="text"[(ngModel)]="valorInput3" formControlName="TokenIpInfo">
-            <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="valorInput3 = ''">
+            <input matInput type="text" formControlName="TokenIpInfo">
+            <button type="button" matSuffix mat-icon-button aria-label="Clear">
               <mat-icon>close</mat-icon>
             </button>
             <mat-error *ngIf="frmConfiguracion.invalid">Este campo es requerido</mat-error>
@@ -42,14 +42,14 @@
           <h2>Distancias</h2>
           <mat-form-field class="example-full-width p-2" appearance="fill">
             <mat-label>Distancia mínima</mat-label>
-            <input matInput type="text" formControlName="DistanciaMinima">
-            <mat-error *ngIf="frmConfiguracion.invalid">Ingrese solo números</mat-error>
+            <input matInput type="number" min="1" pattern="^[0-9]+" formControlName="DistanciaMinima">
+            <mat-error *ngIf="frmConfiguracion.invalid">Ingrese solo números mayores a 0</mat-error>
           </mat-form-field>
 
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Distancia máxima</mat-label>
-            <input matInput type="text" formControlName="DistanciaMaxima">
-            <mat-error *ngIf="frmConfiguracion.invalid">Ingrese solo números</mat-error>
+            <input matInput type="number" min="1" pattern="^[0-9]+" formControlName="DistanciaMaxima">
+            <mat-error *ngIf="frmConfiguracion.invalid">Ingrese solo números mayores a 0</mat-error>
 
           </mat-form-field>
         </div>

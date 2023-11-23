@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-configuraciones-panel',
@@ -8,11 +9,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./configuraciones-panel.component.scss']
 })
 export class ConfiguracionesPanelComponent implements OnInit {
-valorInput:string="";
-valorInput2:string="";
-valorInput3:string="";
+
 frmConfiguracion:FormGroup;
-constructor(private fb:FormBuilder,private UsuarioService:UsuarioService){}
+constructor(private fb:FormBuilder,private ConfiguracionService:ConfiguracionService,private matSnackBar: MatSnackBar){}
 
 
 ngOnInit():void{
@@ -22,29 +21,24 @@ ngOnInit():void{
 CrearFormulario(){
   this.frmConfiguracion=this.fb.group({
 
-    TokenTreffle:['',Validators.required],
-    TokenPlants:['',Validators.required],
-    TokenIpInfo:['',Validators.required],
-    DistanciaMinima:['',[Validators.required,Validators.pattern('^[0-9]*$')]],
-    DistanciaMaxima:['',[Validators.required,Validators.pattern('^[0-9]*$')]]
+    TokenTreffle:[''],
+    TokenPlants:[''],
+    TokenIpInfo:[''],
+    DistanciaMinima:[''],
+    DistanciaMaxima:['']
   })
 }
 
 submit(){
-  if(this.frmConfiguracion.valid){
+  if(this.frmConfiguracion.valid)
   this.ConfigurarPanel();
-  }else{
-    Swal.fire({
-      title: 'Alerta',
-          html: 'Error: Llene los campos correctamente e inténtelo de nuevo',
-          icon: 'error',
-    });
-  }
-
 }
 
 ConfigurarPanel(){
-  this.UsuarioService.ConfigurarPanel({
+
+
+
+  this.ConfiguracionService.ActualizarConfiguracion({
     tokentreffle:this.frmConfiguracion.controls["TokenTreffle"].value,
 	tokenplantsnet:this.frmConfiguracion.controls["TokenPlants"].value,
 	tokenipinfo:this.frmConfiguracion.controls["TokenIpInfo"].value,
@@ -59,7 +53,7 @@ ConfigurarPanel(){
         }
       );
     },
-    (error) => Swal.fire(error.error.message, error.error.data.toString(), 'error')
+    (error) => this.matSnackBar.open(error.error.message,"X",{duration:5000})
   );
 }
 
