@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,8 +24,13 @@ class _MapsPageState extends State<MapsPage> {
   @override
   void initState() {
     super.initState();
-    obtenerPlantasActivas();
-    preguntarPermisos();
+    ejecutar();
+  }
+
+  ejecutar() async {
+    await obtenerPlantasActivas();
+    await preguntarPermisos();
+    setState(() {});
   }
 
 /*Sobreescritura de metodo setState con validacion para volver a inicializar el }
@@ -102,8 +106,6 @@ widget
                           urlTemplate:
                               'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                           subdomains: const ['a', 'b', 'c'],
-                          tileProvider:
-                              FMTC.instance('mapStore').getTileProvider(),
                         ),
                         MarkerLayer(
                           markers: [
