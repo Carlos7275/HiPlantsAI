@@ -15,4 +15,10 @@ export class ConfiguracionService extends Service{
   ActualizarConfiguracion(data:any):Observable<Peticion<any>>{
     return this.cliente.put<Peticion<any>>(Environment.urlApi+'Actualizar/Configuracion',JSON.stringify(data),{headers:this.cabecera});
   }
+
+  ObtenerConfiguracion():Observable<Peticion<any>>{
+    return this.cliente.get<Peticion<any>>(Environment.urlApi+'Configuracion',{headers:this.cabecera});
+  }
+
+
 }
