@@ -28,8 +28,7 @@ Route::middleware(['role:1'])->group(function () {
     Route::get("Recorridos", [RecorridoController::class, "ObtenerRecorridos"]);
     Route::get("Mapa/Plantas", [MapaController::class, "ObtenerPlantas"]);
     Route::put("Actualizar/Configuracion", [ConfiguracionController::class, "ActualizarConfiguracion"]);
-
-
+    Route::get("Conteos", [MapaController::class, "ObtenerEstadisticas"]);
 });
 
 Route::controller(UsuarioController::class)->group(function () {
@@ -80,5 +79,5 @@ Route::controller(LocalizacionIPController::class)->group(function () {
 
 Route::controller(ConfiguracionController::class)->group(function () {
     Route::get("Distancias", "ObtenerDistancias");
-    Route::get("Configuracion","ObtenerConfiguracion");
+    Route::get("Configuracion", "ObtenerConfiguracion");
 });

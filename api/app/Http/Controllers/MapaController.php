@@ -137,4 +137,9 @@ class MapaController extends Controller
             return response()->json(Message::success("¡Se cambio el estatus de la planta a {$msgEstatus}!"));
         return response()->json(Message::notFound(), 404);
     }
+
+    public function ObtenerEstadisticas()
+    {
+        return response()->json(Message::success($this->_mapaRepository->ObtenerEstadisticas()));
+    }
 }

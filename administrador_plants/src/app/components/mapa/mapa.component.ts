@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as L from 'leaflet';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -6,6 +7,7 @@ import { IpLocationService } from 'src/app/services/iplocation.service';
 import { MapaService } from 'src/app/services/mapa.service';
 import { Environment } from 'src/enviroments/enviroment.prod';
 import Swal from 'sweetalert2';
+import { ModalRegistroplantasComponent } from '../modal-registroplantas/modal-registroplantas.component';
 
 @Component({
   selector: 'app-mapa',
@@ -18,7 +20,8 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   constructor(
     private mapaService: MapaService,
     private ipLocationService: IpLocationService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private matDialog: MatDialog
   ) { }
 
   ngAfterViewInit(): void {
@@ -32,6 +35,13 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe;
   }
+  abrirModal() {
+    this.matDialog.open(ModalRegistroplantasComponent, {
+      exitAnimationDuration: "0ms",
+      enterAnimationDuration: "0ms"
+    });
+  }
+
 
   ObtenerIcono(url: string) {
     return L.icon({
@@ -47,7 +57,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
         let coordinates = data.loc.split(',');
         this.map = L.map('map', {
           center: [coordinates[0], coordinates[1]],
-          zoom: 10
+          zoom: 12
         });
 
         const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -68,7 +78,9 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
 
   CambiarEstatus(id: number) {
     this.mapaService.CambiarEstatusPlanta(id)
-      .subscribe(x => Swal.fire(x.message, x.data.toString(), 'success'),
+      .subscribe(x => this.matSnackBar.open(`${x.data}`, "X", {
+        duration: 5000
+      }),
         error => this.matSnackBar.open("Atencion:" + error.error.message, "X", { duration: 5000 }))
   }
 

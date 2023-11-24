@@ -5,6 +5,7 @@ import { Genero } from 'src/app/models/Genero.model';
 import { Rol } from 'src/app/models/Rol.model';
 import { UsuarioInfo } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Regex } from 'src/app/utilities/regex';
 import { Environment } from 'src/enviroments/enviroment.prod';
 import Swal from 'sweetalert2';
 @Component({
@@ -25,8 +26,10 @@ export class InfoUsuarioComponent implements OnInit {
   imgURL: any;
   public message: string;
 
-  constructor(private fb: FormBuilder,
-    private usuarioService: UsuarioService) { }
+  constructor(
+    private fb: FormBuilder,
+    private usuarioService: UsuarioService
+  ) { }
 
   ngOnInit(): void {
     this.CrearFormulario();
@@ -50,7 +53,7 @@ export class InfoUsuarioComponent implements OnInit {
       Nombres: ['', Validators.required],
       ApellidoPaterno: ['', Validators.required],
       ApellidoMaterno: ['', Validators.required],
-      CP: ['', [Validators.minLength(5), Validators.maxLength(5), Validators.required, Validators.pattern('^[0-9]*$')]],
+      CP: ['', [Validators.minLength(5), Validators.maxLength(5), Validators.required, Validators.pattern(Regex.cp)]],
       Direccion: ['', Validators.required],
       Rol: ['', Validators.required],
       Genero: ['', Validators.required],
@@ -79,14 +82,12 @@ export class InfoUsuarioComponent implements OnInit {
   //Nos visualiza la imagen seleccionada en el input file
   preview(files: any) {
     if (files.length === 0) return;
-    //Si el archivo tiene longitud verificaremos su MIME  y en caso de que no sea imagen termimos el proceso
+
     var mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
       this.message = 'Only images are supported.';
       return;
     }
-
-    //Instanciamos el lector de archivos
 
     this.imagePath = files;
     this.reader.readAsDataURL(files[0]);
@@ -118,7 +119,6 @@ export class InfoUsuarioComponent implements OnInit {
   }
 
   EditarUsuario() {
-
     this.usuarioService.ModificarUsuario(this.DatosUsuario().id, {
       nombres: this.frmDatosUsuario.controls["Nombres"].value,
       email: this.frmDatosUsuario.controls["Correo"].value,
@@ -135,7 +135,7 @@ export class InfoUsuarioComponent implements OnInit {
     }).subscribe((x) => {
       this.usuarioService.Me().subscribe(y => {
         localStorage.setItem('info_usuario', JSON.stringify(y.data));
-        Swal.fire("¡Operacion Exitosa!", x.data.toString(), "success");
+        Swal.fire("¡Operacion Exitosa!", x.data.toString(), "success").then(() => window.location.reload());
 
       }, error => {
         Swal.fire({
@@ -146,7 +146,5 @@ export class InfoUsuarioComponent implements OnInit {
       });
     });
   }
-
-
 }
 

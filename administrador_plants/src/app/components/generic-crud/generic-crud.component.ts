@@ -49,7 +49,7 @@ export class GenericCrudComponent<T>  {
     this.fuenteDatos.filter = filterValue.trim().toLowerCase();
   }
 
-  abrirModal(enterAnimationDuration: string, exitAnimationDuration: string, data: any = '') {
+  abrirModal(enterAnimationDuration: string, exitAnimationDuration: string, data: any = null) {
     this.dialog.open(this.componenteModal, {
       width: 'auto',
       enterAnimationDuration,
@@ -59,7 +59,7 @@ export class GenericCrudComponent<T>  {
   }
 
   abrir() {
-    this.abrirModal('0ms', '0ms', 'Registrar');
+    this.abrirModal('0ms', '0ms');
   }
 
   editar(data: any) {

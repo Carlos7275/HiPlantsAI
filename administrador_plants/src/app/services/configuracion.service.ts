@@ -4,21 +4,17 @@ import { Observable } from "rxjs";
 import { Environment } from "src/enviroments/enviroment";
 import { Peticion } from "../models/Peticion.model";
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 
-export class ConfiguracionService extends Service{
+export class ConfiguracionService extends Service {
 
-  ActualizarConfiguracion(data:any):Observable<Peticion<any>>{
-    return this.cliente.put<Peticion<any>>(Environment.urlApi+'Actualizar/Configuracion',JSON.stringify(data),{headers:this.cabecera});
+  ActualizarConfiguracion(data: any): Observable<Peticion<any>> {
+    return this.cliente.put<Peticion<any>>(Environment.urlApi + 'Actualizar/Configuracion', JSON.stringify(data), { headers: this.cabecera });
   }
 
-  ObtenerConfiguracion():Observable<Peticion<any>>{
-    return this.cliente.get<Peticion<any>>(Environment.urlApi+'Configuracion',{headers:this.cabecera});
+  ObtenerConfiguracion(): Observable<Peticion<any>> {
+    return this.cliente.get<Peticion<any>>(Environment.urlApi + 'Configuracion', { headers: this.cabecera });
   }
-
-
 }

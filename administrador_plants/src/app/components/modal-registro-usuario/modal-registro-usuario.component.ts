@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CP } from 'src/app/models/CodigoP.model';
@@ -6,6 +6,7 @@ import { Genero } from 'src/app/models/Genero.model';
 import { Rol } from 'src/app/models/Rol.model';
 import { UsuarioInfo } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Regex } from 'src/app/utilities/regex';
 import { ConfirmedValidator } from 'src/app/validators/CustomValidator';
 import Swal from 'sweetalert2';
 
@@ -17,7 +18,7 @@ import Swal from 'sweetalert2';
 export class ModalRegistroUsuarioComponent implements OnInit {
   frmDatos: FormGroup;
   title: any;
-  flag: boolean = false;
+  flag: boolean;
   reader = new FileReader();
   public message: string;
   data: UsuarioInfo;
@@ -32,61 +33,37 @@ export class ModalRegistroUsuarioComponent implements OnInit {
     private usuarioService: UsuarioService,
     public dialogRef: MatDialogRef<ModalRegistroUsuarioComponent>,
     @Inject(MAT_DIALOG_DATA) public dataModal: any
-  ) { }
+  ) {
+  }
+
 
   ngOnInit(): void {
-    if (this.dataModal == 'Registrar') {
-      this.title = "Registrar Usuario"
-      this.registrar();
+    this.flag = (this.dataModal == null) ? true : false;
+    this.CrearFormulario();
 
-    } else {
+    if (!this.dataModal) {
+      this.title = "Registrar Usuario"
+    }
+    else {
       this.title = "Modificar Usuario"
-      this.modificar(this.dataModal);
+      this.data = this.dataModal;
+      this.modificar();
     }
 
     this.mostrarRoles();
     this.mostrarGeneros();
   }
 
-
   LimpiarCampos() {
     this.frmDatos.reset();
   }
 
+  CrearFormulario() {
 
-  submit() {
-    if (this.frmDatos.valid) {
-      this.Operacion();
-    }
-  }
-
-  registrar() {
-    this.flag = true;
-    this.registrarForm();
-  }
-
-  modificar(data: any) {
-    this.modificarForm();
-    this.flag = false;
-    this.data = data;
-    this.frmDatos.controls["Nombres"].setValue(data.nombres),
-      this.frmDatos.controls["Email"].setValue(data.email),
-      this.frmDatos.controls["ApellidoPaterno"].setValue(data.apellido_paterno),
-      this.frmDatos.controls["ApellidoMaterno"].setValue(data.apellido_materno),
-      this.frmDatos.controls["Domicilio"].setValue(data.domicilio),
-      this.frmDatos.controls["Roles"].setValue(data.id_rol, { onlySelf: true }),
-      this.frmDatos.controls["Generos"].setValue(data.id_genero, { onlySelf: true }),
-      this.frmDatos.controls["CP"].setValue(data.cp);
-    this.frmDatos.controls["Asentamiento"].setValue(data.id_asenta_cpcons, { onlySelf: true }),
-      this.frmDatos.controls["FechaNacimiento"].setValue(data.fecha_nacimiento),
-      this.mostrarAsentamientos(this.frmDatos.controls["CP"].value);
-  }
-
-  registrarForm() {
-    this.frmDatos = this.fb.group({
+    this.frmDatos = (!this.dataModal) ? this.fb.group({
       Email: ['', Validators.required],
-      Password: ['', Validators.required],
-      Password2: ['', Validators.required],
+      Password: ['', [Validators.required, Validators.min(5), Validators.max(8)]],
+      Password2: ['', [Validators.required, Validators.min(5), Validators.max(8)]],
       Nombres: ['', Validators.required],
       ApellidoPaterno: ['', Validators.required],
       ApellidoMaterno: ['', Validators.maxLength(20)],
@@ -95,11 +72,46 @@ export class ModalRegistroUsuarioComponent implements OnInit {
       Roles: ['', Validators.required],
       Generos: ['', Validators.required],
       Asentamiento: ['', Validators.required],
-      CP: ['', Validators.required]
+      CP: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern(Regex.cp)]]
     }, {
       validators: ConfirmedValidator("Password", "Password2")
-    })
+    }) :
+      this.fb.group({
+        Email: ['', Validators.required],
+        Nombres: ['', Validators.required],
+        ApellidoPaterno: ['', Validators.required],
+        ApellidoMaterno: ['', Validators.maxLength(20)],
+        Domicilio: ['', Validators.required],
+        FechaNacimiento: ['', Validators.required],
+        Roles: ['', Validators.required],
+        Generos: ['', Validators.required],
+        Asentamiento: ['', Validators.required],
+        CP: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern(Regex.cp)]],
+      });
+
   }
+
+  submit() {
+    if (this.frmDatos.valid) {
+      this.Operacion();
+    }
+  }
+
+  modificar() {
+
+    this.frmDatos.controls["Nombres"].setValue(this.data.nombres),
+      this.frmDatos.controls["Email"].setValue(this.data.email),
+      this.frmDatos.controls["ApellidoPaterno"].setValue(this.data.apellido_paterno),
+      this.frmDatos.controls["ApellidoMaterno"].setValue(this.data.apellido_materno),
+      this.frmDatos.controls["Domicilio"].setValue(this.data.domicilio),
+      this.frmDatos.controls["Roles"].setValue(this.data.id_rol, { onlySelf: true }),
+      this.frmDatos.controls["Generos"].setValue(this.data.id_genero, { onlySelf: true }),
+      this.frmDatos.controls["CP"].setValue(this.data.cp);
+    this.frmDatos.controls["Asentamiento"].setValue(this.data.id_asenta_cpcons, { onlySelf: true }),
+      this.frmDatos.controls["FechaNacimiento"].setValue(this.data.fecha_nacimiento),
+      this.mostrarAsentamientos(this.frmDatos.controls["CP"].value);
+  }
+
 
   public getPasswordConfirmationErrorMessage() {
 
@@ -109,21 +121,6 @@ export class ModalRegistroUsuarioComponent implements OnInit {
       return 'Las contrasenas no coinciden';
     }
     return ""
-  }
-
-  modificarForm() {
-    this.frmDatos = this.fb.group({
-      Email: ['', Validators.required],
-      Nombres: ['', Validators.required],
-      ApellidoPaterno: ['', Validators.required],
-      ApellidoMaterno: ['', Validators.maxLength(20)],
-      Domicilio: ['', Validators.required],
-      FechaNacimiento: ['', Validators.required],
-      Roles: ['', Validators.required],
-      Generos: ['', Validators.required],
-      Asentamiento: ['', Validators.required],
-      CP: ['', Validators.required],
-    })
   }
 
   Operacion() {

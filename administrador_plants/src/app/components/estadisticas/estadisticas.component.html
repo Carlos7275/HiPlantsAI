@@ -1,0 +1,67 @@
+<div class="main-content" *ngIf="estadisticas" [@fadeIn]>
+    <div class="header bg-gradient-primary pb-4 pt-4 pt-md-6" data-aos="fade-up">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Plantas Registradas</h5>
+                                        <span class="h2 font-weight-bold mb-0">{{ estadisticas.plantas_registradas |
+                                            number}}</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                                            <img src="../../../assets/sigma.png" width="50">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Plantas Activas</h5>
+                                        <span class="h2 font-weight-bold mb-0">{{ estadisticas.plantas_activas |
+                                            number}}</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                            <img src="../../../assets/plant.png" width="50">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Plantas ya no disponibles
+                                        </h5>
+                                        <span class="h2 font-weight-bold mb-0">{{ estadisticas.plantas_inactivas |
+                                            number}}</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="icon icon-shape  bg-yellow text-white rounded-circle shadow">
+                                            <img src="../../../assets/plantdisabled.png" width="50">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

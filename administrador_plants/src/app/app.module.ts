@@ -34,7 +34,9 @@ import { RecuperarPasswordComponent } from './components/recuperar-password/recu
 import { MapaComponent } from './components/mapa/mapa.component';
 import { InfoPlantasComponent } from './components/info-plantas/info-plantas.component';
 import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { ConfiguracionesPanelComponent } from './Components/configuraciones-panel/configuraciones-panel.component';
+import { ConfiguracionesPanelComponent } from './components/configuraciones-panel/configuraciones-panel.component';
+import { ModalRegistroplantasComponent } from './components/modal-registroplantas/modal-registroplantas.component';
+import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { ConfiguracionesPanelComponent } from './Components/configuraciones-pane
     MapaComponent,
     InfoPlantasComponent,
     ConfiguracionesPanelComponent,
+    ModalRegistroplantasComponent,
+    EstadisticasComponent,
   ],
   imports: [
     BrowserModule,

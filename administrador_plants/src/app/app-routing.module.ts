@@ -14,7 +14,7 @@ import { RecuperarCuentaComponent } from './components/recuperar-cuenta/recupera
 import { MapaComponent } from './components/mapa/mapa.component';
 import { InfoPlantasComponent } from './components/info-plantas/info-plantas.component';
 import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
-import { ConfiguracionesPanelComponent } from './Components/configuraciones-panel/configuraciones-panel.component';
+import { ConfiguracionesPanelComponent } from './components/configuraciones-panel/configuraciones-panel.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,14 +29,14 @@ const routes: Routes = [
       { path: 'usuarios', component: UsuariosComponent },
       { path: "mapa", component: MapaComponent },
       { path: "plantas", component: InfoPlantasComponent },
-      {path:"configuracionsistema",component:ConfiguracionesPanelComponent},
+      { path: "configuracionsistema", component: ConfiguracionesPanelComponent },
       {
         path: 'configuracion', component: MenuConfigUsuarioComponent,
         children: [
-          { path: 'infoUsuario', component: InfoUsuarioComponent },
-          { path: "cambiarPassword", component: CambioPasswordComponent },
+          { path: 'infousuario', component: InfoUsuarioComponent },
+          { path: "cambiarcontraseña", component: CambioPasswordComponent },
           {
-            path: '', redirectTo: "infoUsuario", pathMatch: "full"
+            path: '', redirectTo: "infousuario", pathMatch: "full"
           },
         ],
       }

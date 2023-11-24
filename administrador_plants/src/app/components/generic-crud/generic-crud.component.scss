@@ -26,4 +26,10 @@
     width: 80%; /* Utiliza el 80% del ancho de la pantalla */
   }
 }
+.mat-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  display: block;
+}
 

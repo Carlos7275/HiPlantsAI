@@ -33,4 +33,15 @@ export class MapaService extends Service {
       }));
   }
 
+  RegistrarPlanta(data: any): Observable<Peticion<InfoPlantas>> {
+    return this.cliente.post<Peticion<InfoPlantas>>(Environment.urlApi + "Registrar/Planta", JSON.stringify(data), { headers: this.cabecera }).pipe(
+      tap(() => {
+        this.refresh.next();
+      }));;
+  }
+
+  ObtenerEstadisticas(): Observable<Peticion<any>> {
+    return this.cliente.get<Peticion<any>>(Environment.urlApi + "Conteos", { headers: this.cabecera });
+  }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Mapa;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class MapaRepository  extends EloquentRepository
@@ -43,5 +44,14 @@ class MapaRepository  extends EloquentRepository
             return $estatus;
         }
         return null;
+    }
+
+    public function ObtenerEstadisticas()
+    {
+        return DB::select(
+            "select (select count(*) from info_plantas) as plantas_registradas, 
+            (select count(*) from mapa where estatus=1) as plantas_activas,
+            (select count(*) from mapa where estatus=0) as plantas_inactivas;"
+        )[0];
     }
 }

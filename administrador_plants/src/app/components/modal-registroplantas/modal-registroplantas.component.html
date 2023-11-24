@@ -1,0 +1,42 @@
+<div class="dialog-title">
+    <h1 mat-dialog-title>
+        Registrar Planta en el Mapa
+    </h1>
+    <button mat-stroked-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+
+</div>
+
+<div mat-dialog-content>
+    <div class="text-center">
+        <img loading="lazy" *ngIf="imgURL" [src]="imgURL" accept="image/*" alt=""
+            class="rounded-circle img-responsive mt-2 shadow" width="200" height="200">
+        <br>
+    </div>
+
+    <form class="example-form" aria-required="true" [formGroup]="frmRegistro" (ngSubmit)="Submit()">
+        <mat-form-field class="example-full-width">
+            <mat-label>Latitud</mat-label>
+            <input type="number" formControlName="Latitud" matInput>
+            <mat-error *ngIf="frmRegistro.invalid">Ingrese Una Latitud Válida(-90 a 90)</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Longitud</mat-label>
+            <input type="number" formControlName="Longitud" matInput>
+            <mat-error *ngIf="frmRegistro.invalid">Ingrese la Longitud Válida(-180 a 180)</mat-error>
+        </mat-form-field>
+        <div class="mt-3">
+            <br>
+            <input #file id="seleccionArchivos" type="file" (change)="preview(file.files)" required>
+            <mat-error>{{this.message}}</mat-error>
+
+        </div>
+        <div mat-dialog-actions>
+            <div class="btn-group mb-3">
+                <button class="btn btn-primary">Guardar Datos</button>
+                <button class="btn btn-danger" (click)="LimpiarCampos()">Limpiar Datos</button>
+            </div>
+        </div>
+    </form>
+</div>
