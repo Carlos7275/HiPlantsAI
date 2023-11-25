@@ -1,0 +1,70 @@
+<?xml version="1.0" standalone="yes"?>
+<RECORDS>
+	<RECORD>
+		<id>1</id>
+		<id_planta>61554</id_planta>
+		<zona>Ahome, Los Mochis, Ahome, Sinaloa, 81236, Mexico</zona>
+		<latitud>25.8162875</latitud>
+		<longitud>-109.0110877</longitud>
+		<url_imagen>/storage/images/655ff96839d00.jpeg</url_imagen>
+		<estatus>1</estatus>
+		<created_at>24/11/2023 01:16:33</created_at>
+		<updated_at>24/11/2023 01:18:50</updated_at>
+	</RECORD>
+	<RECORD>
+		<id>2</id>
+		<id_planta>66428</id_planta>
+		<zona>Ahome, Los Mochis, Ahome, Sinaloa, 81236, Mexico</zona>
+		<latitud>25.8160348</latitud>
+		<longitud>-109.0106446</longitud>
+		<url_imagen>/storage/images/6560f4ae9f746.png</url_imagen>
+		<estatus>1</estatus>
+		<created_at>24/11/2023 19:08:37</created_at>
+		<updated_at>24/11/2023 19:08:37</updated_at>
+	</RECORD>
+	<RECORD>
+		<id>3</id>
+		<id_planta>69574</id_planta>
+		<zona>Ahome, Los Mochis, Ahome, Sinaloa, 81236, Mexico</zona>
+		<latitud>25.8155861</latitud>
+		<longitud>-109.0098561</longitud>
+		<url_imagen>/storage/images/6560f5f43a795.png</url_imagen>
+		<estatus>1</estatus>
+		<created_at>24/11/2023 19:14:01</created_at>
+		<updated_at>24/11/2023 21:05:00</updated_at>
+	</RECORD>
+	<RECORD>
+		<id>4</id>
+		<id_planta>53325</id_planta>
+		<zona>Universidad Autónoma de Sinaloa, Boulevard Poseidon, Los Mochis, Ahome, Sinaloa, 81210, Mexico</zona>
+		<latitud>25.8145482</latitud>
+		<longitud>-108.9804586</longitud>
+		<url_imagen>/storage/images/6560f71b1b124.jpeg</url_imagen>
+		<estatus>1</estatus>
+		<created_at>24/11/2023 19:18:55</created_at>
+		<updated_at>24/11/2023 21:05:13</updated_at>
+	</RECORD>
+	<RECORD>
+		<id>5</id>
+		<id_planta>78454</id_planta>
+		<zona>Jardín Botánico Benjamin Francis Johnston (Parque Sinaloa), 750, Antonio Rosales, Los Mochis, Ahome, Sinaloa, 81200, Mexico</zona>
+		<latitud>25.7900944</latitud>
+		<longitud>-109.0044555</longitud>
+		<url_imagen>/storage/images/6560f7fd67e25.png</url_imagen>
+		<estatus>1</estatus>
+		<created_at>24/11/2023 19:22:43</created_at>
+		<updated_at>24/11/2023 20:31:33</updated_at>
+	</RECORD>
+	<RECORD>
+		<id>6</id>
+		<id_planta>168420</id_planta>
+		<zona>El Fuerte Pte., Los Mochis, Ahome, Sinaloa, 81236, Mexico</zona>
+		<latitud>25.8167137</latitud>
+		<longitud>-109.0108023</longitud>
+		<url_imagen>/storage/images/6560f9f162dfa.png</url_imagen>
+		<estatus>1</estatus>
+		<created_at>24/11/2023 19:31:03</created_at>
+		<updated_at>24/11/2023 19:31:03</updated_at>
+	</RECORD>
+</RECORDS>
+
