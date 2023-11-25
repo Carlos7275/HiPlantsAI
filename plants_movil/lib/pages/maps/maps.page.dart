@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,43 +19,34 @@ class MapsPage extends StatefulWidget {
 class _MapsPageState extends State<MapsPage> {
   final MapController _mapController = MapController();
   List<Mapa> puntos = List.empty();
-  LatLng _currentLocation =
-      const LatLng(25.781862, -108.990188); // Ubicación inicial en mochis
+  LatLng _currentLocation = const LatLng(25.781862, -108.990188);
 
   @override
   void initState() {
     super.initState();
-    ejecutar();
+    _initMap();
   }
 
-  ejecutar() async {
-    await obtenerPlantasActivas();
-    await preguntarPermisos();
-    setState(() {});
+  Future<void> _initMap() async {
+    await _obtenerPlantasActivas();
+    await _preguntarPermisos();
+    await _obtenerUbicacionUsuario();
   }
 
-/*Sobreescritura de metodo setState con validacion para volver a inicializar el }
-widget
-*/
-  @override
-  void setState(VoidCallback fn) {
-    if (mounted) super.setState(fn);
-  }
-
-  Future<void> preguntarPermisos() async {
+  Future<void> _preguntarPermisos() async {
     final status = await Permission.location.request();
-    if (status case PermissionStatus.denied) {
-      preguntarPermisos();
-    } else if (status case PermissionStatus.granted) {
-      obtenerUbicacionUsuario();
+    if (status == PermissionStatus.denied) {
+      await _preguntarPermisos();
+    } else if (status == PermissionStatus.granted) {
+      await _obtenerUbicacionUsuario();
     }
   }
 
-  Future<void> obtenerPlantasActivas() async {
+  Future<void> _obtenerPlantasActivas() async {
     puntos = await MapaService().obtenerPlantasActivas();
   }
 
-  Future<void> obtenerUbicacionUsuario() async {
+  Future<void> _obtenerUbicacionUsuario() async {
     bool servicio = await Geolocator.isLocationServiceEnabled();
 
     if (servicio) {
@@ -62,7 +54,7 @@ widget
         accuracy: LocationAccuracy.high,
         distanceFilter: 10,
       );
-      //Obtiene la Ubicacion en tiempo real
+
       Geolocator.getPositionStream(locationSettings: settings)
           .listen((position) {
         setState(() {
@@ -70,8 +62,29 @@ widget
         });
       });
     } else {
-      preguntarPermisos();
+      await _preguntarPermisos();
     }
+  }
+
+  Widget _buildMarkers() {
+    return MarkerLayer(
+      markers: [
+        Marker(
+          point: _currentLocation,
+          width: 60,
+          height: 60,
+          child: const Icon(Icons.account_circle,
+              color: Enviroment.secondaryColor),
+        ),
+        for (var markerData in puntos)
+          Marker(
+            point: LatLng(markerData.latitud!, markerData.longitud!),
+            width: 100,
+            height: 100,
+            child: const Icon(LeafIcon.leaf, color: Enviroment.secondaryColor),
+          ),
+      ],
+    );
   }
 
   @override
@@ -99,36 +112,19 @@ widget
                     child: FlutterMap(
                       mapController: _mapController,
                       options: MapOptions(
-                          initialCenter: _currentLocation, initialZoom: 10),
+                        initialCenter: _currentLocation,
+                        initialZoom: 10,
+                      ),
                       children: [
                         TileLayer(
                           userAgentPackageName: "com.example.app",
                           urlTemplate:
                               'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                           subdomains: const ['a', 'b', 'c'],
+                          tileProvider:
+                              FMTC.instance('mapStore').getTileProvider(),
                         ),
-                        MarkerLayer(
-                          markers: [
-                            Marker(
-                              point: _currentLocation,
-                              width: 60,
-                              height: 60,
-                              child: const Icon(Icons.account_circle,
-                                  color: Enviroment.secondaryColor),
-                            ),
-                          ],
-                        ),
-                        MarkerLayer(markers: [
-                          for (var markerData in puntos)
-                            Marker(
-                              point: LatLng(
-                                  markerData.latitud!, markerData.longitud!),
-                              width: 100,
-                              height: 100,
-                              child: const Icon(LeafIcon.leaf,
-                                  color: Enviroment.secondaryColor),
-                            ),
-                        ]),
+                        _buildMarkers(),
                       ],
                     ),
                   ),
