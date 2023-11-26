@@ -81,7 +81,8 @@ class _MapsPageState extends State<MapsPage> {
             point: LatLng(markerData.latitud!, markerData.longitud!),
             width: 100,
             height: 100,
-            child: const Icon(LeafIcon.leaf, color: Enviroment.secondaryColor),
+            child:
+                const Icon(LeafIcon.tree_2, color: Enviroment.secondaryColor),
           ),
       ],
     );

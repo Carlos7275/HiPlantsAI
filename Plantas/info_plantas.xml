@@ -1,27 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <RECORDS>
 	<RECORD>
-		<id>0</id>
-		<nombre_planta/>
-		<nombre_cientifico/>
-		<url_imagen/>
-		<toxicidad/>
-		<comestible>0</comestible>
-		<vegetable>0</vegetable>
-		<año>0</año>
-		<familia/>
-		<nombres_comunes/>
-		<distribucion/>
-		<colores/>
-		<humedad_atmosferica/>
-		<cantidad_luz/>
-		<meses_crecimiento/>
-		<genero/>
-		<estatus/>
-		<created_at/>
-		<updated_at/>
-	</RECORD>
-	<RECORD>
 		<id>53325</id>
 		<nombre_planta>Ixora coccinea</nombre_planta>
 		<nombre_cientifico>ixora-coccinea</nombre_cientifico>

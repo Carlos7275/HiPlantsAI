@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:plants_movil/pages/usuario/usuario_form/usuario_form.dart';
-import 'package:plants_movil/services/usuario.service.dart';
 
 class UsuarioPage extends StatefulWidget {
   const UsuarioPage({super.key});

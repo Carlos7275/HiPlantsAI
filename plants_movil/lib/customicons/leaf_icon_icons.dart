@@ -16,6 +16,10 @@
 ///         Author:    Dave Gandy
 ///         License:   SIL ()
 ///         Homepage:  http://fortawesome.github.com/Font-Awesome/
+/// * Maki, Copyright (C) Mapbox, LCC
+///         Author:    Mapbox
+///         License:   BSD (https://github.com/mapbox/maki/blob/gh-pages/LICENSE.txt)
+///         Homepage:  http://mapbox.com/maki/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -26,4 +30,5 @@ class LeafIcon {
   static const String? _kFontPkg = null;
 
   static const IconData leaf = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData tree_2 = IconData(0xe83f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
