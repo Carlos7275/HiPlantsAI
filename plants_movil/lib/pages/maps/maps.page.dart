@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
@@ -19,7 +21,7 @@ class MapsPage extends StatefulWidget {
 class _MapsPageState extends State<MapsPage> {
   final MapController _mapController = MapController();
   List<Mapa> puntos = List.empty();
-  LatLng _currentLocation = const LatLng(25.781862, -108.990188);
+  LatLng currentLocation = const LatLng(25.781862, -108.990188);
 
   @override
   void initState() {
@@ -28,49 +30,99 @@ class _MapsPageState extends State<MapsPage> {
   }
 
   Future<void> _initMap() async {
-    await _obtenerPlantasActivas();
-    await _preguntarPermisos();
-    await _obtenerUbicacionUsuario();
+    await obtenerPlantasActivas();
+    await preguntarPermisos();
+    await obtenerUbicacionUsuario();
   }
 
-  Future<void> _preguntarPermisos() async {
+  Future<void> preguntarPermisos() async {
     final status = await Permission.location.request();
     if (status == PermissionStatus.denied) {
-      await _preguntarPermisos();
+      await preguntarPermisos();
     } else if (status == PermissionStatus.granted) {
-      await _obtenerUbicacionUsuario();
+      await obtenerUbicacionUsuario();
     }
   }
 
-  Future<void> _obtenerPlantasActivas() async {
+  Future<void> obtenerPlantasActivas() async {
     puntos = await MapaService().obtenerPlantasActivas();
   }
 
-  Future<void> _obtenerUbicacionUsuario() async {
+  Future<void> obtenerUbicacionUsuario() async {
+    StreamSubscription<Position>? locationSubscription;
+
+    void handleLocationChanged(Position position) {
+      print("Location changed: $position");
+      setState(() {
+        currentLocation = LatLng(position.latitude, position.longitude);
+      });
+    }
+
+    void handleLocationError(dynamic error) {
+      print("Error obtaining location: $error");
+      mostrarAlertaActivarGPS();
+    }
+
     bool servicio = await Geolocator.isLocationServiceEnabled();
 
     if (servicio) {
-      const settings = LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 10,
-      );
+      const settings =
+          LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
-      Geolocator.getPositionStream(locationSettings: settings)
-          .listen((position) {
-        setState(() {
-          _currentLocation = LatLng(position.latitude, position.longitude);
-        });
-      });
+      locationSubscription = Geolocator.getPositionStream(
+        locationSettings: settings,
+      ).listen(
+        handleLocationChanged,
+        onError: handleLocationError,
+      );
     } else {
-      await _preguntarPermisos();
+      // If location service is not enabled, prompt the user to enable it.
+      print("Location service is not enabled. Showing alert.");
+      mostrarAlertaActivarGPS();
     }
+
+    // Cancel the location subscription when the widget is disposed.
+    locationSubscription?.onDone(() {
+      print("Location subscription canceled.");
+      locationSubscription?.cancel();
+    });
+
+    setState(() {});
   }
 
-  Widget _buildMarkers() {
+  void mostrarAlertaActivarGPS() {
+    final currentContext = context;
+
+    showDialog(
+      context: currentContext,
+      //barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('GPS Desactivado'),
+          content: const Text(
+            'Por favor, active el GPS para poder utilizar el mapa.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Configuración'),
+              onPressed: () async {
+                await AppSettings.openAppSettings(
+                    type: AppSettingsType.location);
+
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildMarkers() {
     return MarkerLayer(
       markers: [
         Marker(
-          point: _currentLocation,
+          point: currentLocation,
           width: 60,
           height: 60,
           child: const Icon(Icons.account_circle,
@@ -113,7 +165,7 @@ class _MapsPageState extends State<MapsPage> {
                     child: FlutterMap(
                       mapController: _mapController,
                       options: MapOptions(
-                        initialCenter: _currentLocation,
+                        initialCenter: currentLocation,
                         initialZoom: 10,
                       ),
                       children: [
@@ -125,7 +177,7 @@ class _MapsPageState extends State<MapsPage> {
                           tileProvider:
                               FMTC.instance('mapStore').getTileProvider(),
                         ),
-                        _buildMarkers(),
+                        buildMarkers(),
                       ],
                     ),
                   ),
