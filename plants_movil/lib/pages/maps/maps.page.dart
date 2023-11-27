@@ -10,6 +10,7 @@ import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/models/Mapa.model.dart';
 import 'package:plants_movil/services/mapa.service.dart';
 import 'package:plants_movil/customicons/leaf_icon_icons.dart';
+import 'package:plants_movil/widgets/voz/voz.widget.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({Key? key}) : super(key: key);
@@ -143,50 +144,56 @@ class _MapsPageState extends State<MapsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              double mapWidth, mapHeight;
-              if (orientation == Orientation.portrait) {
-                mapWidth = constraints.maxWidth;
-                mapHeight = constraints.maxHeight * 0.75;
-              } else {
-                mapWidth = constraints.maxWidth * 0.85;
-                mapHeight = constraints.maxHeight;
-              }
-
-              return Center(
-                child: SizedBox(
-                  width: mapWidth,
-                  height: mapHeight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FlutterMap(
-                      mapController: _mapController,
-                      options: MapOptions(
-                        initialCenter: currentLocation,
-                        initialZoom: 10,
-                      ),
-                      children: [
-                        TileLayer(
-                          userAgentPackageName: "com.example.app",
-                          urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          subdomains: const ['a', 'b', 'c'],
-                          tileProvider:
-                              FMTC.instance('mapStore').getTileProvider(),
+      body: Stack(children: [
+        OrientationBuilder(
+          builder: (context, orientation) {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                double mapWidth, mapHeight;
+                if (orientation == Orientation.portrait) {
+                  mapWidth = constraints.maxWidth;
+                  mapHeight = constraints.maxHeight * 0.75;
+                } else {
+                  mapWidth = constraints.maxWidth * 0.85;
+                  mapHeight = constraints.maxHeight;
+                }
+                return Row(
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        width: mapWidth,
+                        height: mapHeight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FlutterMap(
+                            mapController: _mapController,
+                            options: MapOptions(
+                              initialCenter: currentLocation,
+                              initialZoom: 10,
+                            ),
+                            children: [
+                              TileLayer(
+                                userAgentPackageName: "com.example.app",
+                                urlTemplate:
+                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                subdomains: const ['a', 'b', 'c'],
+                                tileProvider:
+                                    FMTC.instance('mapStore').getTileProvider(),
+                              ),
+                              buildMarkers(),
+                            ],
+                          ),
                         ),
-                        buildMarkers(),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      Voz()
+      ]),
     );
   }
 }
