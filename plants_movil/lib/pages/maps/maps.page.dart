@@ -163,26 +163,23 @@ class _MapsPageState extends State<MapsPage> {
                       child: SizedBox(
                         width: mapWidth,
                         height: mapHeight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: FlutterMap(
-                            mapController: _mapController,
-                            options: MapOptions(
-                              initialCenter: currentLocation,
-                              initialZoom: 10,
-                            ),
-                            children: [
-                              TileLayer(
-                                userAgentPackageName: "com.example.app",
-                                urlTemplate:
-                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                subdomains: const ['a', 'b', 'c'],
-                                tileProvider:
-                                    FMTC.instance('mapStore').getTileProvider(),
-                              ),
-                              buildMarkers(),
-                            ],
+                        child: FlutterMap(
+                          mapController: _mapController,
+                          options: MapOptions(
+                            initialCenter: currentLocation,
+                            initialZoom: 12,
                           ),
+                          children: [
+                            TileLayer(
+                              userAgentPackageName: "com.example.app",
+                              urlTemplate:
+                                  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              subdomains: const ['a', 'b', 'c'],
+                              tileProvider:
+                                  FMTC.instance('mapStore').getTileProvider(),
+                            ),
+                            buildMarkers(),
+                          ],
                         ),
                       ),
                     ),
@@ -192,7 +189,7 @@ class _MapsPageState extends State<MapsPage> {
             );
           },
         ),
-      Voz()
+        Voz()
       ]),
     );
   }

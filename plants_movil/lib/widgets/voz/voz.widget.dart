@@ -12,12 +12,44 @@ class _VozState extends State<Voz> {
   String texto = 'Por favor ingrese un comando de voz.';
   bool estaEscuchando = false;
   SpeechToText spt = SpeechToText();
+  late AlertDialog alertDialog;
+
   void resultListener(SpeechRecognitionResult result) {
-    print("esele mi toro");
     setState(() {
       texto = result.recognizedWords;
-      print(texto);
     });
+
+    alertDialog = AlertDialog(
+      backgroundColor: Colors.white,
+      title: const Text('Busqueda de Voz'),
+      content: Text(texto),
+      actions: <Widget>[
+        TextButton(
+          child: const Text(
+            'Cancelar',
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () async {
+            await spt.cancel();
+            // Utiliza Navigator.of(context, rootNavigator: true).pop() para cerrar solo el modal.
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+        ),
+      ],
+    );
+
+    setState(() {
+      estaEscuchando = false;
+    });
+
+    // Usa Navigator.of(context, rootNavigator: true).pop() para cerrar solo el modal.
+    Navigator.of(context, rootNavigator: true).pop();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog;
+      },
+    );
   }
 
   @override
@@ -25,37 +57,33 @@ class _VozState extends State<Voz> {
     return Container(
       alignment: Alignment.topRight,
       child: IconButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            Colors.blue,
-          ),
-        ),
-        icon: const Icon(
-          Icons.mic,
-          color: Colors.white,
-        ),
+        icon: Icon(Icons.mic),
         onPressed: () async {
+          // Establecer el texto predeterminado antes de mostrar el diálogo.
           texto = 'Por favor ingrese un comando de voz.';
+          alertDialog = AlertDialog(
+            backgroundColor: Colors.white,
+            title: const Text('Busqueda de Voz'),
+            content: Text(texto),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.black),
+                ),
+                onPressed: () async {
+                  await spt.cancel();
+                  // Utiliza Navigator.of(context, rootNavigator: true).pop() para cerrar solo el modal.
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              ),
+            ],
+          );
+
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: Colors.white,
-                title: const Text('Busqueda de Voz'),
-                content: Text(texto),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text(
-                      'Cancelar',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () async {
-                      await spt.cancel();
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              );
+              return alertDialog;
             },
           );
 
