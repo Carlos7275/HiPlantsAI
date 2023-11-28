@@ -56,6 +56,11 @@ class MapaController extends Controller
             $nombrePlanta = $Planta->results[0]->species->scientificNameWithoutAuthor;
 
             $infoPlanta = $this->_infoPlantasRepository->ObtenerInformacionPlanta($nombrePlanta);
+            if (!isset($infoPlanta)) {
+                Image::DeleteImage(Paths::getRelativePath($url));
+                return response()->json(Message::Observation("¡No se encontro información de la planta ${nombrePlanta}!"));
+            }
+
             $idPlanta = $infoPlanta["data"][0]["id"];
             if (!$this->_infoPlantasRepository->exists($idPlanta)) {
                 $nombreCientifico = $infoPlanta["data"][0]["slug"];

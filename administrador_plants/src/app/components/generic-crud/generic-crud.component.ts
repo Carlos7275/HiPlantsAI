@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { Environment } from 'src/enviroments/enviroment.prod';
 import { MatDialog } from '@angular/material/dialog';
+import { PreviewImagenComponent } from '../preview-imagen/preview-imagen.component';
 @Component({
   selector: 'app-generic-crud',
   templateUrl: './generic-crud.component.html',
@@ -55,9 +56,16 @@ export class GenericCrudComponent<T>  {
       enterAnimationDuration,
       exitAnimationDuration,
       data
-    })
+    });
   }
-
+  abrirPreview(urlImagen: string): void {
+    this.dialog.open(PreviewImagenComponent, {
+      width: 'auto',
+      enterAnimationDuration: '0ms',
+      exitAnimationDuration: '0ms',
+      data: urlImagen
+    });
+  }
   abrir() {
     this.abrirModal('0ms', '0ms');
   }
@@ -65,6 +73,7 @@ export class GenericCrudComponent<T>  {
   editar(data: any) {
     this.abrirModal('0ms', '0ms', data);
   }
+
 
 
 }
