@@ -75,4 +75,9 @@ class Utilities {
     }
     return 'Ingrese un codigo postal valido';
   }
+
+  static String? latitudValidator(value) {
+    if (value == null) return "Ingrese su ubicacion";
+    return null;
+  }
 }
