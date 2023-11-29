@@ -37,6 +37,7 @@ import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ConfiguracionesPanelComponent } from './components/configuraciones-panel/configuraciones-panel.component';
 import { ModalRegistroplantasComponent } from './components/modal-registroplantas/modal-registroplantas.component';
 import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
+import { PreviewImagenComponent } from './components/preview-imagen/preview-imagen.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { EstadisticasComponent } from './components/estadisticas/estadisticas.co
     ConfiguracionesPanelComponent,
     ModalRegistroplantasComponent,
     EstadisticasComponent,
+    PreviewImagenComponent,
   ],
   imports: [
     BrowserModule,
