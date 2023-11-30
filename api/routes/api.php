@@ -44,7 +44,7 @@ Route::controller(UsuarioController::class)->group(function () {
 
 Route::controller(RecorridoController::class)->group(function () {
     Route::post("Registrar/Recorrido", "RegistrarRecorrido");
-    Route::get("MisRecorridos", "ObtenerMisRecorridos");
+    Route::post("MisRecorridos", "ObtenerMisRecorridos");
 });
 Route::controller(InfoPlantasController::class)->group(function () {
     Route::get("Plantas", "ObtenerPlantas");

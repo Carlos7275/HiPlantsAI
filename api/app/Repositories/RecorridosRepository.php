@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Recorridos;
+use Illuminate\Support\Facades\DB;
 
 class RecorridosRepository  extends EloquentRepository
 {
@@ -11,9 +12,13 @@ class RecorridosRepository  extends EloquentRepository
         parent::__construct($recorridos);
     }
 
-    public function ObtenerMisRecorridos()
+    public function ObtenerMisRecorridos($fechainicial, $fechafinal)
     {
         $id = auth()->user()->id;
-        return $this->model->where("id_usuario", $id)->get();
+
+        return $this->model
+            ->where("id_usuario", $id)
+            ->whereBetween(DB::raw('DATE(created_at)'), [$fechainicial, $fechafinal])
+            ->get();
     }
 }

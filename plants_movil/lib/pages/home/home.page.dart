@@ -16,6 +16,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Usuario? usuario;
   bool isLoading = true;
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   void initState() {
@@ -64,8 +70,9 @@ class _HomePageState extends State<HomePage> {
                   ? const CircularProgressIndicator()
                   : DrawerHeader(
                       decoration: const BoxDecoration(
-                        color: Enviroment.secondaryColor,
-                      ),
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/drawer.jpg"),
+                              fit: BoxFit.cover)),
                       child: Column(
                         children: <Widget>[
                           CircleAvatar(
@@ -74,16 +81,16 @@ class _HomePageState extends State<HomePage> {
                                 Enviroment.server + usuario!.urlImagen!),
                           ),
                           Text(
-                            "Hola ${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
+                            "${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
                             style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 13,
+                              color: Colors.white,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: Text(
-                              "Email:${usuario!.email}",
+                              "${usuario!.email}",
                               style: const TextStyle(
                                   fontSize: 13,
                                   color: Colors.white,
@@ -102,7 +109,7 @@ class _HomePageState extends State<HomePage> {
               ),
               ListTile(
                 leading: const Icon(Icons.supervised_user_circle_outlined),
-                title: const Text('Configuracion del Usuario'),
+                title: const Text('Configuración del Usuario'),
                 onTap: () async {
                   Modular.to.pushNamed('/infousuario/');
 
@@ -111,14 +118,15 @@ class _HomePageState extends State<HomePage> {
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
-                title: const Text('Configuracion del Sistema'),
+                title: const Text('Configuración del Sistema'),
                 onTap: () async {
                   Navigator.pop(context);
                 },
               ),
+              const Divider(),
               ListTile(
                 leading: const Icon(Icons.logout),
-                title: const Text('Cerrar Sesion'),
+                title: const Text('Cerrar Sesión'),
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();

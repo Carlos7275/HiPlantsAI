@@ -3,6 +3,7 @@ class Utilities {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   static final RegExp names = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
   static final RegExp codigopostal = RegExp(r'^\d{5}$');
+  static final RegExp numeros = RegExp(r'^-?\d+(\.\d+)?');
 
   static String? emailValidator(String? text) {
     if (text != null && email.hasMatch(text)) {
@@ -76,8 +77,31 @@ class Utilities {
     return 'Ingrese un codigo postal valido';
   }
 
-  static String? latitudValidator(value) {
-    if (value == null) return "Ingrese su ubicacion";
-    return null;
+  static String? latitudValidator(String? value) {
+    if (value!.isEmpty) {
+      return "Ingrese la latitud";
+    } else {
+      if (numeros.hasMatch(value)) {
+        double numero = double.parse(value);
+        if (numero >= -90 && numero <= 90) return null;
+        return "Ingrese una latitud válida (-90 a 90)";
+      } else {
+        return "Solo se aceptar numeros";
+      }
+    }
+  }
+
+  static String? longitudValidator(String? value) {
+    if (value!.isEmpty) {
+      return "Ingrese la longitud";
+    } else {
+      if (numeros.hasMatch(value)) {
+        double numero = double.parse(value);
+        if (numero >= -180 && numero <= 180) return null;
+        return "Ingrese una longitud válida (-180 a 180)";
+      } else {
+        return "Solo se aceptar numeros";
+      }
+    }
   }
 }

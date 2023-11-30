@@ -3,7 +3,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class Voz extends StatefulWidget {
-  Voz({super.key});
+  const Voz({super.key});
   @override
   _VozState createState() => _VozState();
 }
@@ -57,7 +57,8 @@ class _VozState extends State<Voz> {
     return Container(
       alignment: Alignment.topRight,
       child: IconButton(
-        icon: Icon(Icons.mic),
+        icon: const Icon(Icons.mic),
+        hoverColor: Colors.grey,
         onPressed: () async {
           // Establecer el texto predeterminado antes de mostrar el diálogo.
           texto = 'Por favor ingrese un comando de voz.';
