@@ -38,7 +38,7 @@ class _RegistroPlantasForm
   }
 
   void pickupImage() async {
-    var result = await showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

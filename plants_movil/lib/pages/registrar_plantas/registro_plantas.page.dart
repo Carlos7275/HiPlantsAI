@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/pages/registrar_plantas/registrar_plantas_form/registrar_plantas_form.dart';
-import 'package:plants_movil/pages/registrar_usuario/registrar_usuario_form/registrar_usuario_form.dart';
 
 class RegistrarPlantasPage extends StatefulWidget {
   const RegistrarPlantasPage({super.key});
