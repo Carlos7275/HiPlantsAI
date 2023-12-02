@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/generics/widgets/stateful.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -68,8 +69,12 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                                     decoration: TextDecoration.underline,
                                     color: Color.fromARGB(255, 6, 6, 6))),
                           ),
-                          onTap: () {
-                            // do what you need to do when "Click here" gets clicked
+                          onTap: () async {
+                            var uri = Uri.parse(
+                                "${Enviroment.server}:4200/recuperarcuenta");
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri);
+                            }
                           }),
                     ),
                   ],
@@ -114,7 +119,6 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                         ),
                         onPressed: () {
                           Modular.to.pushNamed('/registrar');
-
                         },
                         label: const Text(
                           "Registrarse",

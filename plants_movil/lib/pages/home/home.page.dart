@@ -92,9 +92,9 @@ class _HomePageState extends State<HomePage> {
                             child: Text(
                               "${usuario!.email}",
                               style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                                fontSize: 13,
+                                color: Colors.white,
+                              ),
                             ),
                           )
                         ],

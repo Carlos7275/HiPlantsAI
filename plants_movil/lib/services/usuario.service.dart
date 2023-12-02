@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:plants_movil/generics/persistence/service.dart';
-import 'package:plants_movil/models/Contra.model.dart';
-import 'package:plants_movil/models/RegistrarUsuario.model.dart';
+import 'package:plants_movil/models/Distancias.model.dart';
+import 'package:plants_movil/models/Requests/Contra.model.dart';
+import 'package:plants_movil/models/Requests/RegistrarUsuario.model.dart';
 import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,10 +81,10 @@ class UsuarioService extends Service<Usuario> {
   }
 
   Future<Map<String, dynamic>> registrarUsuario(
-       RegistrarUsuarioModel usuario) async {
+      RegistrarUsuarioModel usuario) async {
     final parameters = jsonEncode({
       "email": usuario.email,
-      "password":usuario.password,
+      "password": usuario.password,
       "nombres": usuario.nombres,
       "apellido_paterno": usuario.apellidoPaterno,
       "apellido_materno": usuario.apellidoMaterno,
@@ -94,7 +94,6 @@ class UsuarioService extends Service<Usuario> {
       "id_genero": usuario.idGenero,
       "id_asenta": usuario.idAsentaCpcons,
       "cp": usuario.cp,
-    
     });
 
     http.Response resp =
@@ -110,8 +109,8 @@ class UsuarioService extends Service<Usuario> {
   Future<Map<String, dynamic>> cambiarContra(ContrasModel contras) async {
     final parameters = jsonEncode({
       "PasswordActual": contras.passwordActual,
-      "PasswordNueva":contras.passwordNueva,
-      "PasswordAuxiliar": contras.passwordAuxiliar,    
+      "PasswordNueva": contras.passwordNueva,
+      "PasswordAuxiliar": contras.passwordAuxiliar,
     });
 
     http.Response resp =
@@ -119,6 +118,17 @@ class UsuarioService extends Service<Usuario> {
 
     if (resp.statusCode == 200) {
       return json.decode(resp.body) as Map<String, dynamic>;
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<Distancias> obtenerDistancias() async {
+    http.Response resp = await httpClient.get(url: 'Distancias');
+
+    if (resp.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = json.decode(resp.body)["data"];
+      return Distancias.fromJson(jsonResponse);
     } else {
       throw resp;
     }

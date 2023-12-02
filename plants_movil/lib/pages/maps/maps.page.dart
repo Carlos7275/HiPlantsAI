@@ -1,18 +1,21 @@
 import 'dart:async';
 import 'package:app_settings/app_settings.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:plants_movil/env/local.env.dart';
+import 'package:plants_movil/models/Distancias.model.dart';
 import 'package:plants_movil/models/Mapa.model.dart';
+import 'package:plants_movil/models/Requests/Recorrido.model.dart';
 import 'package:plants_movil/services/mapa.service.dart';
 import 'package:plants_movil/customicons/leaf_icon_icons.dart';
+import 'package:plants_movil/services/usuario.service.dart';
 import 'package:plants_movil/widgets/voz/voz.widget.dart';
-import 'package:rxdart/rxdart.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({Key? key}) : super(key: key);
@@ -22,32 +25,40 @@ class MapsPage extends StatefulWidget {
 }
 
 class _MapsPageState extends State<MapsPage> {
-  final MapController _mapController = MapController();
+  LatLng ubicacionActual = const LatLng(0, 0);
   List<Mapa> puntos = List.empty();
-  LatLng currentLocation = const LatLng(25.781862, -108.990188);
-
-  final BehaviorSubject<bool> isLoading$ = BehaviorSubject<bool>.seeded(false);
-
-  List<TextEditingController> controllers =
-      List.generate(3, (index) => TextEditingController());
+  List<dynamic> plantaCercana = [];
+  List<dynamic> ultimaplantaCercana = [];
+  bool cargando = true;
+  Stopwatch sw = Stopwatch();
+  bool estaCorriendoStopwatch = false;
+  final MapController mapController = MapController();
+  Distancias? distancias;
 
   @override
   void initState() {
     super.initState();
-    _initMap();
+    inicializarMapa();
   }
 
-  Future<void> _initMap() async {
-    await obtenerPlantasActivas();
-    await preguntarPermisos();
-    await obtenerUbicacionUsuario();
+  void inicializarMapa() async {
+    try {
+      distancias = await obtenerDistancias();
+      //Si no es web preguntar permisos
+      if (!kIsWeb) {
+        await preguntarPermisos();
+      }
+      await obtenerUbicacionUsuario();
+      await obtenerPlantasActivas();
+    } finally {
+      setState(() {
+        cargando = false;
+      });
+    }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _initMap();
-    setState(() {});
+  Future<Distancias> obtenerDistancias() async {
+    return await UsuarioService().obtenerDistancias();
   }
 
   Future<void> preguntarPermisos() async {
@@ -59,6 +70,13 @@ class _MapsPageState extends State<MapsPage> {
     }
   }
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   Future<void> obtenerPlantasActivas() async {
     puntos = await MapaService().obtenerPlantasActivas();
   }
@@ -67,22 +85,27 @@ class _MapsPageState extends State<MapsPage> {
     StreamSubscription<Position>? locationSubscription;
 
     void handleLocationChanged(Position position) {
-      print("Location changed: $position");
+      if (kDebugMode) {
+        print("Se actualizo la posición: $position");
+      }
       setState(() {
-        currentLocation = LatLng(position.latitude, position.longitude);
+        ubicacionActual = LatLng(position.latitude, position.longitude);
+        busquedaPlantasCercanas(position);
       });
     }
 
     void handleLocationError(dynamic error) {
-      print("Error obtaining location: $error");
+      if (kDebugMode) {
+        print("Error al obtener la localización: $error");
+      }
       mostrarAlertaActivarGPS();
     }
 
     bool servicio = await Geolocator.isLocationServiceEnabled();
 
     if (servicio) {
-      const settings =
-          LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10);
+      const settings = LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 10);
 
       locationSubscription = Geolocator.getPositionStream(
         locationSettings: settings,
@@ -91,18 +114,53 @@ class _MapsPageState extends State<MapsPage> {
         onError: handleLocationError,
       );
     } else {
-      // If location service is not enabled, prompt the user to enable it.
-      print("Location service is not enabled. Showing alert.");
       mostrarAlertaActivarGPS();
     }
 
     // Cancel the location subscription when the widget is disposed.
     locationSubscription?.onDone(() {
-      print("Location subscription canceled.");
       locationSubscription?.cancel();
     });
+  }
 
-    setState(() {});
+  void busquedaPlantasCercanas(Position position) async {
+    //Guardamos las distancias de cada planta con respecto a nuestra posición
+    List<dynamic> distanciasPlantas = puntos.map((e) {
+      return {
+        'id': e.id,
+        'distancia': Geolocator.distanceBetween(
+            position.latitude, position.longitude, e.latitud!, e.longitud!),
+      };
+    }).toList();
+
+    //Comparamos las distancias respecto a las distancias minimas y maximas que tenemos definida en la BD
+
+    plantaCercana = distanciasPlantas
+        .where((element) =>
+            element["distancia"] >= distancias!.distanciamin &&
+            element["distancia"] <= distancias!.distanciamax)
+        .toList();
+
+    print(plantaCercana);
+
+    if (plantaCercana.isNotEmpty && plantaCercana != ultimaplantaCercana) {
+      if (!estaCorriendoStopwatch) {
+        sw.start();
+        estaCorriendoStopwatch = true;
+        ultimaplantaCercana = plantaCercana;
+      }
+    } else {
+      if (estaCorriendoStopwatch) {
+        sw.stop();
+        estaCorriendoStopwatch = false;
+        List<dynamic> puntosRecorridos =
+            ultimaplantaCercana.map((e) => e['id']).toList();
+
+        await MapaService().registrarRecorrido(
+            RecorridoModel(puntosRecorridos, sw.elapsed.inSeconds));
+        sw.reset();
+      }
+    }
   }
 
   void mostrarAlertaActivarGPS() {
@@ -136,13 +194,13 @@ class _MapsPageState extends State<MapsPage> {
   Widget buildMarkers() {
     return MarkerLayer(
       markers: [
-        Marker(
-          point: currentLocation,
-          width: 60,
-          height: 60,
-          child: const Icon(Icons.account_circle,
-              color: Enviroment.secondaryColor),
-        ),
+        if (!cargando)
+          Marker(
+            point: ubicacionActual,
+            width: 60,
+            height: 60,
+            child: const Icon(Icons.account_circle, color: Colors.blue),
+          ),
         for (var markerData in puntos)
           Marker(
             point: LatLng(markerData.latitud!, markerData.longitud!),
@@ -155,16 +213,34 @@ class _MapsPageState extends State<MapsPage> {
     );
   }
 
+  asignarUbicacion() {
+    mapController.move(ubicacionActual, 18);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Modular.to.pushNamed('/registrarplanta');
-        },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
-        foregroundColor: Colors.white,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              await obtenerUbicacionUsuario();
+              asignarUbicacion();
+            },
+            backgroundColor: Enviroment.primaryColor,
+            child: const Icon(Icons.gps_fixed_outlined),
+          ),
+          const SizedBox(height: 5),
+          FloatingActionButton(
+            onPressed: () async {
+              Modular.to.pushNamed('/registrarplanta');
+            },
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Stack(children: [
         OrientationBuilder(
@@ -182,27 +258,38 @@ class _MapsPageState extends State<MapsPage> {
                 return Row(
                   children: [
                     Center(
-                      child: SizedBox(
-                        width: mapWidth,
-                        height: mapHeight,
-                        child: FlutterMap(
-                          mapController: _mapController,
-                          options: MapOptions(
-                            initialCenter: currentLocation,
-                            initialZoom: 12,
-                          ),
-                          children: [
-                            TileLayer(
-                              urlTemplate:
-                                  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                              subdomains: const ['a', 'b', 'c'],
-                              tileProvider:
-                                  FMTC.instance('mapStore').getTileProvider(),
+                      child: (cargando)
+                          ? SizedBox(
+                              height: 100,
+                              width: MediaQuery.of(context).size.width,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    strokeWidth: 5),
+                              ),
+                            )
+                          : SizedBox(
+                              width: mapWidth,
+                              height: mapHeight,
+                              child: FlutterMap(
+                                mapController: mapController,
+                                options: MapOptions(
+                                  initialCenter: ubicacionActual,
+                                  initialZoom: 12,
+                                ),
+                                children: [
+                                  TileLayer(
+                                    urlTemplate:
+                                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                    subdomains: const ['a', 'b', 'c'],
+                                    tileProvider:
+                                        CancellableNetworkTileProvider(),
+                                  ),
+                                  buildMarkers(),
+                                ],
+                              ),
                             ),
-                            buildMarkers(),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 );

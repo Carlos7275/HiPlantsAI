@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:plants_movil/generics/widgets/controller.dart';
-import 'package:plants_movil/models/Planta.model.dart';
+import 'package:plants_movil/models/Requests/Planta.model.dart';
 import 'package:plants_movil/services/mapa.service.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,15 +22,14 @@ class RegistroPlantasController extends Controller {
     bool servicio = await Geolocator.isLocationServiceEnabled();
 
     if (servicio) {
-      const settings =
-          LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10);
+      const LocationSettings(
+          accuracy: LocationAccuracy.high, distanceFilter: 10);
 
       Position position = await Geolocator.getCurrentPosition();
       controllers[0].text = position.latitude.toString();
       controllers[1].text = position.longitude.toString();
     } else {
-      // If location service is not enabled, prompt the user to enable it.
-      print("Location service is not enabled. Showing alert.");
+      await AppSettings.openAppSettings(type: AppSettingsType.location);
     }
   }
 

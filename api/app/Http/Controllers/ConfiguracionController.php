@@ -27,8 +27,8 @@ class ConfiguracionController extends Controller
                 "tokentreffle" => 'required|string',
                 "tokenipinfo" => 'required|string',
                 "tokenplantsnet" => 'required|string',
-                "distanciamin" => 'required|numeric',
-                "distanciamax" => 'required|numeric'
+                "distanciamin" => 'required|numeric|min:1|max:5',
+                "distanciamax" => 'required|numeric|min:5|max:15'
             ]);
 
             $this->_configuracionRepository->update(1, $request->json()->all());

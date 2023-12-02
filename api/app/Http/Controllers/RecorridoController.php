@@ -41,7 +41,7 @@ class RecorridoController extends Controller
                 $this->_recorridoRepository->create($datos);
             }
 
-            return response()->json(Message::success("Se registro correctamente el recorrido"), 201);
+            return response()->json(Message::success("Se registro correctamente el recorrido"), 200);
         } catch (ValidationException $e1) {
             return response()->json(Message::Error(Utils::ConvertirErroresALinea($e1->errors())), 422);
         }

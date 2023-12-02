@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/generics/widgets/controller.dart';
-import 'package:plants_movil/models/Contra.model.dart';
+import 'package:plants_movil/models/Requests/Contra.model.dart';
 import 'package:plants_movil/services/usuario.service.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
