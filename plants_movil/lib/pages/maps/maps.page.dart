@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,13 @@ import 'package:plants_movil/env/local.env.dart';
 import 'package:plants_movil/models/Distancias.model.dart';
 import 'package:plants_movil/models/Mapa.model.dart';
 import 'package:plants_movil/models/Requests/Recorrido.model.dart';
+import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:plants_movil/services/mapa.service.dart';
 import 'package:plants_movil/customicons/leaf_icon_icons.dart';
 import 'package:plants_movil/services/usuario.service.dart';
 import 'package:plants_movil/widgets/voz/voz.widget.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({Key? key}) : super(key: key);
@@ -34,7 +38,7 @@ class _MapsPageState extends State<MapsPage> {
   bool estaCorriendoStopwatch = false;
   final MapController mapController = MapController();
   Distancias? distancias;
-
+  bool? isAdmin;
   @override
   void initState() {
     super.initState();
@@ -43,22 +47,32 @@ class _MapsPageState extends State<MapsPage> {
 
   void inicializarMapa() async {
     try {
+      isAdmin = await esAdministrador();
       distancias = await obtenerDistancias();
       //Si no es web preguntar permisos
       if (!kIsWeb) {
         await preguntarPermisos();
       }
       await obtenerUbicacionUsuario();
-      await obtenerPlantasActivas();
+      await obtenerPlantas();
+     
     } finally {
       setState(() {
         cargando = false;
       });
     }
   }
+  Future <void> obtenerPlantas()async{
+    isAdmin! ? await obtenerTodasLasPlantas() : await obtenerPlantasActivas();
+  }
 
   Future<Distancias> obtenerDistancias() async {
     return await UsuarioService().obtenerDistancias();
+  }
+
+  Future<bool> esAdministrador() async {
+    Usuario infousuario = await UsuarioService().obtenerInfoUsuario();
+    return (infousuario.idRol == 1);
   }
 
   Future<void> preguntarPermisos() async {
@@ -79,6 +93,10 @@ class _MapsPageState extends State<MapsPage> {
 
   Future<void> obtenerPlantasActivas() async {
     puntos = await MapaService().obtenerPlantasActivas();
+  }
+
+  Future<void> obtenerTodasLasPlantas() async {
+    puntos = await MapaService().obtenerTodasLasPlantas();
   }
 
   Future<void> obtenerUbicacionUsuario() async {
@@ -121,6 +139,128 @@ class _MapsPageState extends State<MapsPage> {
     locationSubscription?.onDone(() {
       locationSubscription?.cancel();
     });
+  }
+
+  Future<void> mostrarInformacionDePlanta(Mapa infoPlanta) async {
+    showDialog(
+      context: context,
+      //barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Planta ${infoPlanta.infoPlantas!.nombrePlanta!}"),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            CircleAvatar(
+              backgroundColor:
+                  Colors.transparent, // Para que el fondo sea transparente
+              radius: 80,
+              backgroundImage: NetworkImage(
+                Enviroment.server + infoPlanta.urlImagen!,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  "Nombre centífico: ${infoPlanta.infoPlantas!.nombreCientifico!}",
+                  style: const TextStyle(
+                    fontSize: 15,
+                  )),
+            ),
+            if (infoPlanta.infoPlantas!.familia != null)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Familia: ${infoPlanta.infoPlantas!.familia!}",
+                    style: const TextStyle(
+                      fontSize: 15,
+                    )),
+              ),
+            if (infoPlanta.infoPlantas!.nombresComunes!.spa != null)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                    "Nombres comunes: ${infoPlanta.infoPlantas!.nombresComunes!.spa!.join(", ")}",
+                    style: const TextStyle(
+                      fontSize: 15,
+                    )),
+              ),
+            if (infoPlanta.infoPlantas!.toxicidad != null)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Tóxica: ${infoPlanta.infoPlantas!.toxicidad!}",
+                    style: const TextStyle(
+                      fontSize: 15,
+                    )),
+              ),
+            if (infoPlanta.infoPlantas!.comestible != null)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child:
+                    Text("Comestible: ${infoPlanta.infoPlantas!.comestible!}",
+                        style: const TextStyle(
+                          fontSize: 15,
+                        )),
+              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Genero: ${infoPlanta.infoPlantas!.genero!}",
+                  style: const TextStyle(
+                    fontSize: 15,
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  (infoPlanta.estatus == 1)
+                      ? "Estatus: Activo"
+                      : "Estatus: Inactivo",
+                  style: const TextStyle(
+                    fontSize: 15,
+                  )),
+            ),
+          ]),
+          actions: <Widget>[
+            if (isAdmin!)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    cambiarEstatusPlanta(infoPlanta.id!);
+                    inicializarMapa();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.yellow, // Fondo verde
+                    foregroundColor: Colors.black, // Texto blanco
+                  ),
+                  child: const Text('Cambiar Estatus'),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  void cambiarEstatusPlanta(int idPlanta) {
+    cargando = true;
+    MapaService()
+        .cambiarEstatus(idPlanta)
+        .then((value) {
+          QuickAlert.show(
+              context: context,
+              type: QuickAlertType.success,
+              title: "¡Operación Exitosa!",
+              text: value["data"]);
+        })
+        .then((value) async {})
+        .catchError((error) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: jsonDecode(error.body)["message"],
+            showConfirmBtn: true,
+          );
+        });
+    cargando = false;
+    Navigator.pop(context);
   }
 
   void busquedaPlantasCercanas(Position position) async {
@@ -203,12 +343,22 @@ class _MapsPageState extends State<MapsPage> {
           ),
         for (var markerData in puntos)
           Marker(
-            point: LatLng(markerData.latitud!, markerData.longitud!),
-            width: 100,
-            height: 100,
-            child:
-                const Icon(LeafIcon.tree_2, color: Enviroment.secondaryColor),
-          ),
+              point: LatLng(markerData.latitud!, markerData.longitud!),
+              width: 40,
+              height: 40,
+              child: IconButton(
+                  onPressed: () {
+                    mostrarInformacionDePlanta(markerData);
+                  },
+                  iconSize: 30,
+                  style: const ButtonStyle(
+                      elevation: MaterialStatePropertyAll(0.0),
+                      backgroundColor:
+                          MaterialStatePropertyAll(Colors.transparent)),
+                  icon: Icon(LeafIcon.tree_2,
+                      color: markerData.estatus == 0
+                          ? Colors.grey
+                          : Enviroment.secondaryColor)))
       ],
     );
   }

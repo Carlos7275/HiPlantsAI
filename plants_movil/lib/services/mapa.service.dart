@@ -19,10 +19,19 @@ class MapaService extends Service<Mapa> {
       throw resp;
     }
   }
+  Future<List<Mapa>>obtenerTodasLasPlantas()async{
+    http.Response resp=await httpClient.get(url:'Mapa/Plantas');
+     if (resp.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(resp.body)["data"];
+      return jsonResponse.map((mapa) => Mapa.fromJson(mapa)).toList();
+    } else {
+      throw resp;
+    }
+  }
 
   Future<Map<String, dynamic>> cambiarEstatus(int id) async {
     http.Response resp =
-        await httpClient.get(url: 'Cambiar/Estatus/Planta/$id');
+        await httpClient.put(url: 'Cambiar/Estatus/Planta/$id');
     if (resp.statusCode == 200) {
       return json.decode(resp.body) as Map<String, dynamic>;
     } else {
