@@ -8,6 +8,7 @@ import 'package:plants_movil/services/codigospostales.service.dart';
 import 'package:plants_movil/services/generos.service.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
+import 'package:plants_movil/widgets/space/space.widget.dart';
 
 class RegistrarUsuarioForm extends StatefulWidget {
   const RegistrarUsuarioForm({super.key});
@@ -56,8 +57,7 @@ class _RegistraUsuarioState
   //comenzamos a crear el diseño de la pagina
   @override
   Widget build(BuildContext context) {
-    Container spaceBetween = Container(
-        height: 15); //creamos la variable para el salto entre componentes
+    //creamos la variable para el salto entre componentes
     return StreamBuilder<bool>(
         stream: controller.isLoading$,
         builder: (context, snapshot) {
@@ -70,7 +70,7 @@ class _RegistraUsuarioState
                     borderRadius: BorderRadius.circular(50),
                     child: Image.asset('assets/images/user.png', width: 150),
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   Row(
                     children: [
                       Expanded(
@@ -234,7 +234,7 @@ class _RegistraUsuarioState
                     ],
                   ),
 
-                  spaceBetween, //e|spaciado
+                   Space.espaciador(15), //e|spaciado
                   Row(
                     children: [
                       Expanded(
@@ -262,7 +262,7 @@ class _RegistraUsuarioState
                     ],
                   ),
 
-                  spaceBetween, //espaciado
+                   Space.espaciador(15), //espaciado
                 ], //children
               ),
             );

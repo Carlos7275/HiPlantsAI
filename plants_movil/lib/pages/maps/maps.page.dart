@@ -17,6 +17,7 @@ import 'package:plants_movil/models/Usuario.model.dart';
 import 'package:plants_movil/services/mapa.service.dart';
 import 'package:plants_movil/customicons/leaf_icon_icons.dart';
 import 'package:plants_movil/services/usuario.service.dart';
+import 'package:plants_movil/widgets/space/space.widget.dart';
 import 'package:plants_movil/widgets/voz/voz.widget.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -55,14 +56,14 @@ class _MapsPageState extends State<MapsPage> {
       }
       await obtenerUbicacionUsuario();
       await obtenerPlantas();
-     
     } finally {
       setState(() {
         cargando = false;
       });
     }
   }
-  Future <void> obtenerPlantas()async{
+
+  Future<void> obtenerPlantas() async {
     isAdmin! ? await obtenerTodasLasPlantas() : await obtenerPlantasActivas();
   }
 
@@ -122,8 +123,8 @@ class _MapsPageState extends State<MapsPage> {
     bool servicio = await Geolocator.isLocationServiceEnabled();
 
     if (servicio) {
-      const settings = LocationSettings(
-          accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 10);
+      const settings =
+          LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10);
 
       locationSubscription = Geolocator.getPositionStream(
         locationSettings: settings,
@@ -148,90 +149,67 @@ class _MapsPageState extends State<MapsPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Planta ${infoPlanta.infoPlantas!.nombrePlanta!}"),
-          content: Column(mainAxisSize: MainAxisSize.min, children: [
-            CircleAvatar(
-              backgroundColor:
-                  Colors.transparent, // Para que el fondo sea transparente
-              radius: 80,
-              backgroundImage: NetworkImage(
-                Enviroment.server + infoPlanta.urlImagen!,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  "Nombre centífico: ${infoPlanta.infoPlantas!.nombreCientifico!}",
-                  style: const TextStyle(
-                    fontSize: 15,
-                  )),
-            ),
-            if (infoPlanta.infoPlantas!.familia != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Familia: ${infoPlanta.infoPlantas!.familia!}",
-                    style: const TextStyle(
-                      fontSize: 15,
-                    )),
-              ),
-            if (infoPlanta.infoPlantas!.nombresComunes!.spa != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundColor:
+                      Colors.transparent, // Para que el fondo sea transparente
+                  radius: 100,
+                  backgroundImage: NetworkImage(
+                    Enviroment.server + infoPlanta.urlImagen!,
+                  ),
+                ),
+                Space.espaciador(10),
+                Text(
+                  "Nombre científico: ${infoPlanta.infoPlantas!.nombreCientifico!}",
+                ),
+                Space.espaciador(10),
+                if (infoPlanta.infoPlantas!.familia != null)
+                  Text(
+                    "Familia: ${infoPlanta.infoPlantas!.familia!}",
+                  ),
+                Space.espaciador(10),
+                if (infoPlanta.infoPlantas!.nombresComunes!.spa != null)
+                  Text(
                     "Nombres comunes: ${infoPlanta.infoPlantas!.nombresComunes!.spa!.join(", ")}",
-                    style: const TextStyle(
-                      fontSize: 15,
-                    )),
-              ),
-            if (infoPlanta.infoPlantas!.toxicidad != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Tóxica: ${infoPlanta.infoPlantas!.toxicidad!}",
-                    style: const TextStyle(
-                      fontSize: 15,
-                    )),
-              ),
-            if (infoPlanta.infoPlantas!.comestible != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child:
-                    Text("Comestible: ${infoPlanta.infoPlantas!.comestible!}",
-                        style: const TextStyle(
-                          fontSize: 15,
-                        )),
-              ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Genero: ${infoPlanta.infoPlantas!.genero!}",
-                  style: const TextStyle(
-                    fontSize: 15,
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
+                  ),
+                Space.espaciador(10),
+                if (infoPlanta.infoPlantas!.toxicidad != null)
+                  Text(
+                    "Tóxica: ${infoPlanta.infoPlantas!.toxicidad!}",
+                  ),
+                Space.espaciador(10),
+                if (infoPlanta.infoPlantas!.comestible != null)
+                  Text(
+                    "Comestible: ${infoPlanta.infoPlantas!.comestible! ? "Si" : "No"}",
+                  ),
+                Space.espaciador(10),
+                Text(
+                  "Genero: ${infoPlanta.infoPlantas!.genero!}",
+                ),
+                Space.espaciador(10),
+                Text(
                   (infoPlanta.estatus == 1)
                       ? "Estatus: Activo"
                       : "Estatus: Inactivo",
-                  style: const TextStyle(
-                    fontSize: 15,
-                  )),
+                )
+              ],
             ),
-          ]),
+          ),
           actions: <Widget>[
             if (isAdmin!)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    cambiarEstatusPlanta(infoPlanta.id!);
-                    inicializarMapa();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow, // Fondo verde
-                    foregroundColor: Colors.black, // Texto blanco
-                  ),
-                  child: const Text('Cambiar Estatus'),
+              ElevatedButton(
+                onPressed: () {
+                  cambiarEstatusPlanta(infoPlanta.id!);
+                  inicializarMapa();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow, // Fondo verde
+                  foregroundColor: Colors.black, // Texto blanco
                 ),
+                child: const Text('Cambiar Estatus'),
               ),
           ],
         );
@@ -363,8 +341,9 @@ class _MapsPageState extends State<MapsPage> {
     );
   }
 
-  asignarUbicacion() {
+  asignarUbicacion() async {
     mapController.move(ubicacionActual, 18);
+    obtenerPlantas();
   }
 
   @override
@@ -376,7 +355,7 @@ class _MapsPageState extends State<MapsPage> {
           FloatingActionButton(
             onPressed: () async {
               await obtenerUbicacionUsuario();
-              asignarUbicacion();
+              await asignarUbicacion();
             },
             backgroundColor: Enviroment.primaryColor,
             child: const Icon(Icons.gps_fixed_outlined),

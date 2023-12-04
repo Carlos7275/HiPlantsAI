@@ -3,6 +3,7 @@ import 'package:plants_movil/generics/widgets/stateful.dart';
 import 'package:plants_movil/pages/cambiar_contra/cambiar_contra_form/cambiar_contra.controller.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
+import 'package:plants_movil/widgets/space/space.widget.dart';
 
 class CambiarContraForm extends StatefulWidget {
   const CambiarContraForm({super.key});
@@ -10,13 +11,12 @@ class CambiarContraForm extends StatefulWidget {
   State<CambiarContraForm> createState() => _CambiarContraState();
 }
 
-
-class _CambiarContraState extends Stateful<CambiarContraForm, CambiarContraController> {
- //comenzamos a crear el diseño de la pagina
+class _CambiarContraState
+    extends Stateful<CambiarContraForm, CambiarContraController> {
+  //comenzamos a crear el diseño de la pagina
   @override
   Widget build(BuildContext context) {
-    Container spaceBetween = Container(
-        height: 15); //creamos la variable para el salto entre componentes
+    //creamos la variable para el salto entre componentes
     return StreamBuilder<bool>(
         stream: controller.isLoading$,
         builder: (context, snapshot) {
@@ -27,10 +27,10 @@ class _CambiarContraState extends Stateful<CambiarContraForm, CambiarContraContr
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Image.asset('assets/images/imgcontra.jpg', width: 150),
+                    child:
+                        Image.asset('assets/images/imgcontra.jpg', width: 150),
                   ),
-                  spaceBetween,
-
+                  Space.espaciador(15),
                   Row(
                     children: [
                       Expanded(
@@ -44,7 +44,7 @@ class _CambiarContraState extends Stateful<CambiarContraForm, CambiarContraContr
                       ),
                     ],
                   ),
-                  spaceBetween, //espaciado
+                  Space.espaciador(15), //espaciado
 
                   Row(
                     children: [
@@ -59,7 +59,7 @@ class _CambiarContraState extends Stateful<CambiarContraForm, CambiarContraContr
                       ),
                     ],
                   ),
-                  spaceBetween, //espaciado
+                  Space.espaciador(15), //espaciado
 
                   Row(
                     children: [
@@ -74,7 +74,7 @@ class _CambiarContraState extends Stateful<CambiarContraForm, CambiarContraContr
                       ),
                     ],
                   ),
-                  spaceBetween, //espaciado
+                  Space.espaciador(15), //espaciado
 
                   Row(
                     children: [
@@ -101,7 +101,6 @@ class _CambiarContraState extends Stateful<CambiarContraForm, CambiarContraContr
                       ),
                     ],
                   ),
-
                 ], //children
               ),
             );
@@ -118,5 +117,4 @@ class _CambiarContraState extends Stateful<CambiarContraForm, CambiarContraContr
           }
         });
   }
-
 }

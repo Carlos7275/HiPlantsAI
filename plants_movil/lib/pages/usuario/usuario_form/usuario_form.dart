@@ -15,6 +15,7 @@ import 'package:plants_movil/services/generos.service.dart';
 import 'package:plants_movil/services/usuario.service.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
+import 'package:plants_movil/widgets/space/space.widget.dart';
 
 // ignore: must_be_immutable
 class UsuarioForm extends StatefulWidget {
@@ -162,8 +163,6 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
 
   @override
   Widget build(BuildContext context) {
-    Container spaceBetween = Container(height: 15);
-
     return StreamBuilder<bool>(
         stream: controller.isLoading$,
         builder: (context, snapshot) {
@@ -198,7 +197,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                               ),
                               radius: 80,
                             ),
-                      spaceBetween,
+                      Space.espaciador(15),
                       ElevatedButton.icon(
                         icon: const Icon(Icons.image),
                         style: ButtonStyle(
@@ -264,7 +263,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                       ),
                     ],
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   Row(
                     children: [
                       Expanded(
@@ -350,7 +349,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                       ),
                     ],
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   Row(
                     children: [
                       Expanded(
@@ -376,7 +375,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                       ),
                     ],
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   Row(
                     children: [
                       Expanded(
@@ -403,7 +402,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                       ),
                     ],
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                 ],
               ),
             );

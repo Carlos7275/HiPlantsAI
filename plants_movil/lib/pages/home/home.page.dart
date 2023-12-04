@@ -29,6 +29,12 @@ class _HomePageState extends State<HomePage> {
     obtenerInfoUsuario();
   }
 
+  cerrarSesion() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Modular.to.pushNamed('/');
+  }
+
   void obtenerInfoUsuario() async {
     usuario = await UsuarioService().obtenerInfoUsuario();
     setState(() {
@@ -49,91 +55,117 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: const Text(
-              "Hi Plants AI",
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Enviroment.secondaryColor,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20),
-            ))),
-        body: const MapsPage(),
-        drawer: Drawer(
-            child: ListView(
-                // Important: Remove any padding from the ListView.
-                padding: EdgeInsets.zero,
-                children: [
-              isLoading
-                  ? const CircularProgressIndicator()
-                  : DrawerHeader(
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/images/drawer.jpg"),
-                              fit: BoxFit.cover)),
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundImage: NetworkImage(
-                                Enviroment.server + usuario!.urlImagen!),
-                          ),
-                          Text(
-                            "${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text(
-                              "${usuario!.email}",
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+    return WillPopScope(
+        onWillPop: () async {
+          bool confirm = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("¿Desea cerrar Sesión?"),
+                actions: <Widget>[
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child:
+                        const Text("No", style: TextStyle(color: Colors.black)),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      cerrarSesion();
+                    },
+                    child: const Text(
+                      "Sí",
+                      style: TextStyle(color: Colors.black),
                     ),
-              ListTile(
-                leading: const Icon(Icons.data_usage),
-                title: const Text('Recorridos'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.supervised_user_circle_outlined),
-                title: const Text('Configuración del Usuario'),
-                onTap: () async {
-                  Modular.to.pushNamed('/infousuario/');
+                  ),
+                ],
+              );
+            },
+          );
+          return confirm;
+        },
+        child: Scaffold(
+            appBar: AppBar(
+                title: const Text(
+                  "Hi Plants AI",
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Enviroment.secondaryColor,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(20),
+                ))),
+            body: const MapsPage(),
+            drawer: Drawer(
+                child: ListView(
+                  
+                    // Important: Remove any padding from the ListView.
+                    padding: EdgeInsets.zero,
+                    children: [
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : DrawerHeader(
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/images/drawer.jpg"),
+                                  fit: BoxFit.cover)),
+                          child: Column(
+                            children: <Widget>[
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundImage: NetworkImage(
+                                    Enviroment.server + usuario!.urlImagen!),
+                              ),
+                              Text(
+                                "${usuario!.nombres!} ${usuario!.apellidoPaterno} ${usuario!.apellidoMaterno}",
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Text(
+                                  "${usuario!.email}",
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                  ListTile(
+                    leading: const Icon(Icons.data_usage),
+                    title: const Text('Recorridos'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.supervised_user_circle_outlined),
+                    title: const Text('Configuración del Usuario'),
+                    onTap: () async {
+                      Modular.to.pushNamed('/infousuario/');
 
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Configuración del Sistema'),
-                onTap: () async {
-                  Navigator.pop(context);
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Cerrar Sesión'),
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.clear();
-                  Modular.to.pushNamed('/');
-                },
-              ),
-            ])));
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Configuración del Sistema'),
+                    onTap: () async {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Cerrar Sesión'),
+                    onTap: () async {
+                      cerrarSesion();
+                    },
+                  ),
+                ]))));
   }
 }

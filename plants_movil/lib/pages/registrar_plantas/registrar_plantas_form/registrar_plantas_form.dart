@@ -8,6 +8,7 @@ import 'package:plants_movil/pages/registrar_plantas/registrar_plantas_form/regi
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
 import 'package:mime/mime.dart';
+import 'package:plants_movil/widgets/space/space.widget.dart';
 
 class RegistroPlantasForm extends StatefulWidget {
   const RegistroPlantasForm({super.key});
@@ -100,8 +101,6 @@ class _RegistroPlantasForm
 
   @override
   Widget build(BuildContext context) {
-    Container spaceBetween = Container(height: 15);
-
     return StreamBuilder<bool>(
         stream: controller.isLoading$,
         builder: (context, snapshot) {
@@ -129,7 +128,7 @@ class _RegistroPlantasForm
                           child: Image.asset('assets/images/image.png',
                               width: 250),
                         ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.image),
                     style: ButtonStyle(
@@ -146,7 +145,7 @@ class _RegistroPlantasForm
                       ],
                     ),
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   Row(
                     children: [
                       Expanded(
@@ -159,7 +158,7 @@ class _RegistroPlantasForm
                       ),
                     ],
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   Row(
                     children: [
                       Expanded(
@@ -172,7 +171,7 @@ class _RegistroPlantasForm
                       ),
                     ],
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.location_on),
                     style: ButtonStyle(
@@ -191,7 +190,7 @@ class _RegistroPlantasForm
                       ],
                     ),
                   ),
-                  spaceBetween,
+                  Space.espaciador(15),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.save),
                     style: ButtonStyle(
