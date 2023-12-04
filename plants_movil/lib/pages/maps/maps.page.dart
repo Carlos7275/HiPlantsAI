@@ -218,26 +218,20 @@ class _MapsPageState extends State<MapsPage> {
   }
 
   void cambiarEstatusPlanta(int idPlanta) {
-    cargando = true;
-    MapaService()
-        .cambiarEstatus(idPlanta)
-        .then((value) {
-          QuickAlert.show(
-              context: context,
-              type: QuickAlertType.success,
-              title: "¡Operación Exitosa!",
-              text: value["data"]);
-        })
-        .then((value) async {})
-        .catchError((error) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            text: jsonDecode(error.body)["message"],
-            showConfirmBtn: true,
-          );
-        });
-    cargando = false;
+    MapaService().cambiarEstatus(idPlanta).then((value) {
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: "¡Operación Exitosa!",
+          text: value["data"]);
+    }).catchError((error) {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        text: jsonDecode(error.body)["message"],
+        showConfirmBtn: true,
+      );
+    });
     Navigator.pop(context);
   }
 
@@ -343,7 +337,7 @@ class _MapsPageState extends State<MapsPage> {
 
   asignarUbicacion() async {
     mapController.move(ubicacionActual, 18);
-    obtenerPlantas();
+    inicializarMapa();
   }
 
   @override
