@@ -8,6 +8,7 @@ use App\Http\Controllers\GenerosController;
 use App\Http\Controllers\InfoPlantasController;
 use App\Http\Controllers\LocalizacionIPController;
 use App\Http\Controllers\MapaController;
+use App\Http\Controllers\PrologController;
 use App\Http\Controllers\RecorridoController;
 use App\Http\Controllers\RolesController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,10 @@ Route::controller(MapaController::class)->group(function () {
     Route::get("Mapa/Plantas/Activas", "ObtenerPlantasActivas");
     Route::get("Mapa/Planta/{id}", "ObtenerPlanta");
     Route::put("Cambiar/Estatus/Planta/{id}", "CambiarEstatusPlanta");
+});
+
+Route::controller(PrologController::class)->group(function(){
+    Route::get("Sumar/{num1}/{num2}","Sumar");
 });
 
 

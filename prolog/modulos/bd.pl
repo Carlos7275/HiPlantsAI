@@ -10,8 +10,8 @@ conectar_mysql(Connection) :-
                 ]).
 
 consultar_tabla(Query,Resultados):-
-      conectar_mysql(Connection), 
-      odbc_query(Connection,Query,Resultados).
+      conectar_mysql(Connection),
+      findall(Row, odbc_query(Connection, Query, Row), Resultados).
 
 desconectar:-
   odbc_disconnect(mysql).
