@@ -21,6 +21,7 @@ import 'package:plants_movil/widgets/space/space.widget.dart';
 import 'package:plants_movil/widgets/voz/voz.widget.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:intl/intl.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class MapsPage extends StatefulWidget {
 }
 
 class _MapsPageState extends State<MapsPage> {
+  List<dynamic>? distanciasPlantas;
   LatLng ubicacionActual = const LatLng(0, 0);
   List<Mapa> puntos = List.empty();
   List<dynamic> plantaCercana = [];
@@ -124,7 +126,7 @@ class _MapsPageState extends State<MapsPage> {
 
     if (servicio) {
       const settings =
-          LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10);
+          LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 0);
 
       locationSubscription = Geolocator.getPositionStream(
         locationSettings: settings,
@@ -161,34 +163,47 @@ class _MapsPageState extends State<MapsPage> {
                     Enviroment.server + infoPlanta.urlImagen!,
                   ),
                 ),
+                if (distanciasPlantas != null)
+                  Text(
+                      "Se encuentra a : ${distanciasPlantas!.where((element) => element['id'] == infoPlanta.id).first['distancia']} metros de su posición",
+                      textAlign: TextAlign.left),
+                Space.espaciador(10),
+                Text("Zona: ${infoPlanta.zona!}", textAlign: TextAlign.left),
+                Space.espaciador(15),
+                Text(
+                    "Nombre científico: ${infoPlanta.infoPlantas!.nombreCientifico!}",
+                    textAlign: TextAlign.left),
                 Space.espaciador(10),
                 Text(
-                  "Nombre científico: ${infoPlanta.infoPlantas!.nombreCientifico!}",
-                ),
-                Space.espaciador(10),
-                if (infoPlanta.infoPlantas!.familia != null)
-                  Text(
-                    "Familia: ${infoPlanta.infoPlantas!.familia!}",
-                  ),
-                Space.espaciador(10),
+                    "Año de publicación del nombre: ${infoPlanta.infoPlantas!.aO!}",
+                    textAlign: TextAlign.left),
+                Space.espaciador(6),
                 if (infoPlanta.infoPlantas!.nombresComunes!.spa != null)
                   Text(
-                    "Nombres comunes: ${infoPlanta.infoPlantas!.nombresComunes!.spa!.join(", ")}",
-                  ),
+                      "Nombres comunes: ${infoPlanta.infoPlantas!.nombresComunes!.spa!.join(", ")}",
+                      textAlign: TextAlign.left),
+                Space.espaciador(6),
+                if (infoPlanta.infoPlantas!.familia != null)
+                  Text("Familia: ${infoPlanta.infoPlantas!.familia!}",
+                      textAlign: TextAlign.left),
                 Space.espaciador(10),
                 if (infoPlanta.infoPlantas!.toxicidad != null)
-                  Text(
-                    "Tóxica: ${infoPlanta.infoPlantas!.toxicidad!}",
-                  ),
-                Space.espaciador(10),
+                  Text("Tóxica: ${infoPlanta.infoPlantas!.toxicidad!}",
+                      textAlign: TextAlign.left),
+                Space.espaciador(5),
                 if (infoPlanta.infoPlantas!.comestible != null)
                   Text(
-                    "Comestible: ${infoPlanta.infoPlantas!.comestible! ? "Si" : "No"}",
-                  ),
-                Space.espaciador(10),
+                      "Comestible: ${infoPlanta.infoPlantas!.comestible! ? "Si" : "No"}",
+                      textAlign: TextAlign.left),
+                Space.espaciador(5),
+                Text("Genero: ${infoPlanta.infoPlantas!.genero!}",
+                    textAlign: TextAlign.left),
+                Space.espaciador(5),
                 Text(
-                  "Genero: ${infoPlanta.infoPlantas!.genero!}",
+                  "Fecha de registro: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(infoPlanta.createdAt!))}",
+                  textAlign: TextAlign.left, // Alinea el texto a la izquierda
                 ),
+                Space.espaciador(10),
                 Space.espaciador(10),
                 Text(
                   (infoPlanta.estatus == 1)
@@ -236,41 +251,43 @@ class _MapsPageState extends State<MapsPage> {
   }
 
   void busquedaPlantasCercanas(Position position) async {
-    //Guardamos las distancias de cada planta con respecto a nuestra posición
-    List<dynamic> distanciasPlantas = puntos.map((e) {
-      return {
-        'id': e.id,
-        'distancia': Geolocator.distanceBetween(
-            position.latitude, position.longitude, e.latitud!, e.longitud!),
-      };
-    }).toList();
+    if (!cargando) {
+      //Guardamos las distancias de cada planta con respecto a nuestra posición
+      distanciasPlantas = puntos.map((e) {
+        return {
+          'id': e.id,
+          'distancia': Geolocator.distanceBetween(
+              position.latitude, position.longitude, e.latitud!, e.longitud!),
+        };
+      }).toList();
 
-    //Comparamos las distancias respecto a las distancias minimas y maximas que tenemos definida en la BD
+      //Comparamos las distancias respecto a las distancias minimas y maximas que tenemos definida en la BD
 
-    plantaCercana = distanciasPlantas
-        .where((element) =>
-            element["distancia"] >= distancias!.distanciamin &&
-            element["distancia"] <= distancias!.distanciamax)
-        .toList();
+      plantaCercana = distanciasPlantas!
+          .where((element) =>
+              element["distancia"] >= distancias!.distanciamin &&
+              element["distancia"] <= distancias!.distanciamax)
+          .toList();
 
-    print(plantaCercana);
+      print(plantaCercana);
 
-    if (plantaCercana.isNotEmpty && plantaCercana != ultimaplantaCercana) {
-      if (!estaCorriendoStopwatch) {
-        sw.start();
-        estaCorriendoStopwatch = true;
-        ultimaplantaCercana = plantaCercana;
-      }
-    } else {
-      if (estaCorriendoStopwatch) {
-        sw.stop();
-        estaCorriendoStopwatch = false;
-        List<dynamic> puntosRecorridos =
-            ultimaplantaCercana.map((e) => e['id']).toList();
+      if (plantaCercana.isNotEmpty && plantaCercana != ultimaplantaCercana) {
+        if (!estaCorriendoStopwatch) {
+          sw.start();
+          estaCorriendoStopwatch = true;
+          ultimaplantaCercana = plantaCercana;
+        }
+      } else {
+        if (estaCorriendoStopwatch) {
+          sw.stop();
+          estaCorriendoStopwatch = false;
+          List<dynamic> puntosRecorridos =
+              ultimaplantaCercana.map((e) => e['id']).toList();
 
-        await MapaService().registrarRecorrido(
-            RecorridoModel(puntosRecorridos, sw.elapsed.inSeconds));
-        sw.reset();
+          await MapaService().registrarRecorrido(
+              RecorridoModel(puntosRecorridos, sw.elapsed.inSeconds));
+          sw.reset();
+        }
       }
     }
   }
