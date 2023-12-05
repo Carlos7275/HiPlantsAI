@@ -59,8 +59,10 @@ Route::controller(MapaController::class)->group(function () {
     Route::put("Cambiar/Estatus/Planta/{id}", "CambiarEstatusPlanta");
 });
 
-Route::controller(PrologController::class)->group(function(){
-    Route::get("Sumar/{num1}/{num2}","Sumar");
+Route::controller(PrologController::class)->group(function () {
+    Route::get("Plantas/NoVisitadas/", "ObtenerPlantasNoVisitadas");
+    Route::get("Plantas/NoVisitadas/Cercanas/{Lat}/{Long}", "ObtenerPlantasNoVisitadasCercanas");
+
 });
 
 

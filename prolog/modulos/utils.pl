@@ -28,7 +28,26 @@ haversine_distance(Lat1, Lon1, Lat2, Lon2, Distance) :-
     C is 2 * atan2(sqrt(A), sqrt(1 - A)),
     
     % Radius of the Earth (in kilometers)
-    Radius is 6371.0,
+    RadiusKm is 6371.0,
     
-    % Calculate distance
-    Distance is Radius * C.
+    % Calculate distance in meters
+    Distance is RadiusKm * C * 1000.
+
+
+leer_lista([]).
+leer_lista([Element | Rest]) :-
+    asserta(plantas(Element)),
+    leer_lista(Rest).
+
+leer_lista_recorridos([]).
+leer_lista_recorridos([Element | Rest]) :-
+    asserta(recorridos(Element)),
+    leer_lista_recorridos(Rest).
+
+leer_lista_distancias([]).
+leer_lista_distancias([Element | Rest]) :-
+    nth0(0,Element,DistanciaMin),
+    nth0(1,Element,DistanciaMax),
+    asserta(distanciamin(DistanciaMin)),
+    asserta(distanciamax(DistanciaMax)),
+    leer_lista_distancias(Rest).
