@@ -5,6 +5,9 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { Environment } from 'src/enviroments/enviroment.prod';
 import { MatDialog } from '@angular/material/dialog';
 import { PreviewImagenComponent } from '../preview-imagen/preview-imagen.component';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { ComandosService } from 'src/app/services/comandos.service';
+
 @Component({
   selector: 'app-generic-crud',
   templateUrl: './generic-crud.component.html',
@@ -25,6 +28,8 @@ export class GenericCrudComponent<T>  {
   constructor(
     private MatPaginator: MatPaginatorIntl,
     private dialog: MatDialog,
+    private usuarioService: UsuarioService,
+    private comandosService: ComandosService
   ) {
     MatPaginator.nextPageLabel = "Siguiente Página";
     MatPaginator.firstPageLabel = "Primera Página";

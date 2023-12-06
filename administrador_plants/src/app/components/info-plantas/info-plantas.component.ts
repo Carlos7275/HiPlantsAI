@@ -12,15 +12,15 @@ export class InfoPlantasComponent {
 
   columnasMostradas: string[] = [
     'id',
+    'url_imagen',
     'nombre_planta',
     'nombre_cientifico',
-    'url_imagen',
     'familia',
     'año',
     'genero',
-    'created_at',
     "toxicidad",
-
+    "comestible",
+    'created_at'
   ];
   fuenteDatos = new MatTableDataSource<InformacionPlanta>();
   constructor(private mapaService: MapaService) {

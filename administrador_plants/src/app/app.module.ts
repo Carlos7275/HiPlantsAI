@@ -38,6 +38,10 @@ import { ConfiguracionesPanelComponent } from './components/configuraciones-pane
 import { ModalRegistroplantasComponent } from './components/modal-registroplantas/modal-registroplantas.component';
 import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
 import { PreviewImagenComponent } from './components/preview-imagen/preview-imagen.component';
+import { ComandosComponent } from './components/comandos/comandos.component';
+import { ModalComandosComponent } from './components/modal-comandos/modal-comandos.component';
+import { ComandosService } from './services/comandos.service';
+import { UsuarioService } from './services/usuario.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +67,8 @@ import { PreviewImagenComponent } from './components/preview-imagen/preview-imag
     ModalRegistroplantasComponent,
     EstadisticasComponent,
     PreviewImagenComponent,
+    ComandosComponent,
+    ModalComandosComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,7 +100,9 @@ import { PreviewImagenComponent } from './components/preview-imagen/preview-imag
       multi: true,
     },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService
+    JwtHelperService,
+    ComandosService,
+    UsuarioService
   ],
   bootstrap: [AppComponent]
 })

@@ -40,13 +40,18 @@ class EloquentRepository implements RepositoryInterface
     public function update($id, array $data)
     {
         $record = $this->model->find($id);
-        $record->update($data);
-        return $record;
+        if ($record) {
+            $record->update($data);
+            return $record;
+        }
+        return null;
     }
 
     public function delete($id)
     {
         $record = $this->model->find($id);
-        return $record->delete();
+        if ($record)
+            return $record->delete();
+        return null;
     }
 }

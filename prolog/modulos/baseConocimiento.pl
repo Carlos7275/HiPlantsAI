@@ -59,6 +59,7 @@ plantas_no_visitadas_cercanas_por_usuario(Lat, Long, IdUsuario, PlantasNoEnRecor
         Distancia >= DistanciaMin,
         Distancia =< DistanciaMax
     ), PlantasNoEnRecorridos).
+    
 plantas_no_en_recorridos(Plantas, Recorridos, PlantasNoEnRecorridos) :-
     findall(Planta, (
         member(Planta, Plantas),

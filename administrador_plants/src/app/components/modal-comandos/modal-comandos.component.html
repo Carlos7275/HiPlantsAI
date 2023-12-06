@@ -1,0 +1,34 @@
+<div class="dialog-title">
+    <h1 mat-dialog-title>
+        {{title}}
+    </h1>
+    <button mat-stroked-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+
+</div>
+
+<div mat-dialog-content>
+
+
+    <form class="example-form" aria-required="true" [formGroup]="frmRegistro" (ngSubmit)="Submit()">
+        <mat-form-field class="example-full-width">
+            <mat-label>Comando</mat-label>
+            <input type="text" formControlName="comando" placeholder="¿Que plantas son las más peligrosas?" matInput>
+            <mat-error *ngIf="frmRegistro.invalid">Ingrese un comando de voz </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Descripcion</mat-label>
+            <textarea formControlName="descripcion" matInput>
+            </textarea>
+            <mat-error *ngIf="frmRegistro.invalid">Ingrese una descripcion del comando</mat-error>
+        </mat-form-field>
+
+        <div mat-dialog-actions>
+            <div class="btn-group mb-3">
+                <button class="btn btn-primary">Guardar Datos</button>
+                <button class="btn btn-danger" (click)="LimpiarCampos()">Limpiar Datos</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -15,6 +15,7 @@ import { MapaComponent } from './components/mapa/mapa.component';
 import { InfoPlantasComponent } from './components/info-plantas/info-plantas.component';
 import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
 import { ConfiguracionesPanelComponent } from './components/configuraciones-panel/configuraciones-panel.component';
+import { ComandosComponent } from './components/comandos/comandos.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,6 +30,7 @@ const routes: Routes = [
       { path: 'usuarios', component: UsuariosComponent },
       { path: "mapa", component: MapaComponent },
       { path: "plantas", component: InfoPlantasComponent },
+      { path: 'comandos', component: ComandosComponent },
       { path: "configuracionsistema", component: ConfiguracionesPanelComponent },
       {
         path: 'configuracion', component: MenuConfigUsuarioComponent,

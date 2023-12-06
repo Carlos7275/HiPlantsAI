@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CodigoPostalController;
+use App\Http\Controllers\ComandosController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\GenerosController;
@@ -62,9 +63,14 @@ Route::controller(MapaController::class)->group(function () {
 Route::controller(PrologController::class)->group(function () {
     Route::get("Plantas/NoVisitadas/", "ObtenerPlantasNoVisitadas");
     Route::get("Plantas/NoVisitadas/Cercanas/{Lat}/{Long}", "ObtenerPlantasNoVisitadasCercanas");
-
 });
 
+Route::controller(ComandosController::class)->group(function(){
+Route::get("Comandos","ObtenerComandos");
+Route::post("Crear/Comando","CrearComando");
+Route::put("Editar/Comando/{id}","EditarComando");
+Route::delete("Eliminar/Comando/{id}","EliminarComando");
+});
 
 Route::controller(CodigoPostalController::class)->group(function () {
     Route::get("CodigosPostales", "ObtenerCP");

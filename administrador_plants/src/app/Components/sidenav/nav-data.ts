@@ -15,11 +15,16 @@ export const navbarData = [
         icon: 'fal fa-user',
         label: 'Usuarios'
     },
-
+    {
+        routelink: 'comandos',
+        icon: 'fal fa-microphone',
+        label: 'Comandos de Voz'
+    },
     {
         routelink: 'configuracionsistema',
         icon: 'fal fa-cog',
         label: 'Configuracion'
     }
+   
 
 ];
