@@ -204,7 +204,6 @@ class _MapsPageState extends State<MapsPage> {
                   textAlign: TextAlign.left, // Alinea el texto a la izquierda
                 ),
                 Space.espaciador(10),
-                Space.espaciador(10),
                 Text(
                   (infoPlanta.estatus == 1)
                       ? "Estatus: Activo"
@@ -363,14 +362,15 @@ class _MapsPageState extends State<MapsPage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            onPressed: () async {
-              await obtenerUbicacionUsuario();
-              await asignarUbicacion();
-            },
-            backgroundColor: Enviroment.primaryColor,
-            child: const Icon(Icons.gps_fixed_outlined),
-          ),
+          if (!cargando)
+            FloatingActionButton(
+              onPressed: () async {
+                await obtenerUbicacionUsuario();
+                await asignarUbicacion();
+              },
+              backgroundColor: Enviroment.primaryColor,
+              child: const Icon(Icons.gps_fixed_outlined),
+            ),
           const SizedBox(height: 5),
           FloatingActionButton(
             onPressed: () async {
@@ -437,7 +437,7 @@ class _MapsPageState extends State<MapsPage> {
             );
           },
         ),
-        const Voz()
+        if (!cargando) const Voz()
       ]),
     );
   }

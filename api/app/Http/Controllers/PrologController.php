@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InfoPlantas;
 use App\Models\Response\Message;
 use App\Repositories\MapaRepository;
 use App\Repositories\UserRepository;
@@ -116,6 +117,11 @@ class PrologController extends Controller
         $planta = $this->_mapaRepository->find($idplanta);
         if (boolval($text) == 0)
             return response()->json(Message::success($planta));
+        else {
+            $nombrePlanta = InfoPlantas::find($planta->id_planta)->nombre_planta;
+            $mensaje = "La planta mas visitada en general es $nombrePlanta se encuentra en $planta->zona";
+            return response()->json(Message::success($mensaje));
+        }
     }
 
     public function ObtenerPlantasCercanas($text = false, $Lat, $Long)
