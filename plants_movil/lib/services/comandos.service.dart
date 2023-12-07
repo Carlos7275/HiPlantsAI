@@ -32,4 +32,14 @@ class ComandosService extends Service<Comandos> {
       throw resp;
     }
   }
+
+  Future<String> plantaNoVisitadas() async {
+    http.Response resp = await httpClient.get(url: 'Plantas/NoVisitadas/1');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
 }

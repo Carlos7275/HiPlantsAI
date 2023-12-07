@@ -14,6 +14,8 @@ class Voz extends StatefulWidget {
 }
 
 class _VozState extends State<Voz> {
+  FlutterTts tts = FlutterTts();
+
   List<Comandos>? comandos;
   String texto = 'Por favor ingrese un comando de voz.';
   bool estaEscuchando = false;
@@ -59,6 +61,7 @@ class _VozState extends State<Voz> {
     setState(() {
       estaEscuchando = false;
     });
+    await tts.stop();
     // Busca el comando con mayor similitud
     double maxSimilarity = 0.0;
     Comandos matchedCommand = Comandos(comando: '', descripcion: '');
@@ -83,8 +86,7 @@ class _VozState extends State<Voz> {
 
       await ejecutarComando(matchedCommand.id);
     } else {
-      FlutterTts().speak("¡No se detecto ningun comando!");
-      FlutterTts().stop();
+      // await tts.speak("¡No se detectó ningun comando!");
     }
 
     // Usa Navigator.of(context, rootNavigator: true).pop() para cerrar solo el modal.
@@ -100,11 +102,14 @@ class _VozState extends State<Voz> {
   ejecutarComando(id) async {
     FlutterTts tts = FlutterTts();
     switch (id) {
+      case 1:
+        var mensaje = await ComandosService().plantaNoVisitadas();
+        await tts.speak(mensaje);
+        break;
       case 3:
         var mensaje = await ComandosService().plantaMasVisitada();
-        print(mensaje);
-        tts.speak(mensaje);
-        tts.stop();
+        await tts.speak(mensaje);
+        break;
     }
   }
 
