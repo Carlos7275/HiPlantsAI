@@ -74,16 +74,20 @@ planta_mas_visitada(PlantasMasVisitadas) :-
     findall(Planta, recorridos(Planta), Plantas),
     planta_con_mayor_tiempo(Plantas,Max,PlantasMasVisitadas).
 
+planta_menos_visitada(PlantasMenosVisitadas) :-
+    findall(Planta, recorridos(Planta), Plantas),
+    planta_con_menor_tiempo(Plantas,Min,PlantasMenosVisitadas).
+
 
 planta_con_mayor_tiempo(List, Max, Result) :-
     findall(MaxValue, (member(Sublist, List), nth1(8, Sublist, MaxValue)), MaxValues),
     max_list(MaxValues, Max),
     findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Max)), Result).
 
-planta_con_menor_tiempo(List, Max, Result) :-
-    findall(MaxValue, (member(Sublist, List), nth1(8, Sublist, MaxValue)), MaxValues),
-    min_list(MaxValues, Max),
-    findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Max)), Result).
+planta_con_menor_tiempo(List, Min, Result) :-
+    findall(MinValue, (member(Sublist, List), nth1(8, Sublist, MinValue)), MinValues),
+    min_list(MinValues, Min),
+    findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Min)), Result).
 
 
 %plantas cercanas más visitadas
@@ -102,3 +106,16 @@ plantas_cercanas_mas_visitadas(Lat, Long, PlantasCercanasMasVisitadas) :-
         Distancia =< DistanciaMax
 
     ), PlantasCercanasMasVisitadas).
+
+plantas_cercanas(Lat, Long, PlantasCercanas) :-
+    findall([Planta, Distancia],(
+        plantas(Planta),
+        nth0(4, Planta, LatP),
+        nth0(5, Planta, LongP),
+        haversine_distance(Lat, Long, LatP, LongP, Distancia),
+        distanciamin(DistanciaMin),
+        distanciamax(DistanciaMax),
+        Distancia >= DistanciaMin,
+        Distancia =< DistanciaMax
+
+    ), PlantasCercanas).
