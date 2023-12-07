@@ -99,6 +99,9 @@ most_common_element_by_id_helper([H | T], List, MaxCount, AccElement, Element) :
         most_common_element_by_id_helper(T, List, MaxCount, AccElement, Element)
     ).
 
+
+%_____________Planta mas y menos visitada en general______________________________________________
+
 planta_mas_visitada_tiempo(PlantasMasVisitadas) :-
     findall(Planta, recorridos(Planta), Plantas),
     planta_con_mayor_tiempo(Plantas,PlantasMasVisitadas).
@@ -118,6 +121,11 @@ planta_con_menor_tiempo(List, Result) :-
     min_list(MinValues, Min),
     findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Min)), Result).
 
+%__________________________________________________________________________________________________
+
+
+%________________Plantas cercanas al usuario mas visitadas_________________________________________
+
 plantas_cercanas_mas_visitadas(Lat, Long, PlantasCercanasMasVisitadas) :-
     planta_mas_visitada(PlantasMasVisitadas),
     findall([Planta, Distancia],(
@@ -132,6 +140,8 @@ plantas_cercanas_mas_visitadas(Lat, Long, PlantasCercanasMasVisitadas) :-
 
     ), PlantasCercanasMasVisitadas).
 
+%___________________________________________________________________________________________________
+
 plantas_cercanas(Lat, Long, PlantasCercanas) :-
     findall([Planta, Distancia],(
         plantas(Planta),
@@ -144,3 +154,54 @@ plantas_cercanas(Lat, Long, PlantasCercanas) :-
         Distancia =< DistanciaMax
 
     ), PlantasCercanas).
+
+
+
+plantas_toxicas(PlantasToxicas) :-
+    findall(Plantas, (
+        plantas(Plantas),
+        nth0(6, Plantas, PlantaToxica),
+        PlantaToxica = 'Si'
+
+    ), PlantasToxicas).
+
+
+plantas_no_toxicas(PlantasNoToxicas) :-
+    findall(Plantas, (
+        plantas(Plantas),
+        nth0(6, Plantas, PlantaNoToxica),
+        PlantaNoToxica = 'No'
+
+    ), PlantasNoToxicas).
+
+
+%_______________Plantas toxicas cercanas a la ubi del usuario_____________________________________
+
+plantas_cercanas_toxicas(Lat, Long, PlantasCercanasToxicas) :-
+    plantas_toxicas(PlantasToxicas),
+    findall([Planta, Distancia],(
+        member(Planta, PlantasToxicas),
+        nth0(4, Planta, LatP),
+        nth0(5, Planta, LongP),
+        haversine_distance(Lat, Long, LatP, LongP, Distancia),
+        distanciamin(DistanciaMin),
+        distanciamax(DistanciaMax),
+        Distancia >= DistanciaMin,
+        Distancia =< DistanciaMax
+
+    ), PlantasCercanasToxicas).
+
+
+plantas_cercanas_no_toxicas(Lat, Long, PlantasCercanasNoToxicas) :-
+    plantas_no_toxicas(PlantasNoToxicas),
+    findall([Planta, Distancia],(
+        member(Planta, PlantasNoToxicas),
+        nth0(4, Planta, LatP),
+        nth0(5, Planta, LongP),
+        haversine_distance(Lat, Long, LatP, LongP, Distancia),
+        distanciamin(DistanciaMin),
+        distanciamax(DistanciaMax),
+        Distancia >= DistanciaMin,
+        Distancia =< DistanciaMax
+
+    ), PlantasCercanasNoToxicas).
