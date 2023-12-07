@@ -13,7 +13,7 @@ inicializar_plantas :- %inicializamos el hecho de plantas con lo que hay en la b
     leer_lista(Lista). % leemos y guardamos en la bd de prolog la planta
 
 inicializar_recorridos:-
-    Query='SELECT recorridos.id,id_mapa,id_planta,id_usuario,nombre_planta,zona,toxicidad,tiempo FROM recorridos inner join mapa on mapa.id=recorridos.id_mapa inner join info_plantas on info_plantas.id=mapa.id_planta;',
+    Query='SELECT recorridos.id,id_mapa,id_planta,id_usuario,nombre_planta,zona,toxicidad,tiempo,latitud,longitud FROM recorridos inner join mapa on mapa.id=recorridos.id_mapa inner join info_plantas on info_plantas.id=mapa.id_planta;',
     consultar_tabla(Query, Row),
     rows_to_lists_dynamic(Row,Lista),
     retractall(recorridos(_)),
@@ -69,3 +69,36 @@ plantas_no_en_recorridos(Plantas, Recorridos, PlantasNoEnRecorridos) :-
             IdPlantaRecorrido == IdPlanta
         )
     ), PlantasNoEnRecorridos).
+
+planta_mas_visitada(PlantasMasVisitadas) :-
+    findall(Planta, recorridos(Planta), Plantas),
+    planta_con_mayor_tiempo(Plantas,Max,PlantasMasVisitadas).
+
+
+planta_con_mayor_tiempo(List, Max, Result) :-
+    findall(MaxValue, (member(Sublist, List), nth1(8, Sublist, MaxValue)), MaxValues),
+    max_list(MaxValues, Max),
+    findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Max)), Result).
+
+planta_con_menor_tiempo(List, Max, Result) :-
+    findall(MaxValue, (member(Sublist, List), nth1(8, Sublist, MaxValue)), MaxValues),
+    min_list(MaxValues, Max),
+    findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Max)), Result).
+
+
+%plantas cercanas más visitadas
+
+    
+plantas_cercanas_mas_visitadas(Lat, Long, PlantasCercanasMasVisitadas) :-
+    planta_mas_visitada(PlantasMasVisitadas),
+    findall([Planta, Distancia],(
+        member(Planta, PlantasMasVisitadas),
+        nth0(8, Planta, LatP),
+        nth0(9, Planta, LongP),
+        haversine_distance(Lat, Long, LatP, LongP, Distancia),
+        distanciamin(DistanciaMin),
+        distanciamax(DistanciaMax),
+        Distancia >= DistanciaMin,
+        Distancia =< DistanciaMax
+
+    ), PlantasCercanasMasVisitadas).
