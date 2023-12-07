@@ -73,7 +73,6 @@ plantas_no_en_recorridos(Plantas, Recorridos, PlantasNoEnRecorridos) :-
 planta_mas_visitada(PlantasMasVisitadas) :-
     findall(Planta, recorridos(Planta), Plantas),
     most_common_element_by_id(Plantas,PlantasMasVisitadas).
-    %planta_que_mas_se_repite(Plantas,PlantasMasVisitadas).
 
 % Predicado para contar las ocurrencias de un elemento en una lista
 count_occurrences(_, [], 0).
@@ -143,7 +142,7 @@ plantas_cercanas_mas_visitadas(Lat, Long, PlantasCercanasMasVisitadas) :-
 %___________________________________________________________________________________________________
 
 plantas_cercanas(Lat, Long, PlantasCercanas) :-
-    findall([Planta, Distancia],(
+    findall(Planta,(
         plantas(Planta),
         nth0(4, Planta, LatP),
         nth0(5, Planta, LongP),

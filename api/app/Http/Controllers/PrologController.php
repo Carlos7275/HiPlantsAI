@@ -23,17 +23,30 @@ class PrologController extends Controller
         $this->_mapaRepository = $mapaRepository;
     }
 
-    public function ObtenerPlantasNoVisitadas()
+    public function ObtenerPlantasNoVisitadas($text = false)
     {
+
         $id = auth()->user()->id;
 
         $id = urlencode($id);
         $url = "{$this->prologURL}/plantasNoVisitadas?idusuario=$id";
         $response = json_decode(Http::get($url));
-        return response()->json(Message::success($response->resultado));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response->resultado));
+        else {
+            $mensaje = "¡No se encontraron plantas no visitadas!";
+
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 2));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas no visitadas, ' : 'Planta no visitada,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
     }
 
-    public function ObtenerPlantasNoVisitadasCercanas($Lat, $Long)
+    public function ObtenerPlantasNoVisitadasCercanas($text = false, $Lat, $Long)
     {
         $id = auth()->user()->id;
         $Lat = urlencode($Lat);
@@ -41,41 +54,87 @@ class PrologController extends Controller
         $id = urlencode($id);
         $url = "{$this->prologURL}/plantasNoVisitadas/Cercanas?lat=$Lat&long=$Long&idusuario=$id";
         $response = json_decode(Http::get($url));
-        return response()->json(Message::success($response->resultado));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response->resultado));
+        else {
+            $mensaje = "¡No se encontraron plantas no visitadas cercanas!";
+
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 2));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas no visitadas cercanas, ' : 'Planta no visitada cercana,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
     }
 
-    public function ObtenerPlantaMasVisitadaTiempo()
+    public function ObtenerPlantaMasVisitadaTiempo($text = false)
     {
         $url = "{$this->prologURL}/plantaMasVisitadaTiempo";
         $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response->resultado));
+        else {
+            $mensaje = "¡No se encontraron plantas mas visitadas por tiempo!";
 
-        return response()->json(Message::success($response->resultado));
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 4));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontró') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas mas visitadas por tiempo, ' : 'Planta mas visitada por tiempo,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
     }
 
 
-    public function ObtenerPlantaMenosVisitadaTiempo()
+    public function ObtenerPlantaMenosVisitadaTiempo($text = false)
     {
         $url = "{$this->prologURL}/plantaMenosVisitadaTiempo";
         $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response->resultado));
+        else {
+            $mensaje = "¡No se encontraron plantas menos visitadas!";
 
-        return response()->json(Message::success($response->resultado));
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 4));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontró') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas menos visitadas, ' : 'Planta menos visitada,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
     }
-    public function ObtenerPlantaMasVisitada()
+
+    public function ObtenerPlantaMasVisitada($text = false)
     {
         $url = "{$this->prologURL}/plantaMasVisitada";
         $response = json_decode(Http::get($url));
         $idplanta = $response->resultado;
         $planta = $this->_mapaRepository->find($idplanta);
-
-        return response()->json(Message::success($planta));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($planta));
     }
 
-    public function ObtenerPlantasCercanas($Lat, $Long)
+    public function ObtenerPlantasCercanas($text = false, $Lat, $Long)
     {
 
         $url = "{$this->prologURL}/plantasCercanas?lat=$Lat&long=$Long";
         $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response));
+        else {
+            $mensaje = "¡No se encontraron plantas cercanas!";
 
-        return response()->json(Message::success($response));
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 2));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas cercanas, ' : 'Planta cercana,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
     }
 }

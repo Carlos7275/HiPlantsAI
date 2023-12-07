@@ -61,12 +61,12 @@ Route::controller(MapaController::class)->group(function () {
 });
 
 Route::controller(PrologController::class)->group(function () {
-    Route::get("Plantas/NoVisitadas/", "ObtenerPlantasNoVisitadas");
-    Route::get("Plantas/MasVisitadas/", "ObtenerPlantaMasVisitada");
-    Route::get("Plantas/MasVisitadas/Tiempo", "ObtenerPlantaMasVisitadaTiempo");
-    Route::get("Plantas/MenosVisitadas/Tiempo", "ObtenerPlantaMenosVisitadaTiempo");
-    Route::get("Plantas/NoVisitadas/Cercanas/{Lat}/{Long}", "ObtenerPlantasNoVisitadasCercanas");
-    Route::get("Plantas/Cercanas/{Lat}/{Long}", "ObtenerPlantasCercanas");
+    Route::get("Plantas/NoVisitadas/{text?}", "ObtenerPlantasNoVisitadas");
+    Route::get("Plantas/MasVisitadas/{text?}", "ObtenerPlantaMasVisitada");
+    Route::get("Plantas/MasVisitadas/Tiempo/{text?}", "ObtenerPlantaMasVisitadaTiempo");
+    Route::get("Plantas/MenosVisitadas/Tiempo/{text?}", "ObtenerPlantaMenosVisitadaTiempo");
+    Route::get("Plantas/NoVisitadas/Cercanas/{text?}/{Lat}/{Long}", "ObtenerPlantasNoVisitadasCercanas");
+    Route::get("Plantas/Cercanas/{text?}/{Lat}/{Long}", "ObtenerPlantasCercanas");
 });
 
 Route::controller(ComandosController::class)->group(function () {
