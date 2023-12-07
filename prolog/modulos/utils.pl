@@ -51,3 +51,12 @@ leer_lista_distancias([Element | Rest]) :-
     asserta(distanciamin(DistanciaMin)),
     asserta(distanciamax(DistanciaMax)),
     leer_lista_distancias(Rest).
+
+
+% Predicado para contar las ocurrencias de un ID en la lista
+count_occurrences_by_id(_, [], 0).
+count_occurrences_by_id(Id, [[_, Id | Rest] | Tail], N) :-
+    count_occurrences_by_id(Id, Tail, N1),
+    N is N1 + 1.
+count_occurrences_by_id(Id, [_ | Tail], N) :-
+    count_occurrences_by_id(Id, Tail, N).

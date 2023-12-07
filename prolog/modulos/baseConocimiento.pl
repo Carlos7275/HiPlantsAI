@@ -72,27 +72,52 @@ plantas_no_en_recorridos(Plantas, Recorridos, PlantasNoEnRecorridos) :-
 
 planta_mas_visitada(PlantasMasVisitadas) :-
     findall(Planta, recorridos(Planta), Plantas),
-    planta_con_mayor_tiempo(Plantas,Max,PlantasMasVisitadas).
+    most_common_element_by_id(Plantas,PlantasMasVisitadas).
+    %planta_que_mas_se_repite(Plantas,PlantasMasVisitadas).
 
-planta_menos_visitada(PlantasMenosVisitadas) :-
+% Predicado para contar las ocurrencias de un elemento en una lista
+count_occurrences(_, [], 0).
+count_occurrences(X, [X | Tail], N) :-
+    count_occurrences(X, Tail, N1),
+    N is N1 + 1.
+count_occurrences(X, [Y | Tail], N) :-
+    X \= Y,
+    count_occurrences(X, Tail, N).
+
+% Predicado para encontrar el elemento que más se repite en la lista por ID
+most_common_element_by_id(List, Element) :-
+    flatten(List, Flattened),  % Aplanar la lista
+    list_to_set(Flattened, Set),  % Eliminar duplicados
+    most_common_element_by_id_helper(Set, List, 0, _, Element).
+
+most_common_element_by_id_helper([], _, _, Element, Element).
+most_common_element_by_id_helper([H | T], List, MaxCount, AccElement, Element) :-
+    count_occurrences_by_id(H, List, Count),
+    (Count > MaxCount ->
+        most_common_element_by_id_helper(T, List, Count, H, Element)
+    ;
+        most_common_element_by_id_helper(T, List, MaxCount, AccElement, Element)
+    ).
+
+planta_mas_visitada_tiempo(PlantasMasVisitadas) :-
     findall(Planta, recorridos(Planta), Plantas),
-    planta_con_menor_tiempo(Plantas,Min,PlantasMenosVisitadas).
+    planta_con_mayor_tiempo(Plantas,PlantasMasVisitadas).
+
+planta_menos_visitada_tiempo(PlantasMenosVisitadas) :-
+    findall(Planta, recorridos(Planta), Plantas),
+    planta_con_menor_tiempo(Plantas,PlantasMenosVisitadas).
 
 
-planta_con_mayor_tiempo(List, Max, Result) :-
+planta_con_mayor_tiempo(List, Result) :-
     findall(MaxValue, (member(Sublist, List), nth1(8, Sublist, MaxValue)), MaxValues),
     max_list(MaxValues, Max),
     findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Max)), Result).
 
-planta_con_menor_tiempo(List, Min, Result) :-
+planta_con_menor_tiempo(List, Result) :-
     findall(MinValue, (member(Sublist, List), nth1(8, Sublist, MinValue)), MinValues),
     min_list(MinValues, Min),
     findall(Sublist, (member(Sublist, List), nth1(8, Sublist, Min)), Result).
 
-
-%plantas cercanas más visitadas
-
-    
 plantas_cercanas_mas_visitadas(Lat, Long, PlantasCercanasMasVisitadas) :-
     planta_mas_visitada(PlantasMasVisitadas),
     findall([Planta, Distancia],(

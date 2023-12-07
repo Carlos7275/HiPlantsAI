@@ -44,4 +44,8 @@ export class MapaService extends Service {
     return this.cliente.get<Peticion<any>>(Environment.urlApi + "Conteos", { headers: this.cabecera });
   }
 
+  ObtenerPlantaMasVisitada(): Observable<Peticion<Mapa>> {
+    return this.cliente.get<Peticion<Mapa>>(Environment.urlApi + "Plantas/MasVisitadas", { headers: this.cabecera });
+  }
+
 }

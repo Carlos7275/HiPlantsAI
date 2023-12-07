@@ -1,7 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Mapa } from 'src/app/models/Mapa.model';
 import { MapaService } from 'src/app/services/mapa.service';
+import { Environment } from 'src/enviroments/enviroment.prod';
 
 @Component({
   selector: 'app-estadisticas',
@@ -18,9 +20,11 @@ import { MapaService } from 'src/app/services/mapa.service';
 })
 export class EstadisticasComponent implements OnInit, OnDestroy {
   estadisticas: any;
+  plantaMasVisitada: Mapa;
   subscripcion: Subscription;
+  url = Environment.url;
   constructor(private mapaService: MapaService) { }
-  
+
   ngOnInit(): void {
     this.ObtenerEstadisticas();
     this.ActualizarEstadisticas();
@@ -33,6 +37,9 @@ export class EstadisticasComponent implements OnInit, OnDestroy {
   ObtenerEstadisticas() {
     this.mapaService.ObtenerEstadisticas().subscribe(x => {
       this.estadisticas = x.data;
+    });
+    this.mapaService.ObtenerPlantaMasVisitada().subscribe(x => {
+      this.plantaMasVisitada = x.data;
     });
   }
 
