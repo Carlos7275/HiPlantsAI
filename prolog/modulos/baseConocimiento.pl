@@ -204,3 +204,27 @@ plantas_cercanas_no_toxicas(Lat, Long, PlantasCercanasNoToxicas) :-
         Distancia =< DistanciaMax
 
     ), PlantasCercanasNoToxicas).
+
+
+plantas_comestibles(PlantasComestibles) :-
+    findall(Plantas, (
+        plantas(Plantas),
+        nth0(7, Plantas, PlantaComestible),
+        PlantaComestible = 1
+
+    ), PlantasComestibles).
+
+
+plantas_cercanas_comestibles(Lat, Long, PlantasCercanasComestibles) :-
+    plantas_comestibles(PlantasComestibles),
+    findall(Planta,(
+        member(Planta, PlantasComestibles),
+        nth0(4, Planta, LatP),
+        nth0(5, Planta, LongP),
+        haversine_distance(Lat, Long, LatP, LongP, Distancia),
+        distanciamin(DistanciaMin),
+        distanciamax(DistanciaMax),
+        Distancia >= DistanciaMin,
+        Distancia =< DistanciaMax
+
+    ), PlantasCercanasComestibles).

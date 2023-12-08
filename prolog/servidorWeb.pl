@@ -13,6 +13,7 @@
 :-http_handler('/plantasCercanas',buscar_plantas_cercanas_handler,[method(get)]).
 :-http_handler('/plantasCercanasToxicas', buscar_plantas_cercanas_toxicas_handler,[method(get)]).
 :-http_handler('/plantasCercanasNoToxicas', buscar_plantas_cercanas_no_toxicas_handler,[method(get)]).
+:-http_handler('/plantasCercanasComestibles', buscar_plantas_cercanas_comestibles_handler,[method(get)]).
 
 server(Port) :-
     http_server(http_dispatch, [port(Port)]).
@@ -87,6 +88,16 @@ buscar_plantas_cercanas_no_toxicas_handler(Request) :-
 process_planta_cercana_no_toxica_data(Latitud, Longitud, Result) :-
     plantas_cercanas_no_toxicas(Latitud, Longitud, PlantasCercanasNoToxicas),
     Result = _{resultado: PlantasCercanasNoToxicas}.
+
+buscar_plantas_cercanas_comestibles_handler(Request) :-
+    http_parameters(Request, [lat(Latitud,[number]), long(Longitud, [number])]),
+    process_planta_cercana_comestible_data(Latitud, Longitud, Result),
+    reply_json_dict(Result).
+
+process_planta_cercana_comestible_data(Latitud, Longitud, Result) :-
+    plantas_cercanas_comestibles(Latitud, Longitud, PlantasCercanasComestibles),
+    Result = _{resultado: PlantasCercanasComestibles}.
+
 
 % Ejecutar el servidor en el puerto 8080
 :- server(8080).

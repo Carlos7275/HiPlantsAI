@@ -232,4 +232,23 @@ class PrologController extends Controller
             return response()->json(Message::success($mensaje));
         }
     }
+
+    public function ObtenerPlantasCercanasComestibles($text = false, $Lat, $Long)
+    {
+        $url = "{$this->prologURL}/plantasCercanasComestibles?lat=$Lat&long=$Long";
+        $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response));
+        else {
+            $mensaje = "¡No se encontraron plantas comestibles cercanas a ti!";
+
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 2));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas cercanas comestibles, ' : 'Planta cercana comestible,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
+    }
 }

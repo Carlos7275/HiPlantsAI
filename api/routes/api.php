@@ -72,6 +72,7 @@ Route::controller(PrologController::class)->group(function () {
     Route::get("Plantas/Cercanas/No/Toxicas/{text?}/{Lat}/{Long}", "ObtenerPlantasCercanasNoToxicas");
     Route::get("Areas/MasVisitadas/{text?}", "ObtenerAreaMasVisitada");
     Route::get("Areas/MenosVisitadas/Tiempo/{text?}", "ObtenerAreaMenosVisitadaPorTiempo");
+    Route::get("Plantas/Cercanas/Comestibles/{text?}/{Lat}/{Long}", "ObtenerPlantasCercanasComestibles");
 });
 
 Route::controller(ComandosController::class)->group(function () {
