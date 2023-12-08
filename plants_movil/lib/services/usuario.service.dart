@@ -133,4 +133,5 @@ class UsuarioService extends Service<Usuario> {
       throw resp;
     }
   }
+
 }
