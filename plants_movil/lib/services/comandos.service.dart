@@ -75,4 +75,58 @@ class ComandosService extends Service<Comandos> {
       throw resp;
     }
   }
+
+  Future<String> plantaCercanasToxicas(double lat, double longitud) async {
+    http.Response resp =
+        await httpClient.get(url: 'Plantas/Cercanas/Toxicas/1/$lat/$longitud');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> plantaCercanasNoToxicas(double lat, double longitud) async {
+    http.Response resp = await httpClient.get(
+        url: 'Plantas/Cercanas/No/Toxicas/1/$lat/$longitud');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> areasCercanas(double lat, double longitud) async {
+    http.Response resp =
+        await httpClient.get(url: '/Areas/Cercanas/1/$lat/$longitud');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> areaMasVisitada() async {
+    http.Response resp = await httpClient.get(url: 'Areas/MasVisitadas/1');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> areaMenosVisitadaTiempo() async {
+    http.Response resp =
+        await httpClient.get(url: 'Areas/MenosVisitadas/Tiempo/1');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
 }

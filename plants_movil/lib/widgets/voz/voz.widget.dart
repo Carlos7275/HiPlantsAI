@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:plants_movil/models/Comandos.model.dart';
 import 'package:plants_movil/services/comandos.service.dart';
-import 'package:plants_movil/widgets/space/space.widget.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:string_similarity/string_similarity.dart';
@@ -18,7 +17,8 @@ class Voz extends StatefulWidget {
 
 class _VozState extends State<Voz> {
   FlutterTts tts = FlutterTts();
-
+  DateTime lastCommandTime = DateTime.now();
+  int cooldownSeconds = 10;
   List<Comandos>? comandos;
   String texto = 'Por favor ingrese un comando de voz.';
   bool estaEscuchando = false;
@@ -40,7 +40,8 @@ class _VozState extends State<Voz> {
   }
 
   void resultListener(SpeechRecognitionResult result) async {
-    await tts.stop();
+    await tts.setVolume(1);
+    await tts.pause();
     setState(() {
       texto = result.recognizedWords;
     });
@@ -63,12 +64,11 @@ class _VozState extends State<Voz> {
         ),
       ],
     );
-    // var estaHablando = false;
+
     setState(() {
       estaEscuchando = false;
     });
 
-    // Busca el comando con mayor similitud
     double maxSimilarity = 0.0;
     Comandos matchedCommand = Comandos(comando: '', descripcion: '');
 
@@ -80,22 +80,24 @@ class _VozState extends State<Voz> {
       }
     }
 
-    // Establece un umbral de similitud para considerar el comando como coincidente
     double threshold = 0.5;
 
     if (maxSimilarity >= threshold) {
-      // Ejecutar acciones basadas en el comando
-
+      // Execute actions based on the command
       print('Comando detectado: ${matchedCommand.descripcion}');
       print('Descripción: ${matchedCommand.descripcion}');
       print("id ${matchedCommand.id}");
 
       await ejecutarComando(matchedCommand.id);
     } else {
-      // if (!estaEscuchando) {
-      //   estaHablando = true;
-      //   if (estaHablando) await tts.speak("¡No se detectó ningun comando!");
-      // }
+      // Check if a cooldown period has passed before announcing "No se detectó ningún comando"
+      if (!estaEscuchando &&
+          DateTime.now().difference(lastCommandTime).inSeconds >
+              cooldownSeconds) {
+        await tts.speak("¡No se detectó ningún comando!");
+        // Update the last command time
+        lastCommandTime = DateTime.now();
+      }
     }
 
     // Usa Navigator.of(context, rootNavigator: true).pop() para cerrar solo el modal.
@@ -151,12 +153,27 @@ class _VozState extends State<Voz> {
         break;
 
       case 6:
+        var mensaje = await ComandosService().areaMasVisitada();
+        await tts.speak(mensaje);
         break;
       case 7:
+        var mensaje = await ComandosService().areaMasVisitada();
+        await tts.speak(mensaje);
         break;
       case 8:
+        var mensaje = await ComandosService()
+            .plantaCercanasToxicas(coordenadas.latitude, coordenadas.longitude);
+        await tts.speak(mensaje);
         break;
       case 9:
+        var mensaje = await ComandosService().plantaCercanasNoToxicas(
+            coordenadas.latitude, coordenadas.longitude);
+        await tts.speak(mensaje);
+        break;
+      case 10:
+        var mensaje = await ComandosService()
+            .areasCercanas(coordenadas.latitude, coordenadas.longitude);
+        await tts.speak(mensaje);
         break;
     }
   }
@@ -217,7 +234,8 @@ class _VozState extends State<Voz> {
                 alertDialog = AlertDialog(
                   backgroundColor: Colors.white,
                   title: const Text('Comandos de voz'),
-                  content: Text(comandoList!.join(",\n")),
+                  content: SingleChildScrollView(
+                      child: Text(comandoList!.join(",\n"))),
                   actions: <Widget>[
                     TextButton(
                       child: const Text(

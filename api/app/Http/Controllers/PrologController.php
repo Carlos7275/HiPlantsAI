@@ -144,12 +144,31 @@ class PrologController extends Controller
         }
     }
 
-    public function ObtenerPlantasCercanasToxicas($text = false, $Lat, $Long){
+    public function ObtenerAreasCercanas($text = false, $Lat, $Long)
+    {
+
+        $url = "{$this->prologURL}/plantasCercanas?lat=$Lat&long=$Long";
+        $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response));
+        else {
+            $mensaje = "¡No se encontraron zonas cercanas!";
+
+            $nombres = $response->resultado[0][3];
+
+            $mensaje =   'El area cercana de plantas es '  . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
+    }
+
+    public function ObtenerPlantasCercanasToxicas($text = false, $Lat, $Long)
+    {
         $url = "{$this->prologURL}/plantasCercanasToxicas?lat=$Lat&long=$Long";
         $response = json_decode(Http::get($url));
         if (boolval($text) == 0)
             return response()->json(Message::success($response));
-        else{
+        else {
             $mensaje = "¡No se encontraron plantas toxicas cercanas a ti!";
 
             $numeroPlantas = count($response->resultado);
@@ -162,12 +181,13 @@ class PrologController extends Controller
         }
     }
 
-    public function ObtenerPlantasCercanasNoToxicas($text = false, $Lat, $Long){
+    public function ObtenerPlantasCercanasNoToxicas($text = false, $Lat, $Long)
+    {
         $url = "{$this->prologURL}/plantasCercanasNoToxicas?lat=$Lat&long=$Long";
         $response = json_decode(Http::get($url));
         if (boolval($text) == 0)
             return response()->json(Message::success($response));
-        else{
+        else {
             $mensaje = "¡No se encontraron plantas no toxicas cercanas a ti!";
 
             $numeroPlantas = count($response->resultado);
@@ -180,7 +200,8 @@ class PrologController extends Controller
         }
     }
 
-    public function ObtenerAreaMasVisitada($text = false){
+    public function ObtenerAreaMasVisitada($text = false)
+    {
         $url = "{$this->prologURL}/plantaMasVisitada";
         $response = json_decode(Http::get($url));
         $idplanta = $response->resultado;
@@ -189,6 +210,25 @@ class PrologController extends Controller
             return response()->json(Message::success($planta));
         else {
             $mensaje = "El área más visitada es $planta->zona";
+            return response()->json(Message::success($mensaje));
+        }
+    }
+
+    public function ObtenerAreaMenosVisitadaPorTiempo($text = false)
+    {
+        $url = "{$this->prologURL}/plantaMenosVisitadaTiempo";
+        $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response->resultado));
+        else {
+            $mensaje = "¡No se encontro el area menos visitada por tiempo!";
+
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 5));
+
+            if ($numeroPlantas > 0)
+                $mensaje =  ($numeroPlantas > 1 ? 'Las areas menos visitadas por tiempo son ' : 'El area menos visitada por tiempo es ')  . $nombres;
+
             return response()->json(Message::success($mensaje));
         }
     }
