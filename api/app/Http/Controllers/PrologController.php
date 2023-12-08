@@ -143,4 +143,40 @@ class PrologController extends Controller
             return response()->json(Message::success($mensaje));
         }
     }
+
+    public function ObtenerPlantasCercanasToxicas($text = false, $Lat, $Long){
+        $url = "{$this->prologURL}/plantasCercanasToxicas?lat=$Lat&long=$Long";
+        $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response));
+        else{
+            $mensaje = "¡No se encontraron plantas toxicas cercanas a ti!";
+
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 2));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas cercanas toxicas, ' : 'Planta cercana toxica,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
+    }
+
+    public function ObtenerPlantasCercanasNoToxicas($text = false, $Lat, $Long){
+        $url = "{$this->prologURL}/plantasCercanasNoToxicas?lat=$Lat&long=$Long";
+        $response = json_decode(Http::get($url));
+        if (boolval($text) == 0)
+            return response()->json(Message::success($response));
+        else{
+            $mensaje = "¡No se encontraron plantas no toxicas cercanas a ti!";
+
+            $numeroPlantas = count($response->resultado);
+            $nombres = implode(', ', array_column($response->resultado, 2));
+
+            if ($numeroPlantas > 0)
+                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas cercanas no toxicas, ' : 'Planta cercana no toxica,') . $nombres;
+
+            return response()->json(Message::success($mensaje));
+        }
+    }
 }
