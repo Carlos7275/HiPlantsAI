@@ -6,7 +6,6 @@ use App\Models\Response\Message;
 use App\Repositories\RecorridosRepository;
 use App\Utils\Utils;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
 class RecorridoController extends Controller
@@ -59,8 +58,9 @@ class RecorridoController extends Controller
                 "fechainicial" => "required|date",
                 "fechafinal" => "required|date",
             ]);
+            $recorridos=$this->_recorridoRepository->ObtenerMisRecorridos($request->fechainicial, $request->fechafinal);
 
-            return response()->json(Message::success($this->_recorridoRepository->ObtenerMisRecorridos($request->fechainicial, $request->fechafinal)));
+            return response()->json(Message::success($recorridos));
         } catch (ValidationException $e1) {
             return response()->json(Message::Error(Utils::ConvertirErroresALinea($e1->errors())), 422);
         }

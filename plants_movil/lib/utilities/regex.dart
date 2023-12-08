@@ -60,6 +60,14 @@ class Utilities {
     }
   }
 
+  static String? fechaValidator(String? text) {
+    if (text == null) {
+      return "Ingrese la fecha";
+    } else {
+      return null;
+    }
+  }
+
   static String? generosValidator(value) {
     if (value == null) return "Ingrese el Genero";
     return null;

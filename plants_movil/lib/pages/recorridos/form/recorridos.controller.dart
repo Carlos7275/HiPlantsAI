@@ -23,7 +23,7 @@ class RecorridosController extends Controller {
 
   Future obtenerPlantas() async {
     puntos = await RecorridosService().obtenerRecorridos(
-        fechafinalcontroller.text, fechafinalcontroller.text);
+        fechainicialcontroller.text, fechafinalcontroller.text);
   }
 
   enviar(BuildContext context) async {

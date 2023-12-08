@@ -100,7 +100,7 @@ class ComandosService extends Service<Comandos> {
 
   Future<String> areasCercanas(double lat, double longitud) async {
     http.Response resp =
-        await httpClient.get(url: '/Areas/Cercanas/1/$lat/$longitud');
+        await httpClient.get(url: 'Areas/Cercanas/1/$lat/$longitud');
 
     if (resp.statusCode == 200) {
       return json.decode(resp.body)["data"];
@@ -122,6 +122,28 @@ class ComandosService extends Service<Comandos> {
   Future<String> areaMenosVisitadaTiempo() async {
     http.Response resp =
         await httpClient.get(url: 'Areas/MenosVisitadas/Tiempo/1');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> plantasCercanasComestibles(double lat, double long) async {
+    http.Response resp =
+        await httpClient.get(url: 'Plantas/Cercanas/Comestibles/1/$lat/$long');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> plantasCercanasVegetables(double lat, double long) async {
+    http.Response resp =
+        await httpClient.get(url: 'Plantas/Cercanas/Vegetables/1/$lat/$long');
 
     if (resp.statusCode == 200) {
       return json.decode(resp.body)["data"];

@@ -21,12 +21,10 @@ class RecorridosRepository  extends EloquentRepository
             ->join("info_plantas as p", "p.id", "=", "m.id_planta")
             ->where("recorridos.id_usuario", $id)
             ->whereBetween(DB::raw('DATE(recorridos.created_at)'), [$fechainicial, $fechafinal])
+            ->groupBy('m.id', 'p.id', 'p.nombre_planta', 'm.zona', 'p.nombre_cientifico', 'p.año', 'p.familia', 'p.toxicidad', 'm.latitud', 'm.longitud', 'm.url_imagen') // Agrupa por la combinación de id_mapa y id_planta
+            ->selectRaw('m.id, p.id as id_planta ,p.nombre_planta,p.nombre_cientifico,p.familia,p.año,m.zona,p.toxicidad,m.latitud,m.longitud, SUM(recorridos.tiempo) as tiempo,m.url_imagen')
+            ->where("m.estatus","=",1)
             ->get();
-
-        foreach ($result as $row) {
-            $row->nombres_comunes = json_decode($row->nombres_comunes);
-            $row->distribucion = json_decode($row->distribucion);
-        }
         return $result;
     }
 }

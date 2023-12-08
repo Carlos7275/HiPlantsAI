@@ -135,7 +135,10 @@ class PrologController extends Controller
             $mensaje = "¡No se encontraron plantas cercanas!";
 
             $numeroPlantas = count($response->resultado);
-            $nombres = implode(', ', array_column($response->resultado, 2));
+
+            $nombres = implode(', ', array_map(function ($item) {
+                return $item[2] . ' con genero ' . $item[8] . ' de la familia ' . $item[9] . " la cual " . $item[6] . " es tóxica";
+            }, array_slice($response->resultado, 0, 5)));
 
             if ($numeroPlantas > 0)
                 $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas cercanas, ' : 'Planta cercana,') . $nombres;
@@ -270,8 +273,4 @@ class PrologController extends Controller
             return response()->json(Message::success($mensaje));
         }
     }
-
-
-
-
 }

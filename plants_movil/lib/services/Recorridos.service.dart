@@ -13,7 +13,7 @@ class RecorridosService extends Service<Recorridos> {
     final parameters =
         jsonEncode({"fechainicial": fechaInicial, "fechafinal": fechaFinal});
     http.Response resp = await httpClient.post(
-      url: 'ObtenerRecorriodos',
+      url: 'MisRecorridos',
       body: parameters,
     );
 

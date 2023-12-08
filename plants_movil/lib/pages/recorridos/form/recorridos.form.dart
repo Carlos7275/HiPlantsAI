@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,13 @@ class _RecorridosFormState
   final MapController mapController = MapController();
   LatLng ubicacionActual = const LatLng(0, 0);
   bool cargando = true;
+
+  @override
+  void initState() {
+    super.initState();
+    inicializarMapa();
+    setState(() {});
+  }
 
   void inicializarMapa() async {
     try {
@@ -63,17 +69,15 @@ class _RecorridosFormState
               height: 40,
               child: IconButton(
                   onPressed: () {
-                    //   mostrarInformacionDePlanta(markerData);
+                    mostrarInformacionDePlanta(markerData);
                   },
                   iconSize: 30,
                   style: const ButtonStyle(
                       elevation: MaterialStatePropertyAll(0.0),
                       backgroundColor:
                           MaterialStatePropertyAll(Colors.transparent)),
-                  icon: Icon(LeafIcon.tree_2,
-                      color: markerData.estatus == 0
-                          ? Colors.grey
-                          : Enviroment.secondaryColor)))
+                  icon: const Icon(LeafIcon.tree_2,
+                      color: Enviroment.secondaryColor)))
       ],
     );
   }
@@ -94,6 +98,7 @@ class _RecorridosFormState
       if (kDebugMode) {
         print("Se actualizo la posición: $position");
       }
+
       setState(() {
         ubicacionActual = LatLng(position.latitude, position.longitude);
       });
@@ -108,8 +113,8 @@ class _RecorridosFormState
     bool servicio = await Geolocator.isLocationServiceEnabled();
 
     if (servicio) {
-      const settings =
-          LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 0);
+      const settings = LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 0);
 
       locationSubscription = Geolocator.getPositionStream(
         locationSettings: settings,
@@ -125,10 +130,8 @@ class _RecorridosFormState
     });
   }
 
-  asignarUbicacion() async {
+  Future asignarUbicacion() async {
     mapController.move(ubicacionActual, 18);
-    await obtenerUbicacionUsuario();
-    setState(() {});
   }
 
   Future<void> mostrarInformacionDePlanta(Recorridos infoPlanta) async {
@@ -150,28 +153,23 @@ class _RecorridosFormState
                     Enviroment.server + infoPlanta.urlImagen,
                   ),
                 ),
+                Text("Tiempo de observacion: ${infoPlanta.tiempo} segundos",
+                    textAlign: TextAlign.left),
                 Text("Zona: ${infoPlanta.zona}", textAlign: TextAlign.left),
                 Space.espaciador(15),
-                Text("Nombre científico: ${infoPlanta.nombreCientifico!}",
+                Text("Nombre científico: ${infoPlanta.nombreCientifico}",
                     textAlign: TextAlign.left),
                 Space.espaciador(10),
-                Text("Año de publicación del nombre: ${infoPlanta.anio!}",
+                Text("Año de publicación del nombre: ${infoPlanta.anio}",
                     textAlign: TextAlign.left),
                 Space.espaciador(6),
                 Space.espaciador(6),
-                if (infoPlanta.familia != null)
-                  Text("Familia: ${infoPlanta.familia!}",
-                      textAlign: TextAlign.left),
+                Text("Familia: ${infoPlanta.familia}",
+                    textAlign: TextAlign.left),
                 Space.espaciador(10),
-                if (infoPlanta.toxicidad != null)
-                  Text("Tóxica: ${infoPlanta.toxicidad!}",
-                      textAlign: TextAlign.left),
+                Text("Tóxica: ${infoPlanta.toxicidad}",
+                    textAlign: TextAlign.left),
                 Space.espaciador(10),
-                Text(
-                  (infoPlanta.estatus == 1)
-                      ? "Estatus: Activo"
-                      : "Estatus: Inactivo",
-                )
               ],
             ),
           ),
@@ -195,7 +193,8 @@ class _RecorridosFormState
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2100),
                     dateLabelText: 'Fecha de inicio',
-                    //validator: Utilities.fechaValidator,
+                    validator: Utilities.fechaValidator,
+                    icon: const Icon(Icons.date_range),
                   ),
 
                   DateTimePicker(
@@ -203,7 +202,8 @@ class _RecorridosFormState
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2100),
                     dateLabelText: 'Fecha final',
-                    //validator: Utilities.fechaValidator
+                    validator: Utilities.fechaValidator,
+                    icon: const Icon(Icons.date_range),
                   ),
                   Space.espaciador(10),
 
@@ -248,12 +248,15 @@ class _RecorridosFormState
                       ],
                     ),
                   ),
-                  FloatingActionButton(
-                    onPressed: () async {
-                      await asignarUbicacion();
-                    },
-                    backgroundColor: Enviroment.primaryColor,
-                    child: const Icon(Icons.gps_fixed_outlined),
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      onPressed: () async {
+                        await asignarUbicacion();
+                      },
+                      backgroundColor: Enviroment.primaryColor,
+                      child: const Icon(Icons.gps_fixed_outlined),
+                    ),
                   ),
                 ],
               ),
