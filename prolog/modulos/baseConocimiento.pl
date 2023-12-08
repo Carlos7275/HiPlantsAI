@@ -178,7 +178,7 @@ plantas_no_toxicas(PlantasNoToxicas) :-
 
 plantas_cercanas_toxicas(Lat, Long, PlantasCercanasToxicas) :-
     plantas_toxicas(PlantasToxicas),
-    findall([Planta, Distancia],(
+    findall(Planta,(
         member(Planta, PlantasToxicas),
         nth0(4, Planta, LatP),
         nth0(5, Planta, LongP),
@@ -193,7 +193,7 @@ plantas_cercanas_toxicas(Lat, Long, PlantasCercanasToxicas) :-
 
 plantas_cercanas_no_toxicas(Lat, Long, PlantasCercanasNoToxicas) :-
     plantas_no_toxicas(PlantasNoToxicas),
-    findall([Planta, Distancia],(
+    findall(Planta,(
         member(Planta, PlantasNoToxicas),
         nth0(4, Planta, LatP),
         nth0(5, Planta, LongP),
