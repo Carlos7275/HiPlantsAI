@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             body: const MapsPage(),
             drawer: Drawer(
                 child: ListView(
-                  
+
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.zero,
                     children: [
@@ -139,6 +139,8 @@ class _HomePageState extends State<HomePage> {
                     leading: const Icon(Icons.data_usage),
                     title: const Text('Recorridos'),
                     onTap: () {
+                      Modular.to.pushNamed('/recorridos/');
+
                       Navigator.pop(context);
                     },
                   ),
@@ -148,13 +150,6 @@ class _HomePageState extends State<HomePage> {
                     onTap: () async {
                       Modular.to.pushNamed('/infousuario/');
 
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Configuración del Sistema'),
-                    onTap: () async {
                       Navigator.pop(context);
                     },
                   ),

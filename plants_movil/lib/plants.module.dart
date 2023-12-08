@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:plants_movil/pages/cambiar_contra/cambiar_contra_form/cambiar_contra.controller.dart';
 import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
+import 'package:plants_movil/pages/recorridos/form/recorridos.controller.dart';
 import 'package:plants_movil/pages/registrar_plantas/registrar_plantas_form/registro_plantas.controller.dart';
 import 'package:plants_movil/pages/usuario/usuario_form/usuario.controller.dart';
 import 'package:plants_movil/routes.dart';
@@ -16,6 +17,7 @@ class PlantsModule extends Module {
         Bind.factory((i) => RegistrarUsuarioController()),
         Bind.factory((i) => CambiarContraController()),
         Bind.factory((i) => RegistroPlantasController()),
+        Bind.factory((i) => RecorridosController())
       ];
 
   @override
