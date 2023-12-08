@@ -63,7 +63,8 @@ class _VozState extends State<Voz> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topRight,
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           GestureDetector(
             onDoubleTap: () async {

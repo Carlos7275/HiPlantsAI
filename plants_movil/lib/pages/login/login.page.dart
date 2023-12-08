@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage>
     super.initState();
 
     animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 7));
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         animationController.forward(from: 10);

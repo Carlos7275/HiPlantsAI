@@ -19,10 +19,19 @@ class _RegistrarPlantaState extends State<RegistrarPlantasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "Registrar Plantas",
-            style: TextStyle(color: Colors.white),
+          title: const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(2.0),
+                child: Icon(Icons.add, color: Colors.white),
+              ),
+              Text(
+                "Registrar Plantas",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
+          iconTheme: const IconThemeData(color: Colors.white),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),

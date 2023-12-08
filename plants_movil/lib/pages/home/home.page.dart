@@ -85,10 +85,21 @@ class _HomePageState extends State<HomePage> {
         },
         child: Scaffold(
             appBar: AppBar(
-                title: const Text(
-                  "Hi Plants AI",
-                  style: TextStyle(color: Colors.white),
+                title: const Row(
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Image(
+                          image: AssetImage('assets/icon/icon.png'),
+                          width: 40,
+                        )),
+                    Text(
+                      "Hi Plants AI",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
                 ),
+                iconTheme: const IconThemeData(color: Colors.white),
                 backgroundColor: Enviroment.secondaryColor,
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
@@ -136,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                   ListTile(
-                    leading: const Icon(Icons.data_usage),
+                    leading: const Icon(Icons.add_road),
                     title: const Text('Recorridos'),
                     onTap: () {
                       Modular.to.pushNamed('/recorridos/');

@@ -14,12 +14,23 @@ class __RecorridosPagStateState extends State<RecorridosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text(
-              " Mis recorridos",
-              style: TextStyle(color: Colors.white),
+            title: const Row(
+              children: [
+                Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Icon(
+                      Icons.add_road,
+                      color: Colors.white,
+                    )),
+                Text(
+                  " Mis recorridos",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
+            iconTheme: const IconThemeData(color: Colors.white),
             titleSpacing:
-                20, // Espaciado entre el ícono/botón de retroceso y el texto del título
+                10, // Espaciado entre el ícono/botón de retroceso y el texto del título
             centerTitle: false, // Alinea el texto del título a la izquierda
             backgroundColor: Enviroment.secondaryColor),
         body: SingleChildScrollView(

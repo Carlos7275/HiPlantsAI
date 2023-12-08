@@ -27,6 +27,7 @@ class _UsuarioPageState extends State<RegistrarUsuarioPage> {
               borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
           )),
+          iconTheme: const IconThemeData(color: Colors.white),
           titleSpacing:
               20, // Espaciado entre el ícono/botón de retroceso y el texto del título
           centerTitle: false, // Alinea el texto del título a la izquierda

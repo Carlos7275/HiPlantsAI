@@ -58,8 +58,8 @@ class _RecorridosFormState
         if (!cargando)
           Marker(
             point: ubicacionActual,
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             child: const Icon(Icons.account_circle, color: Colors.blue),
           ),
         for (var markerData in controller.puntos)
@@ -71,12 +71,11 @@ class _RecorridosFormState
                   onPressed: () {
                     mostrarInformacionDePlanta(markerData);
                   },
-                  iconSize: 30,
                   style: const ButtonStyle(
                       elevation: MaterialStatePropertyAll(0.0),
                       backgroundColor:
                           MaterialStatePropertyAll(Colors.transparent)),
-                  icon: const Icon(LeafIcon.tree_2,
+                  icon: const Icon(LeafIcon.leaf,
                       color: Enviroment.secondaryColor)))
       ],
     );
@@ -153,7 +152,8 @@ class _RecorridosFormState
                     Enviroment.server + infoPlanta.urlImagen,
                   ),
                 ),
-                Text("Tiempo de observacion: ${infoPlanta.tiempo} segundos",
+                Text(
+                    "Tiempo acumulado de observacion: ${infoPlanta.tiempo} segundos",
                     textAlign: TextAlign.left),
                 Text("Zona: ${infoPlanta.zona}", textAlign: TextAlign.left),
                 Space.espaciador(15),

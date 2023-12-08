@@ -21,10 +21,22 @@ class _UsuarioPageState extends State<UsuarioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "Configuración de Usuario",
-            style: TextStyle(color: Colors.white),
+          title: const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(1.0),
+                child: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                "Ajustes del Usuario",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
+          iconTheme: const IconThemeData(color: Colors.white),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
@@ -41,8 +53,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
             Column(children: [
               Container(
                 padding: const EdgeInsets.all(5),
-                child: const UsuarioForm(
-                ),
+                child: const UsuarioForm(),
               )
             ])
           ]),

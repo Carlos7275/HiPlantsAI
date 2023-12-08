@@ -325,8 +325,8 @@ class _MapsPageState extends State<MapsPage> {
         if (!cargando)
           Marker(
             point: ubicacionActual,
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             child: const Icon(Icons.account_circle, color: Colors.blue),
           ),
         for (var markerData in puntos)
@@ -338,12 +338,11 @@ class _MapsPageState extends State<MapsPage> {
                   onPressed: () {
                     mostrarInformacionDePlanta(markerData);
                   },
-                  iconSize: 30,
                   style: const ButtonStyle(
                       elevation: MaterialStatePropertyAll(0.0),
                       backgroundColor:
                           MaterialStatePropertyAll(Colors.transparent)),
-                  icon: Icon(LeafIcon.tree_2,
+                  icon: Icon(LeafIcon.leaf,
                       color: markerData.estatus == 0
                           ? Colors.grey
                           : Enviroment.secondaryColor)))

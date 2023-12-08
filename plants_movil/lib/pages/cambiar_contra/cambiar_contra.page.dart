@@ -14,15 +14,25 @@ class _CambiarContraPageState extends State<CambiarContraPage> {
   void initState() {
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "Cambiar Contraseña",
-            style: TextStyle(color: Colors.white),
+          title: const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(1.0),
+                child: Icon(Icons.password, color: Colors.white),
+              ),
+              Text(
+                "Cambiar Contraseña",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
+          iconTheme: const IconThemeData(color: Colors.white),
+
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
@@ -45,8 +55,4 @@ class _CambiarContraPageState extends State<CambiarContraPage> {
           ]),
         )));
   }
-
-
-
-
 }
