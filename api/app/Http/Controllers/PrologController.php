@@ -179,4 +179,17 @@ class PrologController extends Controller
             return response()->json(Message::success($mensaje));
         }
     }
+
+    public function ObtenerAreaMasVisitada($text = false){
+        $url = "{$this->prologURL}/plantaMasVisitada";
+        $response = json_decode(Http::get($url));
+        $idplanta = $response->resultado;
+        $planta = $this->_mapaRepository->find($idplanta);
+        if (boolval($text) == 0)
+            return response()->json(Message::success($planta));
+        else {
+            $mensaje = "El área más visitada es $planta->zona";
+            return response()->json(Message::success($mensaje));
+        }
+    }
 }
