@@ -1,8 +1,11 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:plants_movil/models/Comandos.model.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:plants_movil/models/Comandos.model.dart';
 import 'package:plants_movil/services/comandos.service.dart';
+import 'package:plants_movil/widgets/space/space.widget.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:string_similarity/string_similarity.dart';
@@ -21,7 +24,7 @@ class _VozState extends State<Voz> {
   bool estaEscuchando = false;
   SpeechToText spt = SpeechToText();
   late AlertDialog alertDialog;
-
+  LatLng coordenadas = const LatLng(0, 0);
   List<String>? comandoList;
   @override
   void initState() {
@@ -31,10 +34,13 @@ class _VozState extends State<Voz> {
 
   void obtenerComandos() async {
     comandos = await ComandosService().obtenerComandos();
+    await obtenerUbicacionUsuario();
+
     setState(() {});
   }
 
   void resultListener(SpeechRecognitionResult result) async {
+    await tts.stop();
     setState(() {
       texto = result.recognizedWords;
     });
@@ -57,11 +63,11 @@ class _VozState extends State<Voz> {
         ),
       ],
     );
-
+    // var estaHablando = false;
     setState(() {
       estaEscuchando = false;
     });
-    await tts.stop();
+
     // Busca el comando con mayor similitud
     double maxSimilarity = 0.0;
     Comandos matchedCommand = Comandos(comando: '', descripcion: '');
@@ -86,7 +92,10 @@ class _VozState extends State<Voz> {
 
       await ejecutarComando(matchedCommand.id);
     } else {
-      // await tts.speak("¡No se detectó ningun comando!");
+      // if (!estaEscuchando) {
+      //   estaHablando = true;
+      //   if (estaHablando) await tts.speak("¡No se detectó ningun comando!");
+      // }
     }
 
     // Usa Navigator.of(context, rootNavigator: true).pop() para cerrar solo el modal.
@@ -99,16 +108,55 @@ class _VozState extends State<Voz> {
     );
   }
 
+  Future<void> obtenerUbicacionUsuario() async {
+    bool servicio = await Geolocator.isLocationServiceEnabled();
+
+    if (servicio) {
+      const LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 10);
+
+      Position position = await Geolocator.getCurrentPosition();
+      coordenadas = LatLng(position.latitude, position.longitude);
+    } else {
+      await AppSettings.openAppSettings(type: AppSettingsType.location);
+    }
+  }
+
   ejecutarComando(id) async {
     FlutterTts tts = FlutterTts();
+    await obtenerUbicacionUsuario();
+
     switch (id) {
       case 1:
         var mensaje = await ComandosService().plantaNoVisitadas();
         await tts.speak(mensaje);
         break;
+      case 2:
+        var mensaje = await ComandosService()
+            .plantaCercanas(coordenadas.latitude, coordenadas.longitude);
+        await tts.speak(mensaje);
+        break;
       case 3:
         var mensaje = await ComandosService().plantaMasVisitada();
         await tts.speak(mensaje);
+        break;
+      case 4:
+        var mensaje = await ComandosService().plantaMasVisitadaTiempo();
+        await tts.speak(mensaje);
+        break;
+
+      case 5:
+        var mensaje = await ComandosService().plantaMenosVisitadaTiempo();
+        await tts.speak(mensaje);
+        break;
+
+      case 6:
+        break;
+      case 7:
+        break;
+      case 8:
+        break;
+      case 9:
         break;
     }
   }
@@ -156,7 +204,9 @@ class _VozState extends State<Voz> {
                   estaEscuchando = true;
                 });
 
-                await spt.listen(onResult: resultListener);
+                await spt.listen(
+                    onResult: resultListener,
+                    listenFor: const Duration(seconds: 10));
               }
             },
           ),
@@ -190,7 +240,7 @@ class _VozState extends State<Voz> {
                 );
               },
               icon: const Icon(Icons.help),
-            )
+            ),
         ],
       ),
     );

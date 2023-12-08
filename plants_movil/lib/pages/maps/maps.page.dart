@@ -397,6 +397,7 @@ class _MapsPageState extends State<MapsPage> {
                 }
                 return Row(
                   children: [
+                    Space.espaciador(30),
                     Center(
                       child: (cargando)
                           ? SizedBox(
@@ -437,7 +438,7 @@ class _MapsPageState extends State<MapsPage> {
             );
           },
         ),
-        if (!cargando) const Voz()
+        if (!cargando) const Voz(),
       ]),
     );
   }

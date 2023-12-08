@@ -33,8 +33,41 @@ class ComandosService extends Service<Comandos> {
     }
   }
 
+  Future<String> plantaMasVisitadaTiempo() async {
+    http.Response resp =
+        await httpClient.get(url: 'Plantas/MasVisitadas/Tiempo/1');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> plantaMenosVisitadaTiempo() async {
+    http.Response resp =
+        await httpClient.get(url: 'Plantas/MenosVisitadas/Tiempo/1');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
   Future<String> plantaNoVisitadas() async {
     http.Response resp = await httpClient.get(url: 'Plantas/NoVisitadas/1');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body)["data"];
+    } else {
+      throw resp;
+    }
+  }
+
+  Future<String> plantaCercanas(double lat, double longitud) async {
+    http.Response resp =
+        await httpClient.get(url: 'Plantas/Cercanas/1/$lat/$longitud');
 
     if (resp.statusCode == 200) {
       return json.decode(resp.body)["data"];
