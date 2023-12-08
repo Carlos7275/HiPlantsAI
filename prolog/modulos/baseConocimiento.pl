@@ -6,7 +6,7 @@
 :- dynamic distanciamax/1.
 
 inicializar_plantas :- %inicializamos el hecho de plantas con lo que hay en la bd
-    Query = 'SELECT mapa.id,info_plantas.id,nombre_planta,zona,latitud,longitud,toxicidad,comestible,familia,genero,mapa.estatus FROM mapa inner join info_plantas on id_planta=info_plantas.id where mapa.estatus=1;', % Assuming you want only one row
+    Query = 'SELECT mapa.id,info_plantas.id,nombre_planta,zona,latitud,longitud,toxicidad,comestible,familia,genero,mapa.estatus,vegetable FROM mapa inner join info_plantas on id_planta=info_plantas.id where mapa.estatus=1;', % Assuming you want only one row
     consultar_tabla(Query, Row), %obtenemos informacion de la bd
     rows_to_lists_dynamic(Row, Lista), %convertimos los rows a multiple lista
     retractall(plantas(_)), % limpiamos los hechos de planta
@@ -214,6 +214,13 @@ plantas_comestibles(PlantasComestibles) :-
 
     ), PlantasComestibles).
 
+plantas_vegetables(PlantasVegetables):-
+    findall(Plantas,(
+        plantas(Plantas),
+        nth0(11,Plantas,PlantaVegetal),
+        PlantaVegetal=1
+        ),PlantasVegetables).
+
 
 plantas_cercanas_comestibles(Lat, Long, PlantasCercanasComestibles) :-
     plantas_comestibles(PlantasComestibles),
@@ -228,3 +235,16 @@ plantas_cercanas_comestibles(Lat, Long, PlantasCercanasComestibles) :-
         Distancia =< DistanciaMax
 
     ), PlantasCercanasComestibles).
+    
+    plantas_cercanas_vegetables(Lat,Long,PlantasCercanasVegetables):-
+        plantas_vegetables(PlantasVegetables),
+        findall(Planta,(
+            member(Planta,PlantasVegetables),
+            nth0(4,Planta,LatP),
+            nth0(5,Planta,LongP),
+            haversine_distance(Lat,Long,LatP,LongP,Distancia),
+            distanciamin(DistanciaMin),
+            distanciamax(DistanciaMax),
+            Distancia>=DistanciaMin,
+            Distancia=<DistanciaMax
+            ),PlantasCercanasVegetables).
