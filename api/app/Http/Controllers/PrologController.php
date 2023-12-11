@@ -64,7 +64,15 @@ class PrologController extends Controller
             $nombres = implode(', ', array_column($response->resultado, 2));
 
             if ($numeroPlantas > 0)
-                $mensaje = "Se " . ($numeroPlantas > 1 ? 'encontraron' : 'encontro') . " " . $numeroPlantas . " " . ($numeroPlantas > 1 ? 'Plantas no visitadas cercanas, ' : 'Planta no visitada cercana,') . $nombres;
+                $mensaje = "Se " . ($numeroPlantas > 1 
+                    ? 'encontraron' 
+                    : 'encontro'
+                    ) 
+                    . " " . $numeroPlantas . " " . 
+                    ($numeroPlantas > 1 
+                            ? 'Plantas no visitadas cercanas, ' 
+                            : 'Planta no visitada cercana,') 
+                    . $nombres;
 
             return response()->json(Message::success($mensaje));
         }

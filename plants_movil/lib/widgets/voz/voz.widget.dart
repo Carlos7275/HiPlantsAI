@@ -160,8 +160,6 @@ class _VozState extends State<Voz> {
   ejecutarComando(id) async {
     FlutterTts tts = FlutterTts();
     await obtenerUbicacionUsuario();
-    await tts.stop();
-    tts.setSpeechRate(Platform.isAndroid ? 0.8 : 0.395);
     switch (id) {
       case 1:
         var mensaje = await ComandosService().plantaNoVisitadas();

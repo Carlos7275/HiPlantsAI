@@ -28,7 +28,7 @@ export class ConfiguracionesPanelComponent implements OnInit {
       TokenTreffle: ['',Validators.required],
       TokenPlants: ['',Validators.required],
       TokenIpInfo: ['',Validators.required],
-      DistanciaMinima: [0,Validators.required],
+      DistanciaMinima: [0,[Validators.required,Validators.min(0)]],
       DistanciaMaxima: [0,Validators.required]
     })
   }
