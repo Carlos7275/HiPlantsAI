@@ -339,9 +339,9 @@ class _MapsPageState extends State<MapsPage> {
                     mostrarInformacionDePlanta(markerData);
                   },
                   style: const ButtonStyle(
-                      elevation: MaterialStatePropertyAll(0.0),
+                      elevation: WidgetStatePropertyAll(0.0),
                       backgroundColor:
-                          MaterialStatePropertyAll(Colors.transparent)),
+                          WidgetStatePropertyAll(Colors.transparent)),
                   icon: Icon(LeafIcon.leaf,
                       color: markerData.estatus == 0
                           ? Colors.grey

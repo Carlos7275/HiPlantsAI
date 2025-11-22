@@ -114,9 +114,9 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                 children: [
                   ElevatedButton(
                     style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
+                        padding: WidgetStateProperty.all(
                             const EdgeInsets.symmetric(vertical: 5)),
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                           Enviroment.secondaryColor,
                         )),
                     //if user click this button, user can upload image from gallery
@@ -135,9 +135,9 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
+                        padding: WidgetStateProperty.all(
                             const EdgeInsets.symmetric(vertical: 5)),
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                           Enviroment.secondaryColor,
                         )),
                     //if user click this button. user can upload image from camera
@@ -201,7 +201,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                       ElevatedButton.icon(
                         icon: const Icon(Icons.image),
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                           Colors.grey,
                         )),
                         onPressed: () async => pickupImage(),
@@ -268,7 +268,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<Generos>(
-                          value: _generoSeleccionado,
+                          initialValue: _generoSeleccionado,
                           validator: Utilities.generosValidator,
                           style: const TextStyle(
                               fontSize: 14, color: Colors.black),
@@ -314,7 +314,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<CodigosPostales>(
-                          value: _asentamientoSeleccionado,
+                          initialValue: _asentamientoSeleccionado,
                           style: const TextStyle(
                               fontSize: 14, color: Colors.black),
                           onChanged: (CodigosPostales? newValue) {
@@ -356,7 +356,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                         child: ElevatedButton.icon(
                           icon: const Icon(Icons.open_in_new),
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                             const Color.fromARGB(255, 96, 172, 149),
                           )),
                           onPressed: () {
@@ -382,7 +382,7 @@ class _UsuarioFormState extends Stateful<UsuarioForm, UsuarioFormController> {
                         child: ElevatedButton.icon(
                           icon: const Icon(Icons.save),
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                             Colors.blue,
                           )),
                           onPressed: () => setState(() {

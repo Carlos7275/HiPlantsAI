@@ -53,10 +53,10 @@ class _RegistroPlantasForm
               children: [
                 ElevatedButton(
                   style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
+                    padding: WidgetStateProperty.all(
                       const EdgeInsets.symmetric(vertical: 5),
                     ),
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       Enviroment.secondaryColor,
                     ),
                   ),
@@ -73,10 +73,10 @@ class _RegistroPlantasForm
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
+                    padding: WidgetStateProperty.all(
                       const EdgeInsets.symmetric(vertical: 5),
                     ),
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       Enviroment.secondaryColor,
                     ),
                   ),
@@ -132,7 +132,7 @@ class _RegistroPlantasForm
                   ElevatedButton.icon(
                     icon: const Icon(Icons.image),
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                       Colors.grey,
                     )),
                     onPressed: () async => pickupImage(),
@@ -175,7 +175,7 @@ class _RegistroPlantasForm
                   ElevatedButton.icon(
                     icon: const Icon(Icons.location_on),
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                       Enviroment.secondaryColor,
                     )),
                     onPressed: () async {
@@ -194,7 +194,7 @@ class _RegistroPlantasForm
                   ElevatedButton.icon(
                     icon: const Icon(Icons.save),
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                       Colors.blue,
                     )),
                     onPressed: () async => controller.enviar(context, imagen),

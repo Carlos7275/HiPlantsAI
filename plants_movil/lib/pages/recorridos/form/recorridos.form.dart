@@ -72,9 +72,9 @@ class _RecorridosFormState
                     mostrarInformacionDePlanta(markerData);
                   },
                   style: const ButtonStyle(
-                      elevation: MaterialStatePropertyAll(0.0),
+                      elevation: WidgetStatePropertyAll(0.0),
                       backgroundColor:
-                          MaterialStatePropertyAll(Colors.transparent)),
+                          WidgetStatePropertyAll(Colors.transparent)),
                   icon: const Icon(LeafIcon.leaf,
                       color: Enviroment.secondaryColor)))
       ],
@@ -210,7 +210,7 @@ class _RecorridosFormState
                   ElevatedButton.icon(
                     icon: const Icon(Icons.search),
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                       Colors.blue,
                     )),
                     onPressed: () => setState(() {

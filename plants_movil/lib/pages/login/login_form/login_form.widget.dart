@@ -6,6 +6,8 @@ import 'package:plants_movil/pages/login/login_form/login_form.controller.dart';
 import 'package:plants_movil/utilities/regex.dart';
 import 'package:plants_movil/widgets/InputText/inputtext.widget.dart';
 import 'package:plants_movil/widgets/space/space.widget.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginForm extends StatefulWidget {
@@ -71,7 +73,7 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                           ),
                           onTap: () async {
                             var uri = Uri.parse(
-                                "${Enviroment.server}:4200/recuperarcuenta");
+                                "${Enviroment.serverWeb}/recuperarcuenta");
                             if (await canLaunchUrl(uri)) {
                               await launchUrl(uri);
                             }
@@ -86,12 +88,26 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.login_sharp),
                         style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
+                          padding: WidgetStateProperty.all(
                               const EdgeInsets.symmetric(vertical: 5)),
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               Theme.of(context).colorScheme.secondary),
                         ),
-                        onPressed: () => controller.enviar(context),
+                        onPressed: () {
+                          controller.enviar(
+                            onError: (message) {
+                              QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.error,
+                                text: message,
+                                showConfirmBtn: true,
+                              );
+                            },
+                            onSuccess: () {
+                              Modular.to.pushNamed('home');
+                            },
+                          );
+                        },
                         label: const Column(
                           children: [
                             Text(
@@ -112,9 +128,9 @@ class _LoginFormState extends Stateful<LoginForm, LoginFormController> {
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.add_circle_outline),
                         style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
+                          padding: WidgetStateProperty.all(
                               const EdgeInsets.symmetric(vertical: 4)),
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               Theme.of(context).colorScheme.secondary),
                         ),
                         onPressed: () {

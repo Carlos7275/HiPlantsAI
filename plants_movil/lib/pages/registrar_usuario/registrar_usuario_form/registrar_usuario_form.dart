@@ -152,7 +152,7 @@ class _RegistraUsuarioState
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<Generos>(
-                          value: _generoSeleccionado,
+                          initialValue: _generoSeleccionado,
                           validator: Utilities.generosValidator,
                           style: const TextStyle(
                               fontSize: 14, color: Colors.black),
@@ -210,7 +210,7 @@ class _RegistraUsuarioState
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<CodigosPostales>(
-                          value: _asentamientoSeleccionado,
+                          initialValue: _asentamientoSeleccionado,
                           style: const TextStyle(
                               fontSize: 14, color: Colors.black),
                           onChanged: (CodigosPostales? newValue) {
@@ -241,7 +241,7 @@ class _RegistraUsuarioState
                         child: ElevatedButton.icon(
                           icon: const Icon(Icons.add),
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                             Colors.blue,
                           )),
                           onPressed: () => setState(() {
